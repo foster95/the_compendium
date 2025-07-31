@@ -14,12 +14,18 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD.open('the_compendium')
 
-def get_saved_characters():
-    """Function to get saved characters from the Google Sheet"""
+def get_stored_characters():
+    """Function to get stored characters from the Google Sheet"""
     try:
-        sheet = SHEET.worksheet('Saved Characters')
-        data = sheet.get_all_records()
-        return data
+        sheet = SHEET.worksheet('Stored Characters')
+        characters = sheet.get_all_records()
+        if characters:
+            print("Stored Characters:")
+            for character in characters:
+                print(character)
+        else:
+            print("No characters found.")
+        return characters
     except Exception as e:
         print(f"An error occurred while fetching characters: {e}")
         return []
@@ -40,7 +46,7 @@ def launch():
             choice = int(input("Enter your choice: "))
             if choice == 1:
                   print("Viewing all characters...")
-            # Code to view all characters would go here
+                  get_stored_characters()
             elif choice == 2:
                   print("Creating a new character...")
             # Code to create a new character would go here
@@ -51,5 +57,6 @@ def launch():
                  print("Invalid choice, please try again.")
         except ValueError:
             print("Please enter a valid number.")
+
 
 launch()
