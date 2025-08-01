@@ -60,8 +60,21 @@ def create_randomised_character():
         "Wisdom": random.randint(1, 20),
         "Charisma": random.randint(1, 20)
     }
+
+    while True:
+        character_name = input("Enter character name: ")
+        """Code to validate that user has entered a name"""
+        if len(character_name) == 0:
+            print("Character name must contain at least one character, please try again.")
+            continue
+        """Code to validate that user has entered text and not numbers or special characters"""
+        if not character_name.isalpha():
+            print("Character name must contain only letters, please try again.")
+            continue
+        break
+
     randomised_character = {
-        "Name": input("Enter character name: "),
+        "Name": character_name,
         "Race/Species": random.choice(races),
         "Class": random.choice(classes),
         "Stats": stats,
@@ -83,18 +96,22 @@ def launch():
         "Welcome to the Compendium! \n" \
         "Your one stop shop for all your Dungeon's and Dragon's character needs! \n" \
         "Please select an option: \n" \
-        "1. View all characters \n" \
-        "2. Create a new character using The Compendium \n" \
-        "3. Add your own existing character \n" \
-        "0. Exit")
+        "[1.] View all characters \n" \
+        "[2.] Create a new character using The Compendium \n" \
+        "[3.] Add your own existing character \n" \
+        "[0.] Exit")
         
         try:
             choice = int(input("Enter your choice: "))
             if choice == 1:
                   print("Viewing all characters logged to The Compendium...")
+
+                  """Code to view all characters loaded to The Compendium"""
                   get_stored_characters()
             elif choice == 2:
                   print("Create a new character using The Compendium...")
+
+                  """Code to create a new character using The Compendium as a randomiser"""
                   randomised_character=create_randomised_character()
 
                   """Code to print new randomised character"""
