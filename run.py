@@ -95,7 +95,19 @@ def launch():
                   get_stored_characters()
             elif choice == 2:
                   print("Create a new character using The Compendium...")
-                  create_randomised_character()
+                  randomised_character=create_randomised_character()
+
+                  """Code to print new randomised character"""
+                  print("\nYour new character:")
+                  for key, value in randomised_character.items():
+                       if isinstance(value, dict):
+                           print(f"{key}:")
+                           for stat, stat_value in value.items():
+                               print(f"  {stat}: {stat_value}")
+                       elif isinstance(value, list):  
+                           print(f"{key}: {', '.join(value)}")
+                       else:
+                           print(f"{key}: {value}")
             elif choice == 3:
                   print("Loading choices to add an existing character to The Compendium...")
                   # Code to add an existing character will go here
@@ -109,15 +121,3 @@ def launch():
 
 
 launch()
-randomised_character = create_randomised_character()
-
-print("\nYour new character:")
-for key, value in new_character.items():
-    if isinstance(value, dict):  # For stats
-        print(f"{key}:")
-        for stat, stat_value in value.items():
-            print(f"  {stat}: {stat_value}")
-    elif isinstance(value, list):  # For proficiencies
-        print(f"{key}: {', '.join(value)}")
-    else:
-        print(f"{key}: {value}")
