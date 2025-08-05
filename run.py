@@ -63,16 +63,29 @@ def create_randomised_character():
     }
 
     while True:
-        character_name = input("Enter character name: ")
+        """Code for user to provide required first name"""
+        first_name = input("Enter character first name (required): ").strip()
         """Code to validate that user has entered a name"""
-        if len(character_name) == 0:
+        if len(first_name) == 0:
             print("Character name must contain at least one character, please try again.")
             continue
         """Code to validate that user has entered text and not numbers or special characters"""
-        if not character_name.isalpha():
+        if not first_name.isalpha():
             print("Character name must contain only letters, please try again.")
             continue
         break
+
+    while True:
+        """Code for user to provide optional last name"""
+        last_name = input("Enter character surname (optional): ")
+        if last_name and not last_name.isalpha():
+            print("Surname must contain only letters, please try again.")
+            continue
+        break
+
+    """Combine first name and last name (if provided)"""
+
+    character_name = f"{first_name} {last_name}" if last_name else first_name
 
     randomised_character = {
         "Name": character_name,
