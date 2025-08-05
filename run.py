@@ -49,7 +49,8 @@ def create_randomised_character():
     proficiencies = ["Athletics", "Acrobatics", "Stealth", "Perception",
                     "Arcana", "History", "Insight", "Medicine",
                     "Nature", "Religion", "Deception", "Intimidation",
-                    "Performance", "Persuasion"]
+                    "Performance", "Persuasion", "Sleight of Hand", "Investigation",
+                    "Animal Handling", "Survival"]
     randomised_proficiencies = random.sample(proficiencies, 4)
     
     stats = {
@@ -84,55 +85,54 @@ def create_randomised_character():
     
     return randomised_character
 
-
-
 def launch():
     """
     Function to launch The Compendium, allowing users to select options. 
     To exit the compendium the player should type 0
     """
+    print(
+            "Welcome to the Compendium! \n" \
+            "Your one stop shop for all your Dungeon's and Dragon's character needs! \n")
+   
     while True:
-        print(
-        "Welcome to the Compendium! \n" \
-        "Your one stop shop for all your Dungeon's and Dragon's character needs! \n" \
-        "Please select an option: \n" \
-        "[1.] View all characters \n" \
-        "[2.] Create a new character using The Compendium \n" \
-        "[3.] Add your own existing character \n" \
-        "[0.] Exit")
-        
         try:
+            print("Please select an option by typing the relevant number into the terminal: \n" \
+            "[1] View all characters \n" \
+            "[2] Create a new character using The Compendium \n" \
+            "[3] Add your own existing character \n" \
+            "[0] Exit")
+
             choice = int(input("Enter your choice: "))
             if choice == 1:
-                  print("Viewing all characters logged to The Compendium...")
+                print("Viewing all characters logged to The Compendium...")
 
-                  """Code to view all characters loaded to The Compendium"""
-                  get_stored_characters()
+                """Code to view all characters loaded to The Compendium"""
+                get_stored_characters()
             elif choice == 2:
-                  print("Create a new character using The Compendium...")
+                print("Create a new character using The Compendium...")
 
-                  """Code to create a new character using The Compendium as a randomiser"""
-                  randomised_character=create_randomised_character()
+                """Code to create a new character using The Compendium as a randomiser"""
+                randomised_character=create_randomised_character()
 
-                  """Code to print new randomised character"""
-                  print("\nYour new character:")
-                  for key, value in randomised_character.items():
-                       if isinstance(value, dict):
-                           print(f"{key}:")
-                           for stat, stat_value in value.items():
-                               print(f"  {stat}: {stat_value}")
-                       elif isinstance(value, list):  
-                           print(f"{key}: {', '.join(value)}")
-                       else:
-                           print(f"{key}: {value}")
+                """Code to print new randomised character"""
+                print("\nYour new character:")
+                for key, value in randomised_character.items():
+                    if isinstance(value, dict):
+                        print(f"{key}:")
+                        for stat, stat_value in value.items():
+                            print(f"  {stat}: {stat_value}")
+                    elif isinstance(value, list):  
+                        print(f"{key}: {', '.join(value)}")
+                    else:
+                        print(f"{key}: {value}")
             elif choice == 3:
-                  print("Loading choices to add an existing character to The Compendium...")
-                  # Code to add an existing character will go here
+                print("Loading choices to add an existing character to The Compendium...")
+                # Code to add an existing character will go here
             elif choice == 0:
-                  print("Exiting the Compendium. Come back soon!")
-                  break
+                print("Exiting the Compendium. Come back soon!")
+                break
             else:
-                 print("Invalid choice, please only enter a number between 0 and 3.")
+                print("Invalid choice, please only enter a number between 0 and 3.")
         except ValueError:
             print("Please enter a valid number.")
 
