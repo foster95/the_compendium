@@ -41,8 +41,10 @@ def create_randomised_character():
 
     print("Create a new character here using The Compendium to provide you your baseline character traits")
 
-    races = ["Human", "Elf", "Dwarf", "Halfling", "Dragonborn", "Tiefling"]
-    classes = ["Fighter", "Wizard", "Rogue", "Cleric", "Paladin", "Druid"]
+    races = ["Human", "Elf", "Dwarf", "Halfling", "Dragonborn", "Tiefling", "Gnome",
+             "Half-Elf", "Half-Orc"]
+    classes = ["Fighter", "Wizard", "Rogue", "Cleric", "Paladin", "Druid", "Barbarian",
+               "Bard", "Monk", "Ranger", "Sorcerer", "Warlock"]
     alignments = ["Lawful Good", "Neutral Good", "Chaotic Good", 
                    "Lawful Neutral", "True Neutral", "Chaotic Neutral",
                    "Lawful Evil", "Neutral Evil", "Chaotic Evil"]
@@ -84,7 +86,6 @@ def create_randomised_character():
         break
 
     """Combine first name and last name (if provided)"""
-
     character_name = f"{first_name} {last_name}" if last_name else first_name
 
     randomised_character = {
@@ -97,6 +98,36 @@ def create_randomised_character():
     }
     
     return randomised_character
+
+def add_character_to_compendium(character):
+    """
+    Function to add the randomised character to The Compendium.
+    This will add the character to the Google Sheet.
+    """
+    try:
+        sheet = SHEET.worksheet('Stored Characters')
+        
+        """Change dictionary stats to a list of values so it can be added to Google Sheet"""
+        stats_dict = character["Stats"]
+        stats_string = ", ".join(f"{stat}: {value}" for stat, value in stats_dict.items())
+
+        """Change proficiencies to a string so it can be added to Google Sheet"""
+        proficiencies_string = ", ".join(character["Proficiencies"])
+
+        """Create a new row in Google Sheet with new generated character data"""
+        new_row = [
+            character["Name"],
+            character["Race/Species"],
+            character["Class"],
+            stats_string,
+            proficiencies_string,
+            character["Alignment"],
+        ]
+
+        sheet.append_row(new_row)
+        print(f"Character '{character['Name']}' added to The Compendium!")
+    except Exception as e:
+        print(f"Oh no! An error occurred while adding the character: {e}")
 
 def launch():
     """
@@ -138,6 +169,9 @@ def launch():
                         print(f"{key}: {', '.join(value)}")
                     else:
                         print(f"{key}: {value}")
+                """Code to add the new randomised character to The Compendium.
+                This will add the character to the Google Sheet."""
+                randomised_character=add_character_to_compendium(randomised_character)
             elif choice == 3:
                 print("Loading choices to add an existing character to The Compendium...")
                 # Code to add an existing character will go here
