@@ -35,8 +35,9 @@ def get_stored_characters():
 def create_randomised_character():
     """
     Function to create a new character using prompts from The Compendium.
-    At the end of the prompts the user will be given the option to add the character to The Compendium
-    and the character will be added to the Google Sheet.
+    At the end of the prompts the user will be given the option to 
+    add the character to The Compendium and the character will be added
+    to the Google Sheet.
     """
 
     print("Create a new character here using The Compendium to provide you your baseline character traits")
@@ -92,7 +93,7 @@ def create_randomised_character():
         "Name": character_name,
         "Race/Species": random.choice(races),
         "Class": random.choice(classes),
-        "Stats": stats,
+        "Statistics": stats,
         "Proficiencies": randomised_proficiencies,
         "Alignment": random.choice(alignments),
     }
@@ -107,7 +108,8 @@ def add_character_to_compendium(character):
     try:
         sheet = SHEET.worksheet('Stored Characters')
         
-        """Change dictionary stats to a list of values so it can be added to Google Sheet"""
+        """Change dictionary stats to a list of values so it can be added
+        to Google Sheet"""
         stats_dict = character["Stats"]
         stats_string = ", ".join(f"{stat}: {value}" for stat, value in stats_dict.items())
 
@@ -128,6 +130,70 @@ def add_character_to_compendium(character):
         print(f"Character '{character['Name']}' added to The Compendium!")
     except Exception as e:
         print(f"Oh no! An error occurred while adding the character: {e}")
+
+def add_premade_character_to_compendium():
+    """Function to add a character made outside of The Compendium to the Google Sheet."""
+
+    print("Add your own existing character to The Compendium. \n" \
+          "Please provide the character's details as prompted. \n")
+
+    while True:
+        """Code for user to provide required first name"""
+        pre_made_first_name = input("Enter character first name (required): ").strip()
+        """Code to validate that user has entered a name"""
+        if len(pre_made_first_name) == 0:
+            print("Character name must contain at least one character, please try again.")
+            continue
+        """Code to validate that user has entered text and not numbers or special characters"""
+        if not pre_made_first_name.isalpha():
+            print("Character name must contain only letters, please try again.")
+            continue
+        break
+
+    while True:
+        """Code for user to provide optional last name"""
+        pre_made_last_name = input("Enter character surname (optional): ")
+        if pre_made_last_name and not pre_made_last_name.isalpha():
+            print("Surname must contain only letters, please try again.")
+            continue
+        break
+    
+    """Combine first name and last name (if provided)"""
+    pre_made_character_name = f"{pre_made_first_name} {pre_made_last_name}" if pre_made_last_name else pre_made_first_name
+
+    """Code for user to provide pre-made base characterists ie race, class, alignment"""
+    pre_made_race = input("Enter race/species (e.g., Elf, Human): ").strip()
+    pre_made_character_class = input("Enter class (e.g., Fighter, Wizard): ").strip()
+    pre_made_alignment = input("Enter alignment (e.g., Chaotic Good): ").strip()
+
+    pre_made_proficiencies_input = input("Enter 4 proficiencies (comma-separated): ").strip()
+    pre_made_proficiencies = [proficency.strip().title() for proficency in pre_made_proficiencies_input.split(",") if proficency.strip()]
+    if len(pre_made_proficiencies) != 4:
+        print("Please enter exactly 4 proficiencies.")
+        return
+
+    """Code for user to provide pre-made stats"""
+    pre_made_statsistics = {}
+    for statistic in ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"]:
+        while True:
+            try:
+                value = int(input(f"Enter {stat} (1-20): "))
+                if 1 <= value <= 20:
+                    pre_made_statsistics[statistic] = value
+                    break
+                else:
+                    print("Value must be between 1 and 20, please try again.")
+            except ValueError:
+                print("Please enter a valid integer.")
+    
+    return {
+        "Name": pre_made_character_name,
+        "Race/Species": pre_made_race,
+        "Class": pre_made_character_class,
+        "Alignment": pre_made_alignment,
+        "Proficiencies": pre_made_proficiencies,
+        "Statsistics": pre_made_statsistics,
+    }
 
 def launch():
     """
@@ -174,9 +240,18 @@ def launch():
                 randomised_character=add_character_to_compendium(randomised_character)
             elif choice == 3:
                 print("Loading choices to add an existing character to The Compendium...")
-                # Code to add an existing character will go here
-            elif choice == 0:
-                print("Exiting the Compendium. Come back soon!")
+                pre_made_character=add_premade_character_to_compendium()
+                print("Loading choices to add an existing character to The Compendium...")
+                  pre_made_character = add_premade_character_to_compendium()
+                if pre_made_character:
+                    print("\nPlease ensure that the below characteristics are correct before adding to The Compendium")
+                    print(f"Name: {pre_made_character['Name']}")
+                    print(f"Race/Species: {pre_made_character['Race/Species']}")
+                    print(f"Class: {pre_made_character['Class']}")
+                    print(f"Statistics: {pre_made_character['Stats']}")
+                    print(f"Proficiencies: {', '.join(pre_made_character['Proficiencies'])}")
+                    print(f"Alignment: {pre_made_character['Alignment']}")
+                    print("Exiting the Compendium. Come back soon!")
                 break
             else:
                 print("Invalid choice, please only enter a number between 0 and 3.")
