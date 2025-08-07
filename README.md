@@ -30,3 +30,25 @@ The deployment terminal is set to 80 columns by 24 rows. That means that each li
 ---
 
 Happy coding!
+
+Bugs to fix
+Adding proficiencies for a pre-made character
+
+while len(pre_made_proficiencies) < 4:
+        proficiency = input("Enter proficiency: ").strip().title()
+        if proficiency in allowed_proficiencies:
+            if proficiency not in pre_made_proficiencies:
+                pre_made_proficiencies.append(proficiency)
+                print(f"Added proficiency: {proficiency}")
+            else:
+                print("Proficiency already added, please enter a different one.")
+        elif proficiency == "":
+            if len(pre_made_proficiencies) < 4:
+                print("You must enter at least one proficiency.")
+            break
+        else:
+            print("Invalid proficiency, please choose from the list.")
+            print(", ".join(allowed_proficiencies))
+    if not pre_made_proficiencies:
+        print("No proficiencies added, defaulting to 'None'.")
+        pre_made_proficiencies = ["None"]

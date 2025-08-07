@@ -161,25 +161,95 @@ def add_premade_character_to_compendium():
     """Combine first name and last name (if provided)"""
     pre_made_character_name = f"{pre_made_first_name} {pre_made_last_name}" if pre_made_last_name else pre_made_first_name
 
-    """Code for user to provide pre-made base characterists ie race, class, alignment"""
-    pre_made_race = input("Enter race/species (e.g., Elf, Human): ").strip()
-    pre_made_character_class = input("Enter class (e.g., Fighter, Wizard): ").strip()
-    pre_made_alignment = input("Enter alignment (e.g., Chaotic Good): ").strip()
+    """Code to validate race, class, allignment, proficiencies to ensure it matches the same 
+    format as the randomised characters"""
 
-    pre_made_proficiencies_input = input("Enter 4 proficiencies (comma-separated): ").strip()
-    pre_made_proficiencies = [proficency.strip().title() for proficency in pre_made_proficiencies_input.split(",") if proficency.strip()]
-    if len(pre_made_proficiencies) != 4:
-        print("Please enter exactly 4 proficiencies.")
-        return
+    allowed_races = [
+        "Human", "Elf", "Dwarf", "Halfling", "Dragonborn", "Tiefling", "Gnome",
+        "Half-Elf", "Half-Orc"]
+
+    allowed_classes = [
+        "Fighter", "Wizard", "Rogue", "Cleric", "Paladin", "Druid", "Barbarian",
+        "Bard", "Monk", "Ranger", "Sorcerer", "Warlock"
+    ]
+
+    allowed_alignments = [
+        "Lawful Good", "Neutral Good", "Chaotic Good", 
+        "Lawful Neutral", "True Neutral", "Chaotic Neutral",
+        "Lawful Evil", "Neutral Evil", "Chaotic Evil"
+    ]
+
+    allowed_proficiencies = [
+        "Athletics", "Acrobatics", "Stealth", "Perception",
+        "Arcana", "History", "Insight", "Medicine",
+        "Nature", "Religion", "Deception", "Intimidation",
+        "Performance", "Persuasion", "Sleight of Hand", "Investigation",
+        "Animal Handling", "Survival"
+    ]
+
+    """Code for user to provide pre-made base characterists ie race, class, alignment"""
+    """Validation for pre-made character race"""
+    while True:
+        pre_made_race = input(f"Enter race/species ({', '.join(allowed_races)}): ").strip().title()
+        if pre_made_race not in allowed_races:
+            print("Invalid race. Please choose one from the list.")
+        else:
+            break
+
+    """Validation for pre-made character class"""
+    while True:
+        pre_made_character_class = input(f"Enter class ({', '.join(allowed_classes)}): ").strip().title()
+        if pre_made_character_class not in allowed_classes:
+            print("Invalid class. Please choose one from the list.")
+        else:
+            break
+
+    """Validation for pre-made character alignment"""
+    while True:
+        pre_made_alignment = input(f"Enter alignment ({', '.join(allowed_alignments)}): ").strip().title()
+        if pre_made_alignment not in allowed_alignments:
+            print("Invalid alignment. Please choose one from the list.")
+        else:
+            break
+
+    """Code for user to provide pre-made proficiencies"""
+
+    pre_made_proficiencies = []
+    print("\nEnter up to 4 proficiencies from the following list:")
+    print(", ".join(allowed_proficiencies))
+    print("Press Enter on an empty line when you're done.")
+
+    while len(pre_made_proficiencies) < 4:
+        raw_input = input("Enter proficiencies (comma-separated): ").strip()
+
+        if raw_input == "":
+            if not pre_made_proficiencies:
+                print("You must add four proficiencies.")
+                continue
+            break
+
+        entries = [item.strip().title() for item in raw_input.split(',')]
+
+        for proficiency in entries:
+            if len(pre_made_proficiencies) >= 4:
+                break
+            if proficiency in allowed_proficiencies:
+                if proficiency not in pre_made_proficiencies:
+                    pre_made_proficiencies.append(proficiency)
+                    print(f"Added: {proficiency} to proficiencies.")
+                else:
+                    print(f"{proficiency} is already added.")
+            else:
+                print(f"{proficiency} is not a valid proficiency.")
 
     """Code for user to provide pre-made stats"""
-    pre_made_statsistics = {}
+    pre_made_statistics = {}
     for statistic in ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"]:
         while True:
             try:
-                value = int(input(f"Enter {stat} (1-20): "))
+                value = int(input(f"Enter {statistic} (1-20): "))
                 if 1 <= value <= 20:
-                    pre_made_statsistics[statistic] = value
+                    pre_made_statistics[statistic] = value
                     break
                 else:
                     print("Value must be between 1 and 20, please try again.")
@@ -192,7 +262,7 @@ def add_premade_character_to_compendium():
         "Class": pre_made_character_class,
         "Alignment": pre_made_alignment,
         "Proficiencies": pre_made_proficiencies,
-        "Statsistics": pre_made_statsistics,
+        "Statistics": pre_made_statistics,
     }
 
 def launch():
@@ -241,17 +311,16 @@ def launch():
             elif choice == 3:
                 print("Loading choices to add an existing character to The Compendium...")
                 pre_made_character=add_premade_character_to_compendium()
-                print("Loading choices to add an existing character to The Compendium...")
-                  pre_made_character = add_premade_character_to_compendium()
                 if pre_made_character:
                     print("\nPlease ensure that the below characteristics are correct before adding to The Compendium")
                     print(f"Name: {pre_made_character['Name']}")
                     print(f"Race/Species: {pre_made_character['Race/Species']}")
                     print(f"Class: {pre_made_character['Class']}")
-                    print(f"Statistics: {pre_made_character['Stats']}")
+                    print(f"Statistics:")
+                    for stat, value in pre_made_character['Statistics'].items():
+                        print(f"  {stat}: {value}")
                     print(f"Proficiencies: {', '.join(pre_made_character['Proficiencies'])}")
                     print(f"Alignment: {pre_made_character['Alignment']}")
-                    print("Exiting the Compendium. Come back soon!")
                 break
             else:
                 print("Invalid choice, please only enter a number between 0 and 3.")
