@@ -52,7 +52,7 @@ def create_randomised_character():
     proficiencies = ["Athletics", "Acrobatics", "Stealth", "Perception",
                     "Arcana", "History", "Insight", "Medicine",
                     "Nature", "Religion", "Deception", "Intimidation",
-                    "Performance", "Persuasion", "Sleight of Hand", "Investigation",
+                    "Performance", "Persuasion", "Sleight Of Hand", "Investigation",
                     "Animal Handling", "Survival"]
     randomised_proficiencies = random.sample(proficiencies, 4)
     
@@ -183,14 +183,14 @@ def add_premade_character_to_compendium():
         "Athletics", "Acrobatics", "Stealth", "Perception",
         "Arcana", "History", "Insight", "Medicine",
         "Nature", "Religion", "Deception", "Intimidation",
-        "Performance", "Persuasion", "Sleight of Hand", "Investigation",
+        "Performance", "Persuasion", "Sleight Of Hand", "Investigation",
         "Animal Handling", "Survival"
     ]
 
     """Code for user to provide pre-made base characterists ie race, class, alignment"""
     """Validation for pre-made character race"""
     while True:
-        pre_made_race = input(f"Enter race/species ({', '.join(allowed_races)}): ").strip().title()
+        pre_made_race = input(f"\nEnter race/species from the following list - {', '.join(allowed_races)}: ").strip().title()
         if pre_made_race not in allowed_races:
             print("Invalid race. Please choose one from the list.")
         else:
@@ -198,7 +198,7 @@ def add_premade_character_to_compendium():
 
     """Validation for pre-made character class"""
     while True:
-        pre_made_character_class = input(f"Enter class ({', '.join(allowed_classes)}): ").strip().title()
+        pre_made_character_class = input(f"\nEnter class from the following list - {', '.join(allowed_classes)}: ").strip().title()
         if pre_made_character_class not in allowed_classes:
             print("Invalid class. Please choose one from the list.")
         else:
@@ -206,18 +206,15 @@ def add_premade_character_to_compendium():
 
     """Validation for pre-made character alignment"""
     while True:
-        pre_made_alignment = input(f"Enter alignment ({', '.join(allowed_alignments)}): ").strip().title()
+        pre_made_alignment = input(f"\nEnter alignment from the following list - {', '.join(allowed_alignments)}: ").strip().title()
         if pre_made_alignment not in allowed_alignments:
             print("Invalid alignment. Please choose one from the list.")
         else:
             break
 
     """Code for user to provide pre-made proficiencies"""
-
     pre_made_proficiencies = []
-    print("\nEnter up to 4 proficiencies from the following list:")
-    print(", ".join(allowed_proficiencies))
-    print("Press Enter on an empty line when you're done.")
+    print(f"\nEnter up to 4 proficiencies from the following list. When you are done, hit Enter - {', '.join(allowed_proficiencies)}:")
 
     while len(pre_made_proficiencies) < 4:
         raw_input = input("Enter proficiencies (comma-separated): ").strip()
@@ -230,6 +227,11 @@ def add_premade_character_to_compendium():
 
         entries = [item.strip().title() for item in raw_input.split(',')]
 
+        """Warn user if they have entered more than 4 proficiencies"""
+        if len(entries) + len(pre_made_proficiencies) > 4:
+            print("You can only add up to 4 proficiencies in total. Please try again.")
+            continue
+
         for proficiency in entries:
             if len(pre_made_proficiencies) >= 4:
                 break
@@ -238,9 +240,9 @@ def add_premade_character_to_compendium():
                     pre_made_proficiencies.append(proficiency)
                     print(f"Added: {proficiency} to proficiencies.")
                 else:
-                    print(f"{proficiency} is already added.")
+                    print(f"{proficiency} is already added.\n")
             else:
-                print(f"{proficiency} is not a valid proficiency.")
+                print(f"{proficiency} is not a valid proficiency.\n")
 
     """Code for user to provide pre-made stats"""
     pre_made_statistics = {}
@@ -254,7 +256,7 @@ def add_premade_character_to_compendium():
                 else:
                     print("Value must be between 1 and 20, please try again.")
             except ValueError:
-                print("Please enter a valid integer.")
+                print("Please enter a valid statistic number.")
     
     return {
         "Name": pre_made_character_name,

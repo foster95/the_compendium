@@ -34,6 +34,30 @@ Happy coding!
 Bugs to fix
 Adding proficiencies for a pre-made character
 
+    """Validation for pre-made character race"""
+    while True:
+        pre_made_race = input(f"Enter race/species ({', '.join(allowed_races)}): ").strip().title()
+        if pre_made_race not in allowed_races:
+            print("Invalid race. Please choose one from the list.")
+        else:
+            break
+
+    """Validation for pre-made character class"""
+    while True:
+        pre_made_character_class = input(f"Enter class ({', '.join(allowed_classes)}): ").strip().title()
+        if pre_made_character_class not in allowed_classes:
+            print("Invalid class. Please choose one from the list.")
+        else:
+            break
+
+    """Validation for pre-made character alignment"""
+    while True:
+        pre_made_alignment = input(f"Enter alignment ({', '.join(allowed_alignments)}): ").strip().title()
+        if pre_made_alignment not in allowed_alignments:
+            print("Invalid alignment. Please choose one from the list.")
+        else:
+            break
+
 while len(pre_made_proficiencies) < 4:
         proficiency = input("Enter proficiency: ").strip().title()
         if proficiency in allowed_proficiencies:
@@ -52,3 +76,48 @@ while len(pre_made_proficiencies) < 4:
     if not pre_made_proficiencies:
         print("No proficiencies added, defaulting to 'None'.")
         pre_made_proficiencies = ["None"]
+
+    The code had been written to only allow one proficiency added at a time. Whilst this worked, it was laborious and required more work from the user when this could be simplified.
+
+    To simplify this process for the user I changed the code so that the user could provide those proficiencies as a string which had to match up to the required proficiencies dictionary above the function
+
+    pre_made_proficiencies = []
+    print("\nEnter up to 4 proficiencies from the following list:")
+    print(", ".join(allowed_proficiencies))
+    print("Press Enter on an empty line when you're done.")
+
+    while len(pre_made_proficiencies) < 4:
+        raw_input = input("Enter proficiencies (comma-separated): ").strip()
+
+        if raw_input == "":
+            if not pre_made_proficiencies:
+                print("You must add four proficiencies.")
+                continue
+            break
+
+        entries = [item.strip().title() for item in raw_input.split(',')]
+
+        for proficiency in entries:
+            if len(pre_made_proficiencies) >= 4:
+                break
+            if proficiency in allowed_proficiencies:
+                if proficiency not in pre_made_proficiencies:
+                    pre_made_proficiencies.append(proficiency)
+                    print(f"Added: {proficiency} to proficiencies.")
+                else:
+                    print(f"{proficiency} is already added.")
+            else:
+                print(f"{proficiency} is not a valid proficiency.")
+
+
+    Sleight of Hand bug 
+
+    allowed_proficiencies = [
+        "Athletics", "Acrobatics", "Stealth", "Perception",
+        "Arcana", "History", "Insight", "Medicine",
+        "Nature", "Religion", "Deception", "Intimidation",
+        "Performance", "Persuasion", "Sleight of Hand", "Investigation",
+        "Animal Handling", "Survival"
+    ]
+
+    Due to the codee using the strip() process and converting all of the first letters to uppercase, Sleight of Hand was returning as an incorrect option. By changing this to "Sleight Of Hand" this fixed the problem. 
