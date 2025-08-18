@@ -110,7 +110,7 @@ def add_character_to_compendium(character):
         
         """Change dictionary stats to a list of values so it can be added
         to Google Sheet"""
-        stats_dict = character["Stats"]
+        stats_dict = character["Statistics"]
         stats_string = ", ".join(f"{stat}: {value}" for stat, value in stats_dict.items())
 
         """Change proficiencies to a string so it can be added to Google Sheet"""
@@ -323,6 +323,14 @@ def launch():
                         print(f"  {stat}: {value}")
                     print(f"Proficiencies: {', '.join(pre_made_character['Proficiencies'])}")
                     print(f"Alignment: {pre_made_character['Alignment']}")
+                    confirm = input("Do you want to add this character to The Compendium? (type yes or no): ").strip().lower()
+                    if confirm == "yes":
+                        add_character_to_compendium(pre_made_character)
+                        print("Character added to The Compendium.")
+                    if confirm == "no":
+                        print("Character not added to The Compendium.")
+                    else:
+                        print("Invalid option. You must choose either yes or no. Character not added to The Compendium.")
                 break
             else:
                 print("Invalid choice, please only enter a number between 0 and 3.")
