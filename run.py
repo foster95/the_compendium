@@ -331,6 +331,8 @@ def launch():
                         print("Character not added to The Compendium.")
                     else:
                         print("Invalid option. You must choose either yes or no. Character not added to The Compendium.")
+            elif choice == 0:
+                print("Exiting The Compendium. Goodbye!")
                 break
             else:
                 print("Invalid choice, please only enter a number between 0 and 3.")
