@@ -124,8 +124,9 @@ def add_character_to_compendium(character):
         proficiencies_string = ", ".join(character["Proficiencies"])
 
         """Change modifiers to a string so it can be added to Google Sheet"""
+        # Thanks to RealPython for explaining the +d function in Python
         modifiers = calculate_modifiers(character["Statistics"])
-        modifiers_string = ", ".join(f"{stat}: {value}" for stat, value in modifiers.items())
+        modifiers_string = ", ".join(f"{stat}: {modifier:+d}" for stat, modifier in modifiers.items())
 
         """Create a new row in Google Sheet with new generated character data"""
         new_row = [
