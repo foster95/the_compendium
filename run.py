@@ -16,6 +16,13 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD.open('the_compendium')
 
+def calculate_modifiers(stats):
+    """Function to calculate ability score modifiers"""
+    modifiers = {}
+    for stat, value in stats.items():
+        modifiers[stat] = (value - 10) // 2
+    return modifiers
+
 def get_stored_characters():
     """Function to get stored characters from the Google Sheet"""
     try:
@@ -116,12 +123,17 @@ def add_character_to_compendium(character):
         """Change proficiencies to a string so it can be added to Google Sheet"""
         proficiencies_string = ", ".join(character["Proficiencies"])
 
+        """Change modifiers to a string so it can be added to Google Sheet"""
+        modifiers = calculate_modifiers(character["Statistics"])
+        modifiers_string = ", ".join(f"{stat}: {value}" for stat, value in modifiers.items())
+
         """Create a new row in Google Sheet with new generated character data"""
         new_row = [
             character["Name"],
             character["Race/Species"],
             character["Class"],
             stats_string,
+            modifiers_string,
             proficiencies_string,
             character["Alignment"],
         ]
