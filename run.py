@@ -315,7 +315,9 @@ def launch():
                     if isinstance(value, dict):
                         print(f"{key}:")
                         for stat, stat_value in value.items():
-                            print(f"  {stat}: {stat_value}")
+                            modifier = calculate_modifiers(value)[stat]
+                            sign = "+" if modifier >= 0 else ""
+                            print(f"  {stat}: {stat_value} ({sign}{modifier})")
                     elif isinstance(value, list):  
                         print(f"{key}: {', '.join(value)}")
                     else:
@@ -333,14 +335,16 @@ def launch():
                     print(f"Class: {pre_made_character['Class']}")
                     print(f"Statistics:")
                     for stat, value in pre_made_character['Statistics'].items():
-                        print(f"  {stat}: {value}")
+                        modifier = calculate_modifiers(pre_made_character['Statistics'])[stat]
+                        sign = "+" if modifier >= 0 else ""
+                        print(f"  {stat}: {value} ({sign}{modifier})")
                     print(f"Proficiencies: {', '.join(pre_made_character['Proficiencies'])}")
                     print(f"Alignment: {pre_made_character['Alignment']}")
                     confirm = input("Do you want to add this character to The Compendium? (type yes or no): ").strip().lower()
                     if confirm == "yes":
                         add_character_to_compendium(pre_made_character)
                         print("Character added to The Compendium.")
-                    if confirm == "no":
+                    elif confirm == "no":
                         print("Character not added to The Compendium.")
                     else:
                         print("Invalid option. You must choose either yes or no. Character not added to The Compendium.")
