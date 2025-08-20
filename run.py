@@ -48,6 +48,12 @@ def get_stored_characters():
                 if profs:
                     print(f"  Proficiencies: {profs}")
                 print(f"  Alignment: {character.get('Alignment', '')} \n")
+
+            amend = input("Would you like to amend a character from The Compendium? (type yes or no): ").strip().lower()
+            if amend == "yes":
+                amend_stored_character(characters)
+            else:
+                print("No character to be amended. Returning to main menu")
         else:
             print("Oh no! No characters found.")
         return characters
@@ -55,11 +61,39 @@ def get_stored_characters():
         print(f"Oh no! An error occurred while fetching characters: {e}")
         return []
     
-def amend_stored_character():
+def amend_stored_character(characters):
     """Function to amend any of the characters already listed in The Compendium"""
     print("Choose a character from The Compendium to amend. \n")
 
+    name= input("Enter the name of the character you want to amend: ").strip()
+    character = next((char for char in characters if char.get('Name', '').strip().lower() == name.lower()), None)
+    if character:
+        print(f"Amending character: {name}")
 
+        field = input("Enter the field you want to amend (Name, Race/Species, Class, Statistics, Proficiencies, Alignment): ").strip()
+        if field in character:
+            new_value = input(f"Enter the new value for {field}: ").strip()
+            character[field] = new_value
+            print(f"Character {name} amended successfully.")
+
+            # Update character in Google Sheet with amendments
+            try:
+                sheet = SHEET.worksheet('Stored Characters')
+                cell = sheet.find(name)
+                if cell:
+                    row = cell.row
+                    for col, (key, value) in enumerate(character.items()):
+                        sheet.update_cell(row, col + 1, value)
+                    print(f"Character {name} updated successfully in Google Sheet.")
+                else:
+                    print(f"Character {name} not found in Google Sheet.")
+            except Exception as e:
+                print(f"Oh no! An error occurred while updating the character: {e}")
+        else:
+            print(f"Field not found: {field}")
+            print("No changes made.")
+    else:
+        print(f"Character not found: {name}")
 
 def create_randomised_character():
     """
@@ -325,9 +359,6 @@ def launch():
 
                 """Code to view all characters loaded to The Compendium"""
                 get_stored_characters()
-
-                """Code to amend a character stored in The Compendium"""
-                amend_stored_character()
             elif choice == 2:
                 print("Create a new character using The Compendium...")
 
@@ -349,7 +380,7 @@ def launch():
                         print(f"{key}: {value}")
                 """Code to add the new randomised character to The Compendium.
                 This will add the character to the Google Sheet."""
-                randomised_character=add_character_to_compendium(randomised_character)
+                add_character_to_compendium(randomised_character)
             elif choice == 3:
                 print("Loading choices to add an existing character to The Compendium...")
                 pre_made_character=add_premade_character_to_compendium()
