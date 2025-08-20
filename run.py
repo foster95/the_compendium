@@ -20,18 +20,19 @@ SHEET = GSPREAD.open('the_compendium')
 
 allowed_races = [
     "Human", "Elf", "Dwarf", "Halfling", "Dragonborn", "Tiefling", "Gnome",
-    "Half-Elf", "Half-Orc"]
+    "Half-Elf", "Half-Orc"
+]
 
 allowed_classes = [
     "Fighter", "Wizard", "Rogue", "Cleric", "Paladin", "Druid", "Barbarian",
     "Bard", "Monk", "Ranger", "Sorcerer", "Warlock"
-    ]
+]
 
 allowed_alignments = [
     "Lawful Good", "Neutral Good", "Chaotic Good", 
     "Lawful Neutral", "True Neutral", "Chaotic Neutral",
-     "Lawful Evil", "Neutral Evil", "Chaotic Evil"
-    ]
+    "Lawful Evil", "Neutral Evil", "Chaotic Evil"
+]
 
 allowed_proficiencies = [
     "Athletics", "Acrobatics", "Stealth", "Perception",
@@ -39,7 +40,7 @@ allowed_proficiencies = [
     "Nature", "Religion", "Deception", "Intimidation",
     "Performance", "Persuasion", "Sleight Of Hand", "Investigation",
     "Animal Handling", "Survival"
-    ]
+]
 
 def calculate_modifiers(stats):
     """Function to calculate ability score modifiers"""
@@ -129,20 +130,8 @@ def create_randomised_character():
 
     print("Create a new character here using The Compendium to provide you your baseline character traits")
 
-    races = ["Human", "Elf", "Dwarf", "Halfling", "Dragonborn", "Tiefling", "Gnome",
-             "Half-Elf", "Half-Orc"]
-    classes = ["Fighter", "Wizard", "Rogue", "Cleric", "Paladin", "Druid", "Barbarian",
-               "Bard", "Monk", "Ranger", "Sorcerer", "Warlock"]
-    alignments = ["Lawful Good", "Neutral Good", "Chaotic Good", 
-                   "Lawful Neutral", "True Neutral", "Chaotic Neutral",
-                   "Lawful Evil", "Neutral Evil", "Chaotic Evil"]
-    proficiencies = ["Athletics", "Acrobatics", "Stealth", "Perception",
-                    "Arcana", "History", "Insight", "Medicine",
-                    "Nature", "Religion", "Deception", "Intimidation",
-                    "Performance", "Persuasion", "Sleight Of Hand", "Investigation",
-                    "Animal Handling", "Survival"]
-    randomised_proficiencies = random.sample(proficiencies, 4)
-    
+    randomised_proficiencies = random.sample(allowed_proficiencies, 4)
+
     stats = {
         "Strength": random.randint(1, 20),
         "Dexterity": random.randint(1, 20),
@@ -178,11 +167,11 @@ def create_randomised_character():
 
     randomised_character = {
         "Name": character_name,
-        "Race/Species": random.choice(races),
-        "Class": random.choice(classes),
+        "Race/Species": random.choice(allowed_races),
+        "Class": random.choice(allowed_classes),
         "Statistics": stats,
         "Proficiencies": randomised_proficiencies,
-        "Alignment": random.choice(alignments),
+        "Alignment": random.choice(allowed_alignments),
     }
     
     return randomised_character
