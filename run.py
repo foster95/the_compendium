@@ -16,6 +16,31 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD.open('the_compendium')
 
+""" Global variables to be used to validate race, class, allignment, proficiencies"""
+
+allowed_races = [
+    "Human", "Elf", "Dwarf", "Halfling", "Dragonborn", "Tiefling", "Gnome",
+    "Half-Elf", "Half-Orc"]
+
+allowed_classes = [
+    "Fighter", "Wizard", "Rogue", "Cleric", "Paladin", "Druid", "Barbarian",
+    "Bard", "Monk", "Ranger", "Sorcerer", "Warlock"
+    ]
+
+allowed_alignments = [
+    "Lawful Good", "Neutral Good", "Chaotic Good", 
+    "Lawful Neutral", "True Neutral", "Chaotic Neutral",
+     "Lawful Evil", "Neutral Evil", "Chaotic Evil"
+    ]
+
+allowed_proficiencies = [
+    "Athletics", "Acrobatics", "Stealth", "Perception",
+    "Arcana", "History", "Insight", "Medicine",
+    "Nature", "Religion", "Deception", "Intimidation",
+    "Performance", "Persuasion", "Sleight Of Hand", "Investigation",
+    "Animal Handling", "Survival"
+    ]
+
 def calculate_modifiers(stats):
     """Function to calculate ability score modifiers"""
     modifiers = {}
@@ -31,23 +56,23 @@ def get_stored_characters():
         if characters:
             print("Stored Characters:")
             for character in characters:
-                print(f"  Name: {character.get('Name', '')}")
-                print(f"  Race/Species: {character.get('Race/Species', '')}")
-                print(f"  Class: {character.get('Class', '')}")
+                print(f"Name: {character.get('Name', '')}")
+                print(f"Race/Species: {character.get('Race/Species', '')}")
+                print(f"Class: {character.get('Class', '')}")
                 stats = character.get('Statistics', '')
                 if stats:
-                    print(f"  Statistics:")                   
+                    print(f"Statistics:")                   
                     for stat in stats.split(','):
-                        print(f"    {stat.strip()}")
+                        print(f"{stat.strip()}")
                 modifiers = character.get('Modifiers', '')
                 if modifiers:
-                    print(f"  Modifiers:")
+                    print(f"Modifiers:")
                     for mod in modifiers.split(','):
-                        print(f"    {mod.strip()}")
+                        print(f"{mod.strip()}")
                 profs = character.get('Proficiencies', '')
                 if profs:
-                    print(f"  Proficiencies: {profs}")
-                print(f"  Alignment: {character.get('Alignment', '')} \n")
+                    print(f"Proficiencies: {profs}")
+                print(f"Alignment: {character.get('Alignment', '')} \n")
 
             amend = input("Would you like to amend a character from The Compendium? (type yes or no): ").strip().lower()
             if amend == "yes":
@@ -55,7 +80,7 @@ def get_stored_characters():
             else:
                 print("No character to be amended. Returning to main menu")
         else:
-            print("Oh no! No characters found.")
+            print("Oh no! No characters found. Returning to main menu")
         return characters
     except Exception as e:
         print(f"Oh no! An error occurred while fetching characters: {e}")
@@ -84,9 +109,8 @@ def amend_stored_character(characters):
                     row = cell.row
                     for col, (key, value) in enumerate(character.items()):
                         sheet.update_cell(row, col + 1, value)
-                    print(f"Character {name} updated successfully in Google Sheet.")
                 else:
-                    print(f"Character {name} not found in Google Sheet.")
+                    print(f"Character {name} not found in The Compendium.")
             except Exception as e:
                 print(f"Oh no! An error occurred while updating the character: {e}")
         else:
@@ -229,32 +253,6 @@ def add_premade_character_to_compendium():
     
     """Combine first name and last name (if provided)"""
     pre_made_character_name = f"{pre_made_first_name} {pre_made_last_name}" if pre_made_last_name else pre_made_first_name
-
-    """Code to validate race, class, allignment, proficiencies to ensure it matches the same 
-    format as the randomised characters"""
-
-    allowed_races = [
-        "Human", "Elf", "Dwarf", "Halfling", "Dragonborn", "Tiefling", "Gnome",
-        "Half-Elf", "Half-Orc"]
-
-    allowed_classes = [
-        "Fighter", "Wizard", "Rogue", "Cleric", "Paladin", "Druid", "Barbarian",
-        "Bard", "Monk", "Ranger", "Sorcerer", "Warlock"
-    ]
-
-    allowed_alignments = [
-        "Lawful Good", "Neutral Good", "Chaotic Good", 
-        "Lawful Neutral", "True Neutral", "Chaotic Neutral",
-        "Lawful Evil", "Neutral Evil", "Chaotic Evil"
-    ]
-
-    allowed_proficiencies = [
-        "Athletics", "Acrobatics", "Stealth", "Perception",
-        "Arcana", "History", "Insight", "Medicine",
-        "Nature", "Religion", "Deception", "Intimidation",
-        "Performance", "Persuasion", "Sleight Of Hand", "Investigation",
-        "Animal Handling", "Survival"
-    ]
 
     """Code for user to provide pre-made base characterists ie race, class, alignment"""
     """Validation for pre-made character race"""
