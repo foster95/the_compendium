@@ -1,4 +1,5 @@
 """Dependencies imports"""
+from dataclasses import field
 import gspread
 from google.oauth2.service_account import Credentials 
 
@@ -42,6 +43,48 @@ allowed_proficiencies = [
     "Animal Handling", "Survival"
 ]
 
+STAT_KEYS = ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"]
+
+# Code assistance from mentor Spencer Barribal
+def parse_stats_string(stats_str: str) -> dict:
+    """
+    Convert 'Strength: 12, Dexterity: 10, ...' etc into a dictionary with proper keys/ints.
+    Missing stats are filled with 10 by default.
+    """
+    result = {k: 10 for k in STAT_KEYS}
+    if not stats_str:
+        return result
+    for chunk in stats_str.split(","):
+        if ":" not in chunk:
+            continue
+        key, val = chunk.split(":", 1)
+        key = key.strip().title()
+        try:
+            result[key] = int(val.strip())
+        except ValueError:
+            pass  # ignore bad values
+    return result
+
+def format_stats_string(stats: dict) -> str:
+    """Dict -> 'Strength: 12, Dexterity: 10, ...' in fixed, neat order."""
+    return ", ".join(f"{k}: {int(stats.get(k, 10))}" for k in STAT_KEYS)
+
+def format_modifiers_string(stats: dict) -> str:
+    """Build the Modifiers string from stats using your calculate_modifiers()."""
+    mods = calculate_modifiers(stats)
+    return ", ".join(f"{k}: {mods.get(k, 0):+d}" for k in STAT_KEYS)
+
+def update_row_fields(sheet, row: int, fields: dict) -> None:
+    """
+    Update specific named columns in a row by header name.
+    Example: update_row_fields(ws, 5, {"Statistics": "...", "Modifiers": "..."})
+    """
+    headers = sheet.row_values(1)
+    for name, value in fields.items():
+        if name in headers:
+            col_idx = headers.index(name) + 1
+            sheet.update_cell(row, col_idx, value)
+
 def calculate_modifiers(stats):
     """Function to calculate ability score modifiers"""
     modifiers = {}
@@ -60,11 +103,13 @@ def get_stored_characters():
                 print(f"Name: {character.get('Name', '')}")
                 print(f"Race/Species: {character.get('Race/Species', '')}")
                 print(f"Class: {character.get('Class', '')}")
-                stats = character.get('Statistics', '')
-                if stats:
-                    print(f"Statistics:")                   
-                    for stat in stats.split(','):
-                        print(f"  {stat.strip()}")
+                stats_str = character.get('Statistics', '')
+                stats_dict = parse_stats_string(stats_str)
+                print("Statistics:")
+                for stat, value in stats_dict.items():
+                    modifier = calculate_modifiers(stats_dict)[stat]
+                    sign = "+" if modifier >= 0 else ""
+                    print(f"  {stat}: {value} ({sign}{modifier})")
                 modifiers = character.get('Modifiers', '')
                 if modifiers:
                     print(f"Modifiers:")
@@ -75,50 +120,103 @@ def get_stored_characters():
                     print(f"Proficiencies: {profs}")
                 print(f"Alignment: {character.get('Alignment', '')} \n")
 
-            amend = input("Would you like to amend a character from The Compendium? (type yes or no): ").strip().lower()
+            amend = input("Would you like to amend a character from The Compendium? (type yes or no):").strip().lower()
             if amend == "yes":
                 amend_stored_character(characters)
-            else:
-                print("No character chosen to be amended. Returning to main menu")
-        else:
-            print("Oh no! No characters found. Returning to main menu")
+            if amend == "no":
+                print("\nReturning to main menu...\n")
+                return
         return characters
     except Exception as e:
         print(f"Oh no! An error occurred while fetching characters: {e}")
         return []
     
 def amend_stored_character(characters):
-    """Function to amend any of the characters already listed in The Compendium"""
-    print("Choose a character from The Compendium to amend. \n")
+    """Amend a character in 'Stored Characters'. Supports targeted Statistics edit."""
+    print("Choose a character from The Compendium to amend.\n")
 
-    name= input("Enter the name of the character you want to amend: ").strip()
-    character = next((char for char in characters if char.get('Name', '').strip().lower() == name.lower()), None)
-    if character:
-        print(f"Amending character: {name}")
+    name = input("Enter the name of the character you want to amend: ").strip()
+    character = next((c for c in characters if c.get('Name', '').strip().lower() == name.lower()), None)
 
-        field = input("Enter the field you want to amend (Name, Race/Species, Class, Statistics, Proficiencies, Alignment): ").strip()
-        if field in character:
-            new_value = input(f"Enter the new value for {field}: ").strip()
-            character[field] = new_value
-            print(f"Character {name} amended successfully.")
-
-            # Update character in Google Sheet with amendments
-            try:
-                sheet = SHEET.worksheet('Stored Characters')
-                cell = sheet.find(name)
-                if cell:
-                    row = cell.row
-                    for col, (key, value) in enumerate(character.items()):
-                        sheet.update_cell(row, col + 1, value)
-                else:
-                    print(f"Character {name} not found in The Compendium.")
-            except Exception as e:
-                print(f"Oh no! An error occurred while updating the character: {e}")
-        else:
-            print(f"Field not found: {field}")
-            print("No changes made.")
-    else:
+    if not character:
         print(f"Character not found: {name}")
+        return
+
+    print(f"Amending character: {character.get('Name','(unknown)')}")
+    print("Fields you can amend: Name, Race/Species, Class, Statistics, Proficiencies, Alignment")
+    field = input("Enter the field you want to amend: ").strip()
+
+    try:
+        sheet = SHEET.worksheet('Stored Characters')
+    except Exception as e:
+        print(f"Oh no! Could not open worksheet: {e}")
+        return
+
+    cell = sheet.find(character['Name'])
+    if not cell:
+        print(f"Character {name} not found in the sheet.")
+        return
+    row = cell.row
+
+    if field.lower() in {"statistics", "stats"}:
+        current_stats_str = character.get('Statistics', '')
+        stats = parse_stats_string(current_stats_str)
+
+    while True:
+        print("\nWhich statistic do you want to change?")
+        for k in STAT_KEYS:
+            print(f"- {k} (current {stats.get(k, 10)})")
+
+        # Ask user for stat to change
+        while True:
+            chosen_key = input("Type the statistic name exactly as shown above: ").strip().title()
+            if chosen_key in STAT_KEYS:
+                break
+            print("Invalid statistic. Please enter one from the list above.")
+
+        # Ask for new value
+        while True:
+            try:
+                new_val = int(input(f"Enter new value for {chosen_key} (1-20): ").strip())
+                if 1 <= new_val <= 20:
+                    break
+                print("Value must be between 1 and 20.")
+            except ValueError:
+                print("Please enter a whole number between 1 and 20.")
+
+        # Apply change
+        stats[chosen_key] = new_val
+        new_stats_str = format_stats_string(stats)
+        new_mods_str = format_modifiers_string(stats)
+        character['Statistics'] = new_stats_str
+        character['Modifiers'] = new_mods_str
+
+        try:
+            update_row_fields(sheet, row, {"Statistics": new_stats_str, "Modifiers": new_mods_str})
+            print(f"Updated {chosen_key} and recalculated modifiers.")
+        except Exception as e:
+            print(f"Oh no! Error updating sheet: {e}")
+
+        # Ask if user wants to keep editing stats
+        more_updates = input("Do you want to amend another statistic? (yes/no): ").strip().lower()
+        if more_updates != "yes":
+            break
+
+    return
+
+    # ---- Generic path for other fields ----
+    if field not in character:
+        print(f"Field not found on record: {field}")
+        return
+
+    new_value = input(f"Enter the new value for {field}: ").strip()
+    character[field] = new_value
+    try:
+        # update that one field in the sheet safely by header name
+        update_row_fields(sheet, row, {field: new_value})
+        print(f"Updated {field} for {character.get('Name','(unknown)')}.")
+    except Exception as e:
+        print(f"Oh no! Error updating sheet: {e}")
 
 def create_randomised_character():
     """
