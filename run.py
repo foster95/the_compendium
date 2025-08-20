@@ -31,7 +31,23 @@ def get_stored_characters():
         if characters:
             print("Stored Characters:")
             for character in characters:
-                print(character)
+                print(f"  Name: {character.get('Name', '')}")
+                print(f"  Race/Species: {character.get('Race/Species', '')}")
+                print(f"  Class: {character.get('Class', '')}")
+                stats = character.get('Statistics', '')
+                if stats:
+                    print(f"  Statistics:")                   
+                    for stat in stats.split(','):
+                        print(f"    {stat.strip()}")
+                modifiers = character.get('Modifiers', '')
+                if modifiers:
+                    print(f"  Modifiers:")
+                    for mod in modifiers.split(','):
+                        print(f"    {mod.strip()}")
+                profs = character.get('Proficiencies', '')
+                if profs:
+                    print(f"  Proficiencies: {profs}")
+                print(f"  Alignment: {character.get('Alignment', '')} \n")
         else:
             print("Oh no! No characters found.")
         return characters
@@ -39,6 +55,12 @@ def get_stored_characters():
         print(f"Oh no! An error occurred while fetching characters: {e}")
         return []
     
+def amend_stored_character():
+    """Function to amend any of the characters already listed in The Compendium"""
+    print("Choose a character from The Compendium to amend. \n")
+
+
+
 def create_randomised_character():
     """
     Function to create a new character using prompts from The Compendium.
@@ -303,6 +325,9 @@ def launch():
 
                 """Code to view all characters loaded to The Compendium"""
                 get_stored_characters()
+
+                """Code to amend a character stored in The Compendium"""
+                amend_stored_character()
             elif choice == 2:
                 print("Create a new character using The Compendium...")
 
