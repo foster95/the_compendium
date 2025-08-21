@@ -19,23 +19,23 @@ SHEET = GSPREAD.open('the_compendium')
 
 """ Global variables to be used to validate race, class, allignment, proficiencies"""
 
-allowed_races = [
+ALLOWED_RACES = [
     "Human", "Elf", "Dwarf", "Halfling", "Dragonborn", "Tiefling", "Gnome",
     "Half-Elf", "Half-Orc"
 ]
 
-allowed_classes = [
+ALLOWED_CLASSES = [
     "Fighter", "Wizard", "Rogue", "Cleric", "Paladin", "Druid", "Barbarian",
     "Bard", "Monk", "Ranger", "Sorcerer", "Warlock"
 ]
 
-allowed_alignments = [
+ALLOWED_ALIGNMENTS = [
     "Lawful Good", "Neutral Good", "Chaotic Good", 
     "Lawful Neutral", "True Neutral", "Chaotic Neutral",
     "Lawful Evil", "Neutral Evil", "Chaotic Evil"
 ]
 
-allowed_proficiencies = [
+ALLOWED_PROFICIENCIES = [
     "Athletics", "Acrobatics", "Stealth", "Perception",
     "Arcana", "History", "Insight", "Medicine",
     "Nature", "Religion", "Deception", "Intimidation",
@@ -115,21 +115,30 @@ def get_stored_characters():
                     print(f"Modifiers:")
                     for mod in modifiers.split(','):
                         print(f"  {mod.strip()}")
-                profs = character.get('Proficiencies', '')
-                if profs:
-                    print(f"Proficiencies: {profs}")
+                proficiencies = character.get('Proficiencies', '')
+                if proficiencies:
+                    print(f"Proficiencies: {proficiencies}")
                 print(f"Alignment: {character.get('Alignment', '')} \n")
 
-            amend = input("Would you like to amend a character from The Compendium? (type yes or no):").strip().lower()
-            if amend == "yes":
-                amend_stored_character(characters)
-            if amend == "no":
-                print("\nReturning to main menu...\n")
-                return
+            while True:
+                choice = input("Please choose an option from the below:\n"
+                           "[1] Amend a character in The Compendium \n"
+                           "[2] Remove a character from The Compendium \n"
+                           "[0] Return to main menu \n"
+                           "\nEnter your choice: ").strip()
+                if choice == "1":
+                    amend_stored_character(characters)
+                elif choice == "2":
+                    remove_stored_character(character)    
+                elif choice == "0":
+                    print("\nReturning to main menu...\n")
+                    return
+                else:
+                    print("Invalid choice. You must choose from the options above.\n")
         return characters
     except Exception as e:
-        print(f"Oh no! An error occurred while fetching characters: {e}")
-        return []
+        print(f"Oh no! An error occurred while fetching: {e}. Returning to main menu... \n")
+        return
     
 def amend_stored_character(characters):
     """Amend a character in 'Stored Characters'. Supports targeted Statistics edit."""
@@ -158,53 +167,50 @@ def amend_stored_character(characters):
         return
     row = cell.row
 
+    #Update statistics 
     if field.lower() in {"statistics", "stats"}:
         current_stats_str = character.get('Statistics', '')
         stats = parse_stats_string(current_stats_str)
 
-    while True:
-        print("\nWhich statistic do you want to change?")
-        for k in STAT_KEYS:
-            print(f"- {k} (current {stats.get(k, 10)})")
-
-        # Ask user for stat to change
         while True:
+            print("\nWhich statistic do you want to change?")
+            for k in STAT_KEYS:
+                print(f"- {k} (current {stats.get(k, 10)})")
+
+            # Ask user for stat to change
             chosen_key = input("Type the statistic name exactly as shown above: ").strip().title()
-            if chosen_key in STAT_KEYS:
-                break
-            print("Invalid statistic. Please enter one from the list above.")
+            if chosen_key not in STAT_KEYS:
+                print("Invalid statistic. Please enter one from the list above.")
+                continue
 
-        # Ask for new value
-        while True:
+            # Ask for new value
             try:
                 new_val = int(input(f"Enter new value for {chosen_key} (1-20): ").strip())
-                if 1 <= new_val <= 20:
-                    break
-                print("Value must be between 1 and 20.")
+                if not 1 <= new_val <= 20:
+                    print("Value must be between 1 and 20.")
+                    continue
             except ValueError:
                 print("Please enter a whole number between 1 and 20.")
+                continue
 
-        # Apply change
-        stats[chosen_key] = new_val
-        new_stats_str = format_stats_string(stats)
-        new_mods_str = format_modifiers_string(stats)
-        character['Statistics'] = new_stats_str
-        character['Modifiers'] = new_mods_str
+            # Apply change
+            stats[chosen_key] = new_val
+            new_stats_str = format_stats_string(stats)
+            new_mods_str = format_modifiers_string(stats)
+            character['Statistics'] = new_stats_str
+            character['Modifiers'] = new_mods_str
 
-        try:
-            update_row_fields(sheet, row, {"Statistics": new_stats_str, "Modifiers": new_mods_str})
-            print(f"Updated {chosen_key} and recalculated modifiers.")
-        except Exception as e:
-            print(f"Oh no! Error updating sheet: {e}")
+            try:
+                update_row_fields(sheet, row, {"Statistics": new_stats_str, "Modifiers": new_mods_str})
+                print(f"Updated {chosen_key} and recalculated modifiers.")
+            except Exception as e:
+                print(f"Oh no! Error updating sheet: {e}")
 
-        # Ask if user wants to keep editing stats
-        more_updates = input("Do you want to amend another statistic? (yes/no): ").strip().lower()
-        if more_updates != "yes":
-            break
+            more_updates = input("Do you want to amend another statistic? (yes/no): ").strip().lower()
+            if more_updates != "yes":
+                break
+        return
 
-    return
-
-    # ---- Generic path for other fields ----
     if field not in character:
         print(f"Field not found on record: {field}")
         return
@@ -212,11 +218,18 @@ def amend_stored_character(characters):
     new_value = input(f"Enter the new value for {field}: ").strip()
     character[field] = new_value
     try:
-        # update that one field in the sheet safely by header name
         update_row_fields(sheet, row, {field: new_value})
         print(f"Updated {field} for {character.get('Name','(unknown)')}.")
+        print("Returning to main menu \n")
     except Exception as e:
         print(f"Oh no! Error updating sheet: {e}")
+
+def remove_stored_character(character):
+    """Function to remove a character from The Compendium. This will also remove
+    the character from the Google Sheet"""
+
+
+
 
 def create_randomised_character():
     """
@@ -265,11 +278,11 @@ def create_randomised_character():
 
     randomised_character = {
         "Name": character_name,
-        "Race/Species": random.choice(allowed_races),
-        "Class": random.choice(allowed_classes),
+        "Race/Species": random.choice(ALLOWED_RACES),
+        "Class": random.choice(ALLOWED_CLASSES  ),
         "Statistics": stats,
         "Proficiencies": randomised_proficiencies,
-        "Alignment": random.choice(allowed_alignments),
+        "Alignment": random.choice(ALLOWED_ALIGNMENTS),
     }
     
     return randomised_character
@@ -343,24 +356,24 @@ def add_premade_character_to_compendium():
     #Code for user to provide pre-made base characterists ie race, class, alignment
     #Validation for pre-made character race
     while True:
-        pre_made_race = input(f"\nEnter race/species from the following list - {', '.join(allowed_races)}: ").strip().title()
-        if pre_made_race not in allowed_races:
+        pre_made_race = input(f"\nEnter race/species from the following list - {', '.join(ALLOWED_RACES)}: ").strip().title()
+        if pre_made_race not in ALLOWED_RACES:
             print("Invalid race. Please choose one from the list.")
         else:
             break
 
     #Validation for pre-made character class
     while True:
-        pre_made_character_class = input(f"\nEnter class from the following list - {', '.join(allowed_classes)}: ").strip().title()
-        if pre_made_character_class not in allowed_classes:
+        pre_made_character_class = input(f"\nEnter class from the following list - {', '.join(ALLOWED_CLASSES)}: ").strip().title()
+        if pre_made_character_class not in ALLOWED_CLASSES:
             print("Invalid class. Please choose one from the list.")
         else:
             break
 
     #Validation for pre-made character alignment
     while True:
-        pre_made_alignment = input(f"\nEnter alignment from the following list - {', '.join(allowed_alignments)}: ").strip().title()
-        if pre_made_alignment not in allowed_alignments:
+        pre_made_alignment = input(f"\nEnter alignment from the following list - {', '.join(ALLOWED_ALIGNMENTS)}: ").strip().title()
+        if pre_made_alignment not in ALLOWED_ALIGNMENTS:
             print("Invalid alignment. Please choose one from the list.")
         else:
             break
@@ -388,7 +401,7 @@ def add_premade_character_to_compendium():
         for proficiency in entries:
             if len(pre_made_proficiencies) >= 4:
                 break
-            if proficiency in allowed_proficiencies:
+            if proficiency in ALLOWED_PROFICIENCIES:
                 if proficiency not in pre_made_proficiencies:
                     pre_made_proficiencies.append(proficiency)
                     print(f"Added: {proficiency} to proficiencies.")
@@ -435,7 +448,6 @@ def launch():
             "[1] View all characters logged to The Compendium \n" 
             "[2] Create a new character using The Compendium's character generator \n" 
             "[3] Add your own existing character to The Compendium \n" 
-            "[4] Remove a character from The Compendium \n" 
             "[0] Exit\n")
 
             choice = int(input("Enter your choice: "))
