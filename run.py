@@ -125,7 +125,7 @@ def get_stored_characters():
                            "[1] Amend a character in The Compendium \n"
                            "[2] Remove a character from The Compendium \n"
                            "[0] Return to main menu \n"
-                           "\nEnter your choice: ").strip()
+                           "\nEnter your choice: \n").strip()
                 if choice == "1":
                     amend_stored_character(characters)
                 elif choice == "2":
@@ -144,15 +144,15 @@ def amend_stored_character(characters):
     """Amend a character in 'Stored Characters'. Supports targeted Statistics edit."""
     print("Choose a character from The Compendium to amend.\n")
 
-    name = input("Enter the name of the character you want to amend: ").strip()
+    name = input("Enter the name of the character you want to amend: \n").strip()
     character = next((c for c in characters if c.get('Name', '').strip().lower() == name.lower()), None)
 
     if not character:
         print(f"Character not found: {name}")
         return
 
-    print(f"Amending character: {character.get('Name','(unknown)')}")
-    print("Fields you can amend: Name, Race/Species, Class, Statistics, Proficiencies, Alignment")
+    print(f"Amending: {character.get('Name','(unknown)')}...\n")
+    print("Fields you can amend: Name, Race/Species, Class, Statistics, Proficiencies, Alignment\n")
     field = input("Enter the field you want to amend: ").strip()
 
     try:
@@ -210,19 +210,69 @@ def amend_stored_character(characters):
             if more_updates != "yes":
                 break
         return
+    
+    if field.lower() == "proficiencies":
+        current_proficiencies = [p.strip() for p in character.get('Proficiencies', '').split(',') if p.strip()]
+        print(f"\nCurrent Proficiencies: {', '.join(current_proficiencies) if current_proficiencies else '(none)'}")
+        print("Allowed Proficiencies: ", ", ".join(ALLOWED_PROFICIENCIES))
 
-    if field not in character:
-        print(f"Field not found on record: {field}")
-        return
+    while True:
+        action = input("\nDo you want to add or remove a proficiency? \n"
+                       "[1] Add a proficiency \n"
+                       "[2] Remove a proficiency \n"
+                       "[3] Return to character amendment choices \n"
+                       "Enter your choice: ").strip()
 
-    new_value = input(f"Enter the new value for {field}: ").strip()
-    character[field] = new_value
-    try:
-        update_row_fields(sheet, row, {field: new_value})
-        print(f"Updated {field} for {character.get('Name','(unknown)')}.")
-        print("Returning to main menu \n")
-    except Exception as e:
-        print(f"Oh no! Error updating sheet: {e}")
+        if action == "1":
+            if len(current_proficiencies) >= 4:
+                print("Maximum of 4 proficiencies reached. Remove one first if you want to add another.")
+                continue
+
+            new_proficiency = input("Enter a proficiency to add (or hit Enter to cancel): ").strip().title()
+            if not new_proficiency:
+                continue
+            if new_proficiency not in ALLOWED_PROFICIENCIES:
+                print("Not an allowed proficiency. Try again.")
+                continue
+            if new_proficiency in current_proficiencies:
+                print("Character already has this proficiency.")
+                continue
+
+            current_proficiencies.append(new_proficiency)
+            character['Proficiencies'] = ", ".join(current_proficiencies)
+            try:
+                update_row_fields(sheet, row, {"Proficiencies": character['Proficiencies']})
+                print(f"Added proficiency: {new_proficiency}")
+            except Exception as e:
+                print(f"Error updating sheet: {e}")
+
+        elif action == "2":
+            if not current_proficiencies:
+                print("No proficiencies to remove.")
+                continue
+
+            proficiency_to_remove = input("Enter a proficiency to remove: ").strip().title()
+            if proficiency_to_remove not in current_proficiencies:
+                print("Character does not have this proficiency.")
+                continue
+
+            current_proficiencies.remove(proficiency_to_remove)
+            character['Proficiencies'] = ", ".join(current_proficiencies)
+            try:
+                update_row_fields(sheet, row, {"Proficiencies": character['Proficiencies']})
+                print(f"Removed proficiency: {proficiency_to_remove}")
+            except Exception as e:
+                print(f"Error updating sheet: {e}")
+
+        elif action == "3":
+            print("Returning to character amendment choices...")
+            break  # Correctly exits the while loop, not the whole function
+
+        else:
+            print("Invalid action. Please choose 1, 2, or 3.")
+
+    return  # Return after finishing proficiencies amendment
+
 
 def remove_stored_character(character):
     """Function to remove a character from The Compendium. This will also remove
