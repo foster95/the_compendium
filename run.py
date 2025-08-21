@@ -296,9 +296,7 @@ def create_randomised_character():
     to the Google Sheet.
     """
 
-    print("Create a new character here using The Compendium to provide you your baseline character traits")
-
-    randomised_proficiencies = random.sample(allowed_proficiencies, 4)
+    randomised_proficiencies = random.sample(ALLOWED_PROFICIENCIES, 4)
 
     stats = {
         "Strength": random.randint(1, 20),
@@ -311,7 +309,7 @@ def create_randomised_character():
 
     while True:
         #Code to require user to provide required first name
-        first_name = input("Enter character first name (required): \n").strip()
+        first_name = input("\nEnter character first name (required): \n").strip()
         #Code to validate that user has entered a name
         if len(first_name) == 0:
             print("Character name must contain at least one character, please try again.")
@@ -376,7 +374,7 @@ def add_character_to_compendium(character):
         ]
 
         sheet.append_row(new_row)
-        print(f"Character '{character['Name']}' added to The Compendium!")
+        print(f"\nCharacter '{character['Name']}' added to The Compendium! Returning to main menu... \n")
     except Exception as e:
         print(f"Oh no! An error occurred while adding the character: {e}")
 
@@ -437,7 +435,7 @@ def add_premade_character_to_compendium():
 
     #Code for user to provide pre-made proficiencies
     pre_made_proficiencies = []
-    print(f"\nEnter up to 4 proficiencies from the following list. When you are done, hit Enter - {', '.join(allowed_proficiencies)}:")
+    print(f"\nEnter up to 4 proficiencies from the following list. When you are done, hit Enter - {', '.join(ALLOWED_PROFICIENCIES)}:")
 
     while len(pre_made_proficiencies) < 4:
         raw_input = input("Enter proficiencies (comma-separated): \n").strip()
@@ -539,7 +537,7 @@ def launch():
                 print("Loading choices to add an existing character to The Compendium...")
                 pre_made_character=add_premade_character_to_compendium()
                 if pre_made_character:
-                    print("\nPlease ensure that the below characteristics are correct before adding to The Compendium")
+                    print("\nPlease ensure that the below characteristics are correct before adding to The Compendium\n")
                     print(f"  Name: {pre_made_character['Name']}")
                     print(f"  Race/Species: {pre_made_character['Race/Species']}")
                     print(f"  Class: {pre_made_character['Class']}")
@@ -550,12 +548,12 @@ def launch():
                         print(f"    {stat}: {value} ({sign}{modifier})")
                     print(f"  Proficiencies: {', '.join(pre_made_character['Proficiencies'])}")
                     print(f"  Alignment: {pre_made_character['Alignment']}")
-                    confirm = input("Do you want to add this character to The Compendium? (type yes or no): \n").strip().lower()
+                    confirm = input("\nDo you want to add this character to The Compendium? (type yes or no): \n").strip().lower()
                     if confirm == "yes":
                         add_character_to_compendium(pre_made_character)
-                        print("Character added to The Compendium!")
+                        print("Character added to The Compendium! Returning to main menu...")
                     elif confirm == "no":
-                        print("Character not added to The Compendium.")
+                        print("Character not added to The Compendium. Returning to main menu...")
                     else:
                         print("Invalid option. You must choose either yes or no. Character not added to The Compendium.")
             elif choice == 0:
