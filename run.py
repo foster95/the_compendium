@@ -123,13 +123,10 @@ def get_stored_characters():
             while True:
                 choice = input("Please choose an option from the below:\n"
                            "[1] Amend a character in The Compendium \n"
-                           "[2] Remove a character from The Compendium \n"
                            "[0] Return to main menu \n"
                            "\nEnter your choice: \n").strip()
                 if choice == "1":
-                    amend_stored_character(characters)
-                elif choice == "2":
-                    remove_stored_character(character)    
+                    amend_stored_character(characters) 
                 elif choice == "0":
                     print("\nReturning to main menu...\n")
                     return
@@ -151,10 +148,6 @@ def amend_stored_character(characters):
         print(f"Character not found: {name}")
         return
 
-    print(f"\nAmending: {character.get('Name','(unknown)')}...\n")
-    print("Fields you can amend: Class, Statistics, Proficiencies, Alignment\n")
-    field = input("Enter the field you want to amend.\n").strip()
-
     try:
         sheet = SHEET.worksheet('Stored Characters')
     except Exception as e:
@@ -167,187 +160,202 @@ def amend_stored_character(characters):
         return
     row = cell.row
 
-    #Update Class to allow for character to multi-class within allowed classes group
-    if field.lower() == "class":
-        current_class = [c.strip() for c in character.get('Class', '').split(',') if c.strip()]
-        print(f"\nCurrent Class: {current_class}")
-        print("Allowed Classes: ", ", ".join(ALLOWED_CLASSES))
+    while True:
+        print(f"\nAmending: {character.get('Name','(unknown)')}")
+        print("Fields you can amend:")
+        print("[1] Class")
+        print("[2] Statistics")
+        print("[3] Proficiencies")
+        print("[4] Alignment")
+        print("[0] Return to main menu\n")
 
-        while True:
-            action = input("\nDo you want to add a class? \n"
-                       "[1] Yes \n"
-                       "[0] Return to character amendment choices \n"
-                       "Enter your choice: \n").strip()
+        choice = input("Enter your choice:\n").strip()
+        if choice == "1":
+            amend_class(character, sheet, row)
+        elif choice == "2":
+            amend_statistics(character, sheet, row)
+        elif choice == "3":
+            amend_proficiencies(character, sheet, row)
+        elif choice == "4":
+            amend_alignment(character, sheet, row)
+        elif choice == "0":
+            print("Returning to main menu...")
+            break
+        else:
+            print("Invalid choice. You must choose either 0, 1, 2, 3 or 4")
+
+def amend_class(character, sheet, row):
+    current_class = [c.strip() for c in character.get('Class', '').split(',') if c.strip()]
+    print(f"\nCurrent Class: {', '.join(current_class) if current_class else '(none)'}")
+    print("Allowed Classes: ", ", ".join(ALLOWED_CLASSES))
+
+    while True:
+        action = input("\nDo you want to add a class? \n"
+                "[1] Yes \n"
+                "[0] Return to character amendment choices \n"
+                "Enter your choice: \n").strip()
             
-            if action == "1":
-                new_class = input("Enter new class (or hit Enter to cancel): \n").strip().title()
-                if not new_class:
-                    continue
-                if new_class not in ALLOWED_CLASSES:
-                    print("Not an allowed class. Try again.")
-                    continue
-                if new_class in current_class:
-                    print("Character already has this class.")
-                    continue
-                current_class.append(new_class)
-                character['Class'] = ', '.join(current_class)
-                try:
-                    update_row_fields(sheet, row, {"Class": character['Class']})
-                    print(f"\nUpdated Class to {character['Class']}.\n")
-                except Exception as e:
-                    print(f"\nOh no! Error updating sheet: {e}")
-            elif action == "0":
-                print("Returning to character amendment choices...")
-                return
-            else:
-                print("Invalid choice. Please choose from the options above.")
-
-    #Update statistics 
-    if field.lower() in {"statistics", "stats"}:
-        current_stats_str = character.get('Statistics', '')
-        stats = parse_stats_string(current_stats_str)
-
-        while True:
-            print("\nWhich statistic do you want to change?")
-            for k in STAT_KEYS:
-                print(f"{k} (current {stats.get(k, 10)})")
-
-            # Ask user for stat to change
-            chosen_key = input("\nType the statistic name exactly as shown above. To return back to the character amendment options, type 0: \n").strip().title()
-            if chosen_key == "0":
-                print("Returning to character amendment choices...")
-                return
-            if chosen_key not in STAT_KEYS:
-                print("Invalid statistic. Please enter one from the list above.")
+        if action == "1":
+            new_class = input("Enter new class (or hit Enter to cancel): \n").strip().title()
+            if not new_class:
                 continue
-
-            # Ask for new value
-            try:
-                new_val = int(input(f"\nEnter new value for {chosen_key} (1-20): \n").strip())
-                if not 1 <= new_val <= 20:
-                    print("\nValue must be between 1 and 20.")
-                    continue
-            except ValueError:
-                print("Please enter a whole number between 1 and 20.")
+            if new_class not in ALLOWED_CLASSES:
+                print("Not an allowed class. Try again.")
                 continue
-
-            # Apply change
-            stats[chosen_key] = new_val
-            new_stats_str = format_stats_string(stats)
-            new_mods_str = format_modifiers_string(stats)
-            character['Statistics'] = new_stats_str
-            character['Modifiers'] = new_mods_str
-
+            if new_class in current_class:
+                print("Character already has this class.")
+                continue
+            current_class.append(new_class)
+            character['Class'] = ', '.join(current_class)
             try:
-                update_row_fields(sheet, row, {"Statistics": new_stats_str, "Modifiers": new_mods_str})
-                print(f"\nUpdated {chosen_key} and recalculated modifiers.\n")
+                update_row_fields(sheet, row, {"Class": character['Class']})
+                print(f"\nUpdated Class to {character['Class']}.\n")
             except Exception as e:
                 print(f"\nOh no! Error updating sheet: {e}")
+        elif action == "0":
+            print("Returning to character amendment choices...")
+            return
+        else:
+            print("Invalid choice. Please choose from the options above.")
 
-            more_updates = input("Do you want to amend another statistic? (yes/no): \n").strip().lower()
-            if more_updates != "yes":
-                break
+def amend_statistics(character, sheet, row):
+    current_stats_str = character.get('Statistics', '')
+    stats = parse_stats_string(current_stats_str)
+
+    while True:
+        print("\nWhich statistic do you want to change?")
+        for k in STAT_KEYS:
+            print(f"{k} (current {stats.get(k, 10)})")
+
+        # Ask user for stat to change
+        chosen_key = input("\nType the statistic name exactly as shown above. To return back to the character amendment options, type 0: \n").strip().title()
+        if chosen_key == "0":
+            print("Returning to character amendment choices...")
+            return
+        if chosen_key not in STAT_KEYS:
+            print("Invalid statistic. Please enter one from the list above.")
+            continue
+
+        # Ask for new value
+        try:
+            new_val = int(input(f"\nEnter new value for {chosen_key} (1-20): \n").strip())
+            if not 1 <= new_val <= 20:
+                print("\nValue must be between 1 and 20.")
+                continue
+        except ValueError:
+            print("Please enter a whole number between 1 and 20.")
+            continue
+
+        # Apply change
+        stats[chosen_key] = new_val
+        new_stats_str = format_stats_string(stats)
+        new_mods_str = format_modifiers_string(stats)
+        character['Statistics'] = new_stats_str
+        character['Modifiers'] = new_mods_str
+
+        try:
+            update_row_fields(sheet, row, {"Statistics": new_stats_str, "Modifiers": new_mods_str})
+            print(f"\nUpdated {chosen_key} and recalculated modifiers.\n")
+        except Exception as e:
+            print(f"\nOh no! Error updating sheet: {e}")
+
+        more_updates = input("Do you want to amend another statistic? (yes/no): \n").strip().lower()
+        if more_updates != "yes":
+            break
         return
     
-    #Update proficiencies whilst still remaining within the allowed proficiencies list and keeping no more than 4 proficiencies listed
-    if field.lower() == "proficiencies":
-        current_proficiencies = [p.strip() for p in character.get('Proficiencies', '').split(',') if p.strip()]
-        print(f"\nCurrent Proficiencies: {', '.join(current_proficiencies) if current_proficiencies else '(none)'}")
-        print("Allowed Proficiencies: ", ", ".join(ALLOWED_PROFICIENCIES))
+def amend_proficiencies(character, sheet, row):
+    current_proficiencies = [p.strip() for p in character.get('Proficiencies', '').split(',') if p.strip()]
+    print(f"\nCurrent Proficiencies: {', '.join(current_proficiencies) if current_proficiencies else '(none)'}")
+    print("Allowed Proficiencies: ", ", ".join(ALLOWED_PROFICIENCIES))
 
-        while True:
-            action = input("\nDo you want to add or remove a proficiency? \n"
-                       "[1] Add a proficiency \n"
-                       "[2] Remove a proficiency \n"
-                       "[3] Return to character amendment choices \n"
-                       "[4] Return to main menu \n"
-                       "Enter your choice: \n").strip()
+    while True:
+        action = input("\nDo you want to add or remove a proficiency? \n"
+                    "[1] Add a proficiency \n"
+                    "[2] Remove a proficiency \n"
+                    "[0] Return to character amendment choices \n"
+                    "\nEnter your choice: \n").strip()
 
-            if action == "1":
-                    if len(current_proficiencies) >= 4:
-                        print("\nMaximum of 4 proficiencies reached. Remove one first if you want to add another.")
-                        continue
-
-                    new_proficiency = input("Enter a proficiency to add (or hit Enter to cancel): \n").strip().title()
-                    if not new_proficiency:
-                        continue
-                    if new_proficiency not in ALLOWED_PROFICIENCIES:
-                        print("Not an allowed proficiency. Try again.")
-                        continue
-                    if new_proficiency in current_proficiencies:
-                        print("Character already has this proficiency.")
-                        continue
-
-                    current_proficiencies.append(new_proficiency)
-                    character['Proficiencies'] = ", ".join(current_proficiencies)
-                    try:
-                        update_row_fields(sheet, row, {"Proficiencies": character['Proficiencies']})
-                        print(f"Added proficiency: {new_proficiency}")
-                    except Exception as e:
-                        print(f"Error updating sheet: {e}")
-
-            elif action == "2":
-                    if not current_proficiencies:
-                        print("No proficiencies to remove.")
-                        continue
-
-                    proficiency_to_remove = input("Enter a proficiency to remove: \n").strip().title()
-                    if proficiency_to_remove not in current_proficiencies:
-                        print("Character does not have this proficiency.")
-                        continue
-
-                    current_proficiencies.remove(proficiency_to_remove)
-                    character['Proficiencies'] = ", ".join(current_proficiencies)
-                    try:
-                        update_row_fields(sheet, row, {"Proficiencies": character['Proficiencies']})
-                        print(f"Removed proficiency: {proficiency_to_remove}")
-                    except Exception as e:
-                        print(f"Error updating sheet: {e}")
-
-            elif action == "3":
-                        print("Returning to character amendment choices...")
-                        break  # Correctly exits the while loop, not the whole function
-
-            elif action == "4":
-                    return  # Exit the function to return to main menu
-        
-    else:
-            print("Invalid action. Returning to character ammendment options...")
-
-    #Update allignment so it remains within allowed allignment limits
-    if field.lower() == "alignment":
-        current_alignment = character.get('Alignment', '')
-        print(f"\nCurrent Alignment: {current_alignment}")
-        print("Allowed Alignments: ", ", ".join(ALLOWED_ALIGNMENTS))
-
-        while True:
-            new_alignment = input("\nEnter new alignment (or hit Enter to cancel): \n").strip().title()
-            if not new_alignment:
-                print("No changes made to alignment.")
-                break
-            if new_alignment not in ALLOWED_ALIGNMENTS:
-                print("Not an allowed alignment. Try again.")
+        if action == "1":
+            if len(current_proficiencies) >= 4:
+                print("\nMaximum of 4 proficiencies reached. Remove one first if you want to add another.")
                 continue
 
-            character['Alignment'] = new_alignment
+            new_proficiency = input("Enter a proficiency to add (or hit Enter to cancel): \n").strip().title()
+            if not new_proficiency:
+                continue
+            if new_proficiency not in ALLOWED_PROFICIENCIES:
+                print("Not an allowed proficiency. Try again.")
+                continue
+            if new_proficiency in current_proficiencies:
+                print("Character already has this proficiency.")
+                continue
+
+            current_proficiencies.append(new_proficiency)
+            character['Proficiencies'] = ", ".join(current_proficiencies)
             try:
-                update_row_fields(sheet, row, {"Alignment": character['Alignment']})
-                print(f"\nUpdated Alignment to {character['Alignment']}.\n")
+                update_row_fields(sheet, row, {"Proficiencies": character['Proficiencies']})
+                print(f"Added proficiency: {new_proficiency}")
             except Exception as e:
-                print(f"\nOh no! Error updating sheet: {e}")
+                print(f"Error updating sheet: {e}")
+
+        elif action == "2":
+            if not current_proficiencies:
+                print("No proficiencies to remove.")
+                continue
+
+            proficiency_to_remove = input("Enter a proficiency to remove: \n").strip().title()
+            if proficiency_to_remove not in current_proficiencies:
+                print("Character does not have this proficiency.")
+                continue
+
+            current_proficiencies.remove(proficiency_to_remove)
+            character['Proficiencies'] = ", ".join(current_proficiencies)
+            try:
+                update_row_fields(sheet, row, {"Proficiencies": character['Proficiencies']})
+                print(f"Removed proficiency: {proficiency_to_remove}")
+            except Exception as e:
+                print(f"Error updating sheet: {e}")
+
+        elif action == "0":
+            print("Returning to character amendment choices...")
+            break  # Correctly exits the while loop, not the whole function
+
+        elif action == "4":
+            return  # Exit the function to return to main menu  
+    
+    else:
+        print("Invalid action. Returning to character ammendment options...")
+
+def amend_alignment(character, sheet, row):
+    current_alignment = character.get('Alignment', '')
+    print(f"\nCurrent Alignment: {current_alignment}")
+    print("Allowed Alignments: ", ", ".join(ALLOWED_ALIGNMENTS))
+
+    while True:
+        new_alignment = input("\nEnter new alignment or type 0 to return to character ammendment options: \n").strip().title()
+        if new_alignment == "0":
+            print("Returning to character amendment options...")
+            return
+        if not new_alignment:
+            print("No changes made to alignment.")
             break
+        if new_alignment not in ALLOWED_ALIGNMENTS:
+            print("Not an allowed alignment. Try again.")
+            continue
+        if new_alignment == current_alignment:
+            print("Alignment is already set to this value.")
+            continue
+
+        character['Alignment'] = new_alignment
+        try:
+            update_row_fields(sheet, row, {"Alignment": character['Alignment']})
+            print(f"\nUpdated Alignment to {character['Alignment']}.\n")
+        except Exception as e:
+            print(f"\nOh no! Error updating sheet: {e}")
+        break
 
     return character
-
-
-
-
-def remove_stored_character(character):
-    """Function to remove a character from The Compendium. This will also remove
-    the character from the Google Sheet"""
-
-
-
 
 def create_randomised_character():
     """

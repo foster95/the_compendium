@@ -1,3 +1,25 @@
+Project 03 by Alice Foster
+
+View live project
+
+The Compendium
+The Compendium is a Python built project which is built around the concept of character creation for Dungeons and Dragon's (known colloquially as DnD). The project is connected to a Google Sheet and allows users to do the following: See all the characters already logged to the Google Sheet, Create a character using randomised features provided by the Compendium terminal and upload the details of a pre-made DnD character the user already has. Any characters created using The Compendium are automatically uploaded to the Google Sheet. Users can choose if they want to upload the pre-made character to the Google Sheet. 
+
+The Compendium is designed for the following audience:
+* People who play Dungeons and Dragons (specifically Dungeon Masters) who need to create characters fast, particularly for NPC roles which don't require a huge amount of character detail
+* People who play Dungeons and Dragons characters who would like a simple digital record of their own personal characters outside of platforms like DnD Beyond
+
+Existing Features
+Opening Menu
+View Characters Logged to The Compendium
+Modifiers
+Create a Randomised Character using The Compendium
+Log a Pre-Made Character
+Upload Pre-Made Character to The Compendium
+
+Project Logic
+In order to follow best practise, I created a flowchart using Lucidchart, which maps out the logic of the processes throughout the project
+
 ![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
 
 Welcome,
@@ -120,4 +142,4 @@ while len(pre_made_proficiencies) < 4:
         "Animal Handling", "Survival"
     ]
 
-    Due to the codee using the strip() process and converting all of the first letters to uppercase, Sleight of Hand was returning as an incorrect option. By changing this to "Sleight Of Hand" this fixed the problem. 
+    Due to the codee using the strip() process and converting all of the first letters to uppercase, Sleight of Hand was returning as an incorrect option. By changing this to "Sleight Of Hand" in both the allowed_proficiencies and the proficiencies dictionary this fixed the problem. 
