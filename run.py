@@ -141,7 +141,7 @@ def get_stored_characters():
         return
     
 def amend_stored_character(characters):
-    """Amend a character in 'Stored Characters'. Supports targeted Statistics edit."""
+    """Function to amend a character stored in The Compendium"""
     print("Choose a character from The Compendium to amend.\n")
 
     name = input("Enter the name of the character you want to amend: \n").strip()
@@ -151,9 +151,9 @@ def amend_stored_character(characters):
         print(f"Character not found: {name}")
         return
 
-    print(f"Amending: {character.get('Name','(unknown)')}...\n")
+    print(f"\nAmending: {character.get('Name','(unknown)')}...\n")
     print("Fields you can amend: Name, Race/Species, Class, Statistics, Proficiencies, Alignment\n")
-    field = input("Enter the field you want to amend: ").strip()
+    field = input("Enter the field you want to amend: \n").strip()
 
     try:
         sheet = SHEET.worksheet('Stored Characters')
@@ -175,19 +175,22 @@ def amend_stored_character(characters):
         while True:
             print("\nWhich statistic do you want to change?")
             for k in STAT_KEYS:
-                print(f"- {k} (current {stats.get(k, 10)})")
+                print(f"{k} (current {stats.get(k, 10)})")
 
             # Ask user for stat to change
-            chosen_key = input("Type the statistic name exactly as shown above: ").strip().title()
+            chosen_key = input("\nType the statistic name exactly as shown above. To return back to the character amendment options, type 0: \n").strip().title()
+            if chosen_key == "0":
+                print("Returning to character amendment choices...")
+                return
             if chosen_key not in STAT_KEYS:
                 print("Invalid statistic. Please enter one from the list above.")
                 continue
 
             # Ask for new value
             try:
-                new_val = int(input(f"Enter new value for {chosen_key} (1-20): ").strip())
+                new_val = int(input(f"\nEnter new value for {chosen_key} (1-20): \n").strip())
                 if not 1 <= new_val <= 20:
-                    print("Value must be between 1 and 20.")
+                    print("\nValue must be between 1 and 20.")
                     continue
             except ValueError:
                 print("Please enter a whole number between 1 and 20.")
@@ -202,11 +205,11 @@ def amend_stored_character(characters):
 
             try:
                 update_row_fields(sheet, row, {"Statistics": new_stats_str, "Modifiers": new_mods_str})
-                print(f"Updated {chosen_key} and recalculated modifiers.")
+                print(f"\nUpdated {chosen_key} and recalculated modifiers.\n")
             except Exception as e:
-                print(f"Oh no! Error updating sheet: {e}")
+                print(f"\nOh no! Error updating sheet: {e}")
 
-            more_updates = input("Do you want to amend another statistic? (yes/no): ").strip().lower()
+            more_updates = input("Do you want to amend another statistic? (yes/no): \n").strip().lower()
             if more_updates != "yes":
                 break
         return
@@ -221,14 +224,15 @@ def amend_stored_character(characters):
                        "[1] Add a proficiency \n"
                        "[2] Remove a proficiency \n"
                        "[3] Return to character amendment choices \n"
-                       "Enter your choice: ").strip()
+                       "[4] Return to main menu \n"
+                       "Enter your choice: \n").strip()
 
         if action == "1":
             if len(current_proficiencies) >= 4:
-                print("Maximum of 4 proficiencies reached. Remove one first if you want to add another.")
+                print("\nMaximum of 4 proficiencies reached. Remove one first if you want to add another.")
                 continue
 
-            new_proficiency = input("Enter a proficiency to add (or hit Enter to cancel): ").strip().title()
+            new_proficiency = input("Enter a proficiency to add (or hit Enter to cancel): \n").strip().title()
             if not new_proficiency:
                 continue
             if new_proficiency not in ALLOWED_PROFICIENCIES:
@@ -251,7 +255,7 @@ def amend_stored_character(characters):
                 print("No proficiencies to remove.")
                 continue
 
-            proficiency_to_remove = input("Enter a proficiency to remove: ").strip().title()
+            proficiency_to_remove = input("Enter a proficiency to remove: \n").strip().title()
             if proficiency_to_remove not in current_proficiencies:
                 print("Character does not have this proficiency.")
                 continue
@@ -267,9 +271,12 @@ def amend_stored_character(characters):
         elif action == "3":
             print("Returning to character amendment choices...")
             break  # Correctly exits the while loop, not the whole function
-
+        
+        elif action == "4":
+            return  # Exit the function to return to main menu
+        
         else:
-            print("Invalid action. Please choose 1, 2, or 3.")
+            print("Invalid action. Please choose 1, 2, 3 or 4.")
 
     return  # Return after finishing proficiencies amendment
 
@@ -304,7 +311,7 @@ def create_randomised_character():
 
     while True:
         #Code to require user to provide required first name
-        first_name = input("Enter character first name (required): ").strip()
+        first_name = input("Enter character first name (required): \n").strip()
         #Code to validate that user has entered a name
         if len(first_name) == 0:
             print("Character name must contain at least one character, please try again.")
@@ -317,7 +324,7 @@ def create_randomised_character():
 
     while True:
         #Code for user to provide optional last name
-        last_name = input("Enter character surname (optional): ")
+        last_name = input("Enter character surname (optional): \n")
         if last_name and not last_name.isalpha():
             print("Surname must contain only letters, please try again.")
             continue
@@ -381,7 +388,7 @@ def add_premade_character_to_compendium():
 
     while True:
         #Code for user to provide required first name
-        pre_made_first_name = input("Enter character first name (required): ").strip()
+        pre_made_first_name = input("Enter character first name (required): \n").strip()
         #Code to validate that user has entered a name
         if len(pre_made_first_name) == 0:
             print("Character name must contain at least one character, please try again.")
@@ -394,7 +401,7 @@ def add_premade_character_to_compendium():
 
     while True:
         #Code for user to provide optional last name    
-        pre_made_last_name = input("Enter character surname (optional): ")
+        pre_made_last_name = input("Enter character surname (optional): \n")
         if pre_made_last_name and not pre_made_last_name.isalpha():
             print("Surname must contain only letters, please try again.")
             continue
@@ -406,7 +413,7 @@ def add_premade_character_to_compendium():
     #Code for user to provide pre-made base characterists ie race, class, alignment
     #Validation for pre-made character race
     while True:
-        pre_made_race = input(f"\nEnter race/species from the following list - {', '.join(ALLOWED_RACES)}: ").strip().title()
+        pre_made_race = input(f"\nEnter race/species from the following list - {', '.join(ALLOWED_RACES)}: \n").strip().title()
         if pre_made_race not in ALLOWED_RACES:
             print("Invalid race. Please choose one from the list.")
         else:
@@ -414,7 +421,7 @@ def add_premade_character_to_compendium():
 
     #Validation for pre-made character class
     while True:
-        pre_made_character_class = input(f"\nEnter class from the following list - {', '.join(ALLOWED_CLASSES)}: ").strip().title()
+        pre_made_character_class = input(f"\nEnter class from the following list - {', '.join(ALLOWED_CLASSES)}: \n").strip().title()
         if pre_made_character_class not in ALLOWED_CLASSES:
             print("Invalid class. Please choose one from the list.")
         else:
@@ -422,7 +429,7 @@ def add_premade_character_to_compendium():
 
     #Validation for pre-made character alignment
     while True:
-        pre_made_alignment = input(f"\nEnter alignment from the following list - {', '.join(ALLOWED_ALIGNMENTS)}: ").strip().title()
+        pre_made_alignment = input(f"\nEnter alignment from the following list - {', '.join(ALLOWED_ALIGNMENTS)}: \n").strip().title()
         if pre_made_alignment not in ALLOWED_ALIGNMENTS:
             print("Invalid alignment. Please choose one from the list.")
         else:
@@ -433,7 +440,7 @@ def add_premade_character_to_compendium():
     print(f"\nEnter up to 4 proficiencies from the following list. When you are done, hit Enter - {', '.join(allowed_proficiencies)}:")
 
     while len(pre_made_proficiencies) < 4:
-        raw_input = input("Enter proficiencies (comma-separated): ").strip()
+        raw_input = input("Enter proficiencies (comma-separated): \n").strip()
 
         if raw_input == "":
             if not pre_made_proficiencies:
@@ -500,7 +507,7 @@ def launch():
             "[3] Add your own existing character to The Compendium \n" 
             "[0] Exit\n")
 
-            choice = int(input("Enter your choice: "))
+            choice = int(input("Enter your choice: \n"))
             if choice == 1:
                 print("Viewing all characters logged to The Compendium...")
 
@@ -543,7 +550,7 @@ def launch():
                         print(f"    {stat}: {value} ({sign}{modifier})")
                     print(f"  Proficiencies: {', '.join(pre_made_character['Proficiencies'])}")
                     print(f"  Alignment: {pre_made_character['Alignment']}")
-                    confirm = input("Do you want to add this character to The Compendium? (type yes or no): ").strip().lower()
+                    confirm = input("Do you want to add this character to The Compendium? (type yes or no): \n").strip().lower()
                     if confirm == "yes":
                         add_character_to_compendium(pre_made_character)
                         print("Character added to The Compendium!")
