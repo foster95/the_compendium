@@ -139,10 +139,12 @@ def get_stored_characters():
                     "[0] Return to main menu \n"
                     "\nEnter your choice: \n").strip()
                 if choice == "1":
-                    amend_stored_character(characters)
+                    exit_to_main_menu = amend_stored_character(characters)
+                    if exit_to_main_menu:
+                        break
                 elif choice == "0":
                     print("\nReturning to main menu...\n")
-                    return
+                    break
                 else:
                     print("Invalid choice. You must choose from the options above.\n")
         return characters
@@ -193,8 +195,8 @@ def amend_stored_character(characters):
         elif choice == "4":
             amend_alignment(character, sheet, row)
         elif choice == "0":
-            print("Returning to main menu...\n")
-            break
+            print("\nReturning to main menu...")
+            return True
         else:
             print("Invalid choice. You must choose either 0, 1, 2, 3 or 4")
 
@@ -282,7 +284,6 @@ def amend_statistics(character, sheet, row):
         more_updates = input("Do you want to amend another statistic? (yes/no): \n").strip().lower()
         if more_updates != "yes":
             break
-        return
 
 
 def amend_proficiencies(character, sheet, row):
@@ -301,7 +302,8 @@ def amend_proficiencies(character, sheet, row):
         if action == "0":
             # Correctly exits the while loop, not the whole function
             print("Returning to character amendment choices...\n")
-            break
+            return
+
         elif action == "1":
             # Launch proficiency addition
             if len(current_proficiencies) >= 4:
@@ -323,12 +325,13 @@ def amend_proficiencies(character, sheet, row):
                 print(f"Added proficiency: {new_proficiency}")
             except Exception as e:
                 print(f"Error updating sheet: {e}")
+
         elif action == "2":
             # Launch proficiency removal
             if not current_proficiencies:
                 print("No proficiencies to remove.")
                 continue
-            proficiency_to_remove = input("Enter a proficiency to remove (or type 0 to cancel): \n").strip().title()
+            proficiency_to_remove = input("Enter a proficiency to remove (or type 0 to return to character amendment choices): \n").strip().title()
             if proficiency_to_remove == "0":
                 print("Returning to character amendment choices...\n")
                 continue
@@ -348,7 +351,6 @@ def amend_alignment(character, sheet, row):
     current_alignment = character.get('Alignment', '')
     print(f"\nCurrent Alignment: {current_alignment}")
     print("Allowed Alignments: ", ", ".join(ALLOWED_ALIGNMENTS))
-
     while True:
         new_alignment = input("\nEnter new alignment or type 0 to return to character ammendment choices: \n").strip().title()
         if new_alignment == "0":
@@ -363,7 +365,6 @@ def amend_alignment(character, sheet, row):
         if new_alignment == current_alignment:
             print("Alignment is already set to this value.")
             continue
-
         character['Alignment'] = new_alignment
         try:
             update_row_fields(sheet, row, {"Alignment": character['Alignment']})
@@ -371,7 +372,6 @@ def amend_alignment(character, sheet, row):
         except Exception as e:
             print(f"\nOh no! Error updating sheet: {e}")
         break
-
     return character
 
 
@@ -384,7 +384,6 @@ def create_randomised_character():
     """
 
     randomised_proficiencies = random.sample(ALLOWED_PROFICIENCIES, 4)
-
     stats = {
         "Strength": random.randint(1, 20),
         "Dexterity": random.randint(1, 20),
@@ -393,7 +392,6 @@ def create_randomised_character():
         "Wisdom": random.randint(1, 20),
         "Charisma": random.randint(1, 20)
     }
-
     while True:
         # Code to require user to provide required first name
         first_name = input("\nEnter character first name (required): \n").strip()
@@ -406,7 +404,6 @@ def create_randomised_character():
             print("Character name must contain only letters, please try again.")
             continue
         break
-
     while True:
         # Code for user to provide optional last name
         last_name = input("Enter character surname (optional): \n")
@@ -414,7 +411,6 @@ def create_randomised_character():
             print("Surname must contain only letters, please try again.")
             continue
         break
-
     # Combine first name and last name (if provided)
     character_name = f"{first_name} {last_name}" if last_name else first_name
 
@@ -426,7 +422,6 @@ def create_randomised_character():
         "Proficiencies": randomised_proficiencies,
         "Alignment": random.choice(ALLOWED_ALIGNMENTS),
     }
-
     return randomised_character
 
 
@@ -441,15 +436,15 @@ def add_character_to_compendium(character):
         # Change dictionary stats to a list of values so it can be added to Google Sheet
         stats_dict = character["Statistics"]
         stats_string = ", ".join(f"{stat}: {value}" for stat, value in stats_dict.items())
-
+        
         # Change proficiencies to a string so it can be added to Google Sheet
         proficiencies_string = ", ".join(character["Proficiencies"])
-
+        
         # Change modifiers to a string so it can be added to Google Sheet
         # Thanks to RealPython for explaining the +d function in Python
         modifiers = calculate_modifiers(character["Statistics"])
         modifiers_string = ", ".join(f"{stat}: {modifier:+d}" for stat, modifier in modifiers.items())
-
+        
         # Create a new row in Google Sheet with new generated character data
         new_row = [
             character["Name"],
@@ -460,7 +455,6 @@ def add_character_to_compendium(character):
             proficiencies_string,
             character["Alignment"],
         ]
-
         sheet.append_row(new_row)
         print(f"\nCharacter '{character['Name']}' added to The Compendium! Returning to main menu... \n")
     except Exception as e:
@@ -473,26 +467,29 @@ def add_premade_character_to_compendium():
     print("Add your own existing character to The Compendium. \n"
           "Please provide the character's details as prompted. \n"
           "\nTo go back to the main menu at any time, type 0")
-
     while True:
         # Code for user to provide required first name
         pre_made_first_name = input("Enter character first name (required): \n").strip()
+        
+        # Go back to main menu
         if pre_made_first_name == "0":
             print("Returning to main menu...\n")
-            return  # Go back to main menu
+            return
+        
         # Code to validate that user has entered a name
         if len(pre_made_first_name) == 0:
             print("Character name must contain at least one character, please try again.")
             continue
+        
         # Code to validate that user has entered text and not numbers or special characters
         if not pre_made_first_name.isalpha():
             print("Character name must contain only letters, please try again.")
             continue
         break
-
     while True:
         # Code for user to provide optional last name
         pre_made_last_name = input("Enter character surname (optional): \n")
+        
         # Go back to main menu
         if pre_made_last_name == "0":
             print("Returning to main menu...\n")
@@ -501,10 +498,10 @@ def add_premade_character_to_compendium():
             print("Surname must contain only letters, please try again.")
             continue
         break
-
+    
     # Code to combine first name and last name (if provided)
     pre_made_character_name = f"{pre_made_first_name} {pre_made_last_name}" if pre_made_last_name else pre_made_first_name
-
+    
     # Code for user to provide pre-made base characterists ie race, class, alignment
     # Validation for pre-made character race
     while True:
@@ -517,7 +514,7 @@ def add_premade_character_to_compendium():
             print("Invalid race. Please choose one from the list.")
         else:
             break
-
+    
     # Validation for pre-made character class
     while True:
         pre_made_character_class = input(f"\nEnter class from the following list - {', '.join(ALLOWED_CLASSES)}: \n").strip().title()
@@ -529,7 +526,7 @@ def add_premade_character_to_compendium():
             print("Invalid class. Please choose one from the list.")
         else:
             break
-
+    
     # Validation for pre-made character alignment
     while True:
         pre_made_alignment = input(f"\nEnter alignment from the following list - {', '.join(ALLOWED_ALIGNMENTS)}: \n").strip().title()
@@ -624,6 +621,7 @@ def main():
                 print("Viewing all characters logged to The Compendium...")
                 # Code to view all characters loaded to The Compendium
                 get_stored_characters()
+            
             elif choice == 2:
                 print("Create a new character using The Compendium...")
                 # Code to create a new character using The Compendium as a randomiser
@@ -644,6 +642,7 @@ def main():
                 # Code to add the new randomised character to The Compendium.
                 # This will add the character to the Google Sheet.
                 add_character_to_compendium(randomised_character)
+           
             elif choice == 3:
                 print("Loading choices to add an existing character to The Compendium...")
                 pre_made_character = add_premade_character_to_compendium()
@@ -667,6 +666,7 @@ def main():
                         print("Character not added to The Compendium. Returning to main menu...\n")
                     else:
                         print("Invalid option. You must choose either yes or no. Character not added to The Compendium.")
+            
             elif choice == 0:
                 print("Exiting The Compendium. Goodbye!")
                 break
