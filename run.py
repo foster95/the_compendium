@@ -43,7 +43,10 @@ ALLOWED_PROFICIENCIES = [
     "Performance", "Persuasion", "Sleight Of Hand", "Investigation",
     "Animal Handling", "Survival"
 ]
-
+"""
+Global variables for the stat keys to be used in the ammend
+stats section of compendium
+"""
 STAT_KEYS = [
     "Strength", "Dexterity", "Constitution", "Intelligence",
     "Wisdom", "Charisma"
@@ -73,14 +76,14 @@ def parse_stats_string(stats_str: str) -> dict:
 
 def format_stats_string(stats: dict) -> str:
     """
-    Dict -> 'Strength: 12, Dexterity: 10, ...' in fixed, neat order.
+    Shows character's statistics in a formatted string.
     """
     return ", ".join(f"{k}: {int(stats.get(k, 10))}" for k in STAT_KEYS)
 
 
 def format_modifiers_string(stats: dict) -> str:
     """
-    Build the Modifiers string from stats using calculate_modifiers().
+    Shows character's ability score modifiers in a formatted string.
     """
     mods = calculate_modifiers(stats)
     return ", ".join(f"{k}: {mods.get(k, 0):+d}" for k in STAT_KEYS)
@@ -98,7 +101,9 @@ def update_row_fields(sheet, row: int, fields: dict) -> None:
 
 
 def calculate_modifiers(stats):
-    """Function to calculate ability score modifiers"""
+    """
+    Function to calculate ability score modifiers
+    """
     modifiers = {}
     for stat, value in stats.items():
         modifiers[stat] = (value - 10) // 2
@@ -106,7 +111,10 @@ def calculate_modifiers(stats):
 
 
 def get_stored_characters():
-    """Function to get stored characters from the Google Sheet"""
+    """
+    Function to get stored characters from the Google Sheet
+    and show in terminal
+    """
     try:
         sheet = SHEET.worksheet('Stored Characters')
         characters = sheet.get_all_records()
@@ -137,7 +145,8 @@ def get_stored_characters():
                     "Please choose an option from the below:\n"
                     "[1] Amend a character in The Compendium \n"
                     "[0] Return to main menu \n"
-                    "\nEnter your choice: \n").strip()
+                    "\nEnter your choice: \n"
+                    ).strip()
                 if choice == "1":
                     exit_to_main_menu = amend_stored_character(characters)
                     if exit_to_main_menu:
@@ -154,7 +163,9 @@ def get_stored_characters():
 
 
 def amend_stored_character(characters):
-    """Function to amend a character stored in The Compendium"""
+    """
+    Function to amend a character stored in The Compendium
+    """
     print("Choose a character from The Compendium to amend.\n")
 
     name = input("Enter the name of the character you want to amend: \n").strip()
@@ -178,30 +189,40 @@ def amend_stored_character(characters):
 
     while True:
         print(f"Amending: {character.get('Name','(unknown)')}")
-        print("Fields you can amend:")
-        print("[1] Class")
-        print("[2] Statistics")
-        print("[3] Proficiencies")
-        print("[4] Alignment")
-        print("[0] Return to main menu\n")
-
+        print("\nFields you can amend:\n"
+              "[1] Class\n"
+              "[2] Statistics\n"
+              "[3] Proficiencies\n"
+              "[4] Alignment\n"
+              "[0] Return to main menu\n"
+              )
+        
+        # Allows user to choose field to ammend or breakout to main menu
         choice = input("Enter your choice:\n").strip()
         if choice == "1":
             amend_class(character, sheet, row)
+
         elif choice == "2":
             amend_statistics(character, sheet, row)
+
         elif choice == "3":
             amend_proficiencies(character, sheet, row)
+
         elif choice == "4":
             amend_alignment(character, sheet, row)
+
         elif choice == "0":
             print("\nReturning to main menu...")
             return True
+        
         else:
             print("Invalid choice. You must choose either 0, 1, 2, 3 or 4")
 
 
 def amend_class(character, sheet, row):
+    """
+    Function to allow user to ammend class
+    """
     current_class = [c.strip() for c in character.get('Class', '').split(',') if c.strip()]
     print(f"\nCurrent Class: {', '.join(current_class) if current_class else '(none)'}")
     print("Allowed Classes: ", ", ".join(ALLOWED_CLASSES))
@@ -211,11 +232,13 @@ def amend_class(character, sheet, row):
             "\nDo you want to add a class? \n"
             "[1] Yes \n"
             "[0] Return to character amendment choices \n"
-            "Enter your choice: \n").strip()
+            "Enter your choice: \n"
+            ).strip()
 
         if action == "0":
             print("Returning to character amendment choices...\n")
             return
+        
         elif action == "1":
             new_class = input("Enter new class or type 0 to return to character amendment choices: \n").strip().title()
             if new_class == "0":
@@ -241,6 +264,9 @@ def amend_class(character, sheet, row):
 
 
 def amend_statistics(character, sheet, row):
+    """
+    Function to allow user to ammend character statistics
+    """
     current_stats_str = character.get('Statistics', '')
     stats = parse_stats_string(current_stats_str)
 
@@ -249,7 +275,7 @@ def amend_statistics(character, sheet, row):
         for k in STAT_KEYS:
             print(f"{k} (current {stats.get(k, 10)})")
 
-        # Ask user for stat to change
+        # Prompt user for which stat to change
         chosen_key = input("\nType the statistic name exactly as shown above. To return back to the character amendment choices, type 0: \n").strip().title()
         if chosen_key == "0":
             print("Returning to character amendment choices...\n")
@@ -287,6 +313,9 @@ def amend_statistics(character, sheet, row):
 
 
 def amend_proficiencies(character, sheet, row):
+    """
+    Function to allow user to ammend character proficiency
+    """
     current_proficiencies = [p.strip() for p in character.get('Proficiencies', '').split(',') if p.strip()]
     print(f"\nCurrent Proficiencies: {', '.join(current_proficiencies) if current_proficiencies else '(none)'}")
     print("Allowed Proficiencies: ", ", ".join(ALLOWED_PROFICIENCIES))
@@ -297,7 +326,8 @@ def amend_proficiencies(character, sheet, row):
             "[1] Add a proficiency \n"
             "[2] Remove a proficiency \n"
             "[0] Return to character amendment choices \n"
-            "\nEnter your choice: \n").strip()
+            "\nEnter your choice: \n"
+            ).strip()
 
         if action == "0":
             # Correctly exits the while loop, not the whole function
@@ -305,47 +335,76 @@ def amend_proficiencies(character, sheet, row):
             return
 
         elif action == "1":
-            # Launch proficiency addition
+            # Launch proficiency addition. If character already
+            # has 4 proficiencies, they cannot add more and
+            # are prompted to remove a proficiency instead
             if len(current_proficiencies) >= 4:
                 print("\nMaximum of 4 proficiencies reached. Remove one first if you want to add another.")
                 continue
-            new_proficiency = input("Enter a proficiency to add (or hit Enter to cancel): \n").strip().title()
+
+            print(f"\nCurrent Proficiencies: {', '.join(current_proficiencies)}")
+            new_proficiency = input(
+                "Enter a proficiency to add, with a comma between each proficiency
+                "or type 0 to return to character amendment choices: \n"
+            ).strip().title()
+
             if not new_proficiency:
                 continue
-            if new_proficiency not in ALLOWED_PROFICIENCIES:
-                print("Not an allowed proficiency. Try again.")
-                continue
-            if new_proficiency in current_proficiencies:
-                print("Character already has this proficiency.")
-                continue
-            current_proficiencies.append(new_proficiency)
+            
+            added_proficiency = [p.strip() for p in new_proficiency.split(",") if p.strip()]
+
+            for new_proficiency in added_proficiency:
+                if len(current_proficiencies) >= 4:
+                    print("\nMaximum of 4 proficiencies reached. You cannot add another proficiency.")
+                    break
+                if new_proficiency == "0":
+                    print("Returning to character amendment choices...\n")
+                    return
+                if new_proficiency not in ALLOWED_PROFICIENCIES:
+                    print("Not an allowed proficiency. Try again.")
+                    continue
+                if new_proficiency in current_proficiencies:
+                    print(f"Character already has {new_proficiency}.")
+                    continue
+                current_proficiencies.append(new_proficiency)
+                print(f"{new_proficiency} added to proficiencies.")
+
             character['Proficiencies'] = ", ".join(current_proficiencies)
             try:
                 update_row_fields(sheet, row, {"Proficiencies": character['Proficiencies']})
-                print(f"Added proficiency: {new_proficiency}")
             except Exception as e:
                 print(f"Error updating sheet: {e}")
 
         elif action == "2":
-            # Launch proficiency removal
+            # Launch proficiency removal. If character has no proficiencies,
+            # they cannot remove any and are prompted to add a 
+            # proficiency instead
             if not current_proficiencies:
-                print("No proficiencies to remove.")
+                print("No proficiencies to remove. Please add a proficiency first.")
                 continue
-            proficiency_to_remove = input("Enter a proficiency to remove (or type 0 to return to character amendment choices): \n").strip().title()
+
+            print(f"\nCurrent Proficiencies: {', '.join(current_proficiencies)}")
+            proficiency_to_remove = input(
+                "Enter a proficiency to remove, with a comma between each proficiency
+                "(or type 0 to return to character amendment choices): \n"
+                ).strip().title()
             if proficiency_to_remove == "0":
                 print("Returning to character amendment choices...\n")
                 continue
-            if proficiency_to_remove not in current_proficiencies:
-                print("Character does not have this proficiency.")
-                continue
-            current_proficiencies.remove(proficiency_to_remove)
-            character['Proficiencies'] = ", ".join(current_proficiencies)
-            try:
-                update_row_fields(sheet, row, {"Proficiencies": character['Proficiencies']})
-                print(f"Removed proficiency: {proficiency_to_remove}")
-            except Exception as e:
-                print(f"Error updating sheet: {e}")
 
+            removed_proficiencies = [p.strip() for p in proficiency_to_remove.split(",") if p.strip()]
+            for proficiency_to_remove in removed_proficiencies:
+                if proficiency_to_remove not in current_proficiencies:
+                    print(f"{proficiency_to_remove} is not in current proficiencies.")
+                    continue
+                current_proficiencies.remove(proficiency_to_remove)
+                print(f"{proficiency_to_remove} removed from proficiencies.")
+
+                character['Proficiencies'] = ", ".join(current_proficiencies)
+                try:
+                    update_row_fields(sheet, row, {"Proficiencies": character['Proficiencies']})
+                except Exception as e:
+                    print(f"Error updating sheet: {e}")
 
 def amend_alignment(character, sheet, row):
     current_alignment = character.get('Alignment', '')
@@ -541,7 +600,9 @@ def add_premade_character_to_compendium():
 
     # Code for user to provide pre-made proficiencies
     pre_made_proficiencies = []
-    print(f"\nEnter up to 4 proficiencies from the following list. When you are done, hit Enter - {', '.join(ALLOWED_PROFICIENCIES)}:")
+    print(
+        f"\nEnter up to 4 proficiencies from the following list. \n"
+        f"When you are done, hit Enter - {', '.join(ALLOWED_PROFICIENCIES)}:")
 
     while len(pre_made_proficiencies) < 4:
         raw_input = input("Enter proficiencies (comma-separated): \n").strip()
@@ -558,7 +619,9 @@ def add_premade_character_to_compendium():
 
         # Warn user if they have entered more than 4 proficiencies
         if len(entries) + len(pre_made_proficiencies) > 4:
-            print("You can only add up to 4 proficiencies in total. Please try again.")
+            print(
+                "You can only add up to 4 proficiencies in total. "
+                "Please try again.")
             continue
 
         for proficiency in entries:
