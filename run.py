@@ -211,8 +211,14 @@ def amend_class(character, sheet, row):
             "[0] Return to character amendment choices \n"
             "Enter your choice: \n").strip()
 
-        if action == "1":
-            new_class = input("Enter new class (or hit Enter to cancel): \n").strip().title()
+        if action == "0":
+            print("Returning to character amendment choices...\n")
+            return
+        elif action == "1":
+            new_class = input("Enter new class or type 0 to return to character amendment choices: \n").strip().title()
+            if new_class == "0":
+                print("Returning to character amendment choices...\n")
+                return
             if not new_class:
                 continue
             if new_class not in ALLOWED_CLASSES:
@@ -228,9 +234,6 @@ def amend_class(character, sheet, row):
                 print(f"\nUpdated Class to {character['Class']}.\n")
             except Exception as e:
                 print(f"\nOh no! Error updating sheet: {e}")
-        elif action == "0":
-            print("Returning to character amendment choices...\n")
-            return
         else:
             print("Invalid choice. Please choose from the options above.")
 
@@ -295,12 +298,15 @@ def amend_proficiencies(character, sheet, row):
             "[0] Return to character amendment choices \n"
             "\nEnter your choice: \n").strip()
 
-        if action == "1":
+        if action == "0":
+            # Correctly exits the while loop, not the whole function
+            print("Returning to character amendment choices...\n")
+            break
+        elif action == "1":
             # Launch proficiency addition
             if len(current_proficiencies) >= 4:
                 print("\nMaximum of 4 proficiencies reached. Remove one first if you want to add another.")
                 continue
-
             new_proficiency = input("Enter a proficiency to add (or hit Enter to cancel): \n").strip().title()
             if not new_proficiency:
                 continue
@@ -310,7 +316,6 @@ def amend_proficiencies(character, sheet, row):
             if new_proficiency in current_proficiencies:
                 print("Character already has this proficiency.")
                 continue
-
             current_proficiencies.append(new_proficiency)
             character['Proficiencies'] = ", ".join(current_proficiencies)
             try:
@@ -318,18 +323,18 @@ def amend_proficiencies(character, sheet, row):
                 print(f"Added proficiency: {new_proficiency}")
             except Exception as e:
                 print(f"Error updating sheet: {e}")
-
         elif action == "2":
             # Launch proficiency removal
             if not current_proficiencies:
                 print("No proficiencies to remove.")
                 continue
-
-            proficiency_to_remove = input("Enter a proficiency to remove: \n").strip().title()
+            proficiency_to_remove = input("Enter a proficiency to remove (or type 0 to cancel): \n").strip().title()
+            if proficiency_to_remove == "0":
+                print("Returning to character amendment choices...\n")
+                continue
             if proficiency_to_remove not in current_proficiencies:
                 print("Character does not have this proficiency.")
                 continue
-
             current_proficiencies.remove(proficiency_to_remove)
             character['Proficiencies'] = ", ".join(current_proficiencies)
             try:
@@ -337,15 +342,6 @@ def amend_proficiencies(character, sheet, row):
                 print(f"Removed proficiency: {proficiency_to_remove}")
             except Exception as e:
                 print(f"Error updating sheet: {e}")
-
-        elif action == "0":
-            # Correctly exits the while loop, not the whole function
-            print("Returning to character amendment choices...\n")
-            break
-
-        elif action == "4":
-            # Exit the function to return to main menu
-            return
 
 
 def amend_alignment(character, sheet, row):
