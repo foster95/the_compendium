@@ -344,7 +344,7 @@ def amend_proficiencies(character, sheet, row):
 
             print(f"\nCurrent Proficiencies: {', '.join(current_proficiencies)}")
             new_proficiency = input(
-                "Enter a proficiency to add, with a comma between each proficiency
+                "Enter a proficiency to add, with a comma between each proficiency"
                 "or type 0 to return to character amendment choices: \n"
             ).strip().title()
 
@@ -385,7 +385,7 @@ def amend_proficiencies(character, sheet, row):
 
             print(f"\nCurrent Proficiencies: {', '.join(current_proficiencies)}")
             proficiency_to_remove = input(
-                "Enter a proficiency to remove, with a comma between each proficiency
+                "Enter a proficiency to remove, with a comma between each proficiency"
                 "(or type 0 to return to character amendment choices): \n"
                 ).strip().title()
             if proficiency_to_remove == "0":
