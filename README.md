@@ -10,12 +10,46 @@ The Compendium is designed for the following audience:
 * People who play Dungeons and Dragons characters who would like a simple digital record of their own personal characters outside of platforms like DnD Beyond
 
 Existing Features
-Opening Menu
-View Characters Logged to The Compendium
+Opening menu
+Upon launching the program, users are immediately greeted with a welcome message and the home screen. The welcome message tells the user exactly what the program does and provides them with a short list of options to progress the program. To exit and return to the previous point (or at this point, to leave the program), the user must type 0.
+
+View characters logged to The Compendium
+If the uses chooses option 1 they are immediately taken to the list of currently logged characters. This is information that is pulled directly from The_Compendium google sheet and is a real time snapshot of that information shown in the terminal. The information is laid out in the clearest way possible, with breaks between each character to ensure that the user can understand the information shown. 
+
 Modifiers
-Create a Randomised Character using The Compendium
-Log a Pre-Made Character
-Upload Pre-Made Character to The Compendium
+Within DnD, modifiers play a huge part of character creation. They affect dice rolls and can change reguarly. 
+
+ As such it was really important to me that along with statistics being updated, modifiers were also calculated at the same time, in the clearest possible fashion. When playing DnD, most users will instantly look to their modifier, not their stat. To work out the modifier for each stat, I built the function calculate modifiers. This function is based entirely on the logic behind the DnD modifier system, seen below:
+
+ Taken directly from DnD Beyond:
+ | Ability Score | Modifier |
+ --- | ---
+ 1-2 | -4
+ 3-4 | -3
+ 5-6 | -2
+ 7-8 | -1
+ 9-10 | +0
+ 11-12 | +1
+ 13-14 | +2
+ 15-16 | +3
+ 17-18 | +4
+ 19-20 | +5
+ 
+ Using the above logic I created the calculate_modifiers function, which takes the stat, works out its value - 10 and then divides the figure by two
+
+        def calculate_modifiers(stats):
+        """
+        Function to calculate ability score modifiers
+        """
+        modifiers = {}
+        for stat, value in stats.items():
+            modifiers[stat] = (value - 10) // 2
+        return modifiers
+
+Ammend a character logged to The Compendium
+Create a randomised character using The Compendium
+Log a pre-made Character
+Upload pre-made Character to The Compendium
 
 Project Logic
 In order to follow best practise, I created a flowchart using Lucidchart, which maps out the logic of the processes throughout the project
