@@ -23,8 +23,8 @@ SHEET = GSPREAD.open('the_compendium')
 allignment, proficiencies"""
 
 ALLOWED_RACES = [
-    "Human", "Elf", "Dwarf", "Halfling", "Dragonborn", "Tiefling", "Gnome",
-    "Half-Elf", "Half-Orc"
+    "Human", "Elf", "Dwarf", "Halfling", "Dragonborn", "Tiefling",
+    "Gnome", "Half-Elf", "Half-Orc"
 ]
 
 ALLOWED_CLASSES = [
@@ -296,7 +296,7 @@ def amend_statistics(character, sheet, row):
 
         # Prompt user for which stat to change
         chosen_key = input(
-            "\nType the statistic name exactly as shown above." 
+            "\nType the statistic name exactly as shown above."
             " To return back to the character amendment"
             " choices, type 0: \n"
             ).strip().title()
@@ -314,6 +314,9 @@ def amend_statistics(character, sheet, row):
                 ).strip())
             if not 1 <= new_val <= 20:
                 print("\nValue must be between 1 and 20.")
+                continue
+            if new_val == stats.get(chosen_key, 10):
+                print(f"\nCharacter already has {chosen_key} = {new_val}. Try again.")
                 continue
         except ValueError:
             print("Please enter a whole number between 1 and 20.")
@@ -366,10 +369,10 @@ def amend_proficiencies(character, sheet, row):
             # has 4 proficiencies, they cannot add more and
             # are prompted to remove a proficiency instead
             if len(current_proficiencies) >= 4:
-                print("" \
-                "\nMaximum of 4 proficiencies reached."
-                " Remove one first if you want to add another."
-                )
+                print(
+                    "\nMaximum of 4 proficiencies reached."
+                    " Remove one first if you want to add another."
+                    )
                 continue
 
             print(
@@ -763,10 +766,10 @@ def main():
         try:
             print(
                 "Please select an option by typing the relevant number into"
-                "the terminal: \n"
+                " the terminal: \n"
                 "[1] View all characters logged to The Compendium \n"
-                "[2] Create a new character using The Compendium's\n"
-                "character generator \n"
+                "[2] Create a new character using The Compendium's"
+                " character generator \n"
                 "[3] Add your own existing character to The Compendium \n"
                 "[0] Exit\n"
             )
@@ -840,7 +843,7 @@ def main():
                         )
                     else:
                         print(
-                            "Invalid option. You must choose either yes or no." 
+                            "Invalid option. You must choose either yes or no."
                             " Character not added to The Compendium."
                         )
 
