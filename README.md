@@ -46,8 +46,79 @@ Within DnD, modifiers play a huge part of character creation. They affect dice r
             modifiers[stat] = (value - 10) // 2
         return modifiers
 
+Global Variables
+In order to ensure that the user can only provide information that the program will accept, I create a few global variables. These variables are used in multiple functions across the program, adhering to the DRY principle. 
+
+        ALLOWED_RACES = [
+            "Human", "Elf", "Dwarf", "Halfling", "Dragonborn", "Tiefling",
+            "Gnome", "Half-Elf", "Half-Orc"
+        ]
+
+        ALLOWED_CLASSES = [
+            "Fighter", "Wizard", "Rogue", "Cleric", "Paladin", "Druid" "Barbarian","Bard", "Monk", "Ranger", "Sorcerer", "Warlock"
+        ]
+
+        ALLOWED_ALIGNMENTS = [
+            "Lawful Good", "Neutral Good", "Chaotic Good",
+            "Lawful Neutral", "True Neutral", "Chaotic Neutral",
+            "Lawful Evil", "Neutral Evil", "Chaotic Evil"
+        ]
+
+        ALLOWED_PROFICIENCIES = [
+            "Athletics", "Acrobatics", "Stealth", "Perception",
+            "Arcana", "History", "Insight", "Medicine",
+            "Nature", "Religion", "Deception", "Intimidation",
+            "Performance", "Persuasion", "Sleight Of Hand", "Investigation",
+            "Animal Handling", "Survival"
+        ]
+
+By requiring the user to meet these restrictions, the program is immediately not suitable for anyone with HomeBrew characters. HomeBrew characters are charaqcter that don't follow standard Dungeons & Dragons rules. This is particularly relevant with the allowed races option. As of the D5 version of the players handbook, there are currently over 80 races registered in the universe, and this continues to grow. As there are over 80 races in the Dungeons and Dragons universe and I was aware of time, I chose to only include the races that are considered the standard/basic races. However, a further development of the program would include an import of a wider range of races. This would still not allow for HomeBrew characters, but would go a way to making it accessible for players that want to use more unique races.
+
 Ammend a character logged to The Compendium
-Create a randomised character using The Compendium
+After the user has trigged the view characters function, they are given the option to either return to the main menu (by typing 0), or alternatively to ammend an individual character. The user is then asked which character they would like to choose, and they are required to type the entire name, with no spelling issues or added special characters, otherwise they will trigger the validation and will not be able to move further into the program. However upon typing the correct name, they will then be greeted with a further sub menu. The sub menu is made up of all of the features that can be adjusted - Class, Statistics, Proficiencies and Alignment. They also have the option to break out of the program and return directly to the main menu.
+
+If a character chooses to change any of their classes, statistics, proficiencies or alignments they must meet the following global variable requirements (these variables are also used for the character randomiser program and for logging a pre-made character)
+
+Once a user has chosen which feature they want to ammend, they can type the number to launch the approporiate program. At all times if the user enters information that is always registered to the character, they should recieve a prompt to state that the character already has that relevant class/alignment/proficiency and ask them to provide something different. The Program is also broken down into further functions. Details of these are below:
+
+Ammend Classes
+If the user chooses to launch the Class ammendment option they are told the following information - the current Class associated to the logged character and the allowed classes that the program requires.
+
+A feature of Dungeons & Dragons is that the user can create a character that has multiple classes. This isn't a standardised process, a player has to level up in order to unlock the ability to have multiple classes, and the program currently operates on the assumption that for randomised characters, they should be starting at a L1 with only one class. However, for users that have chosen to multi-class, then they can choose to specifically add a second class. They cannot add the same class already associated to the character, and the second class must be from the allowed classes list.
+
+If the user does not want to add a further class, they can type 0 to return to the character ammendment options. 
+
+Ammend Statistics
+If the user chooses to ammend their statistics, they are shown a list of all of their current statistics in the terminal and are prompted to type the name of the statistic that they want to update and hit enter. They are then asked what they want to update their new statistic to. Typically players are unlikely to update more than three statistics at any one time, and provided that the new statistic is accepted by the program, the user is prompted and asked if they want to add any more statistics. 
+
+As with all of the ammendments, the user is required to type the statistic name they wish to ammend exactly, without special characters otherwise this will trigger the validation. If the user tries to update the statistic number to one that is already logged to the character they are told that the character already has this number and asked to try again.
+
+Though it is not seen in the terminal, if the user chooses to update a statistic, the update_modifier function also runs, to ensure that the modifier is updated in line with the statistic number. 
+
+If the user does not want to ammend a statistic, they can type 0 to return to the character ammendment options. 
+
+Amend Allignments
+If the user chooses to launch the Alignment amendment option they are told the following information - the current Alignment associated to the logged character and the allowed Allignments that the program requires.
+
+If the user wishes to update their Allignment, they must type the new Allignment exactly as listed in the program otherwise they will trigger the validation. A user cannot add the same Alignment already associated to the character.
+
+At the end of any character ammendments, these amendments will be logged and changed on the Google sheet immediately. The user will be brought back to the character ammendment menu and then can choose to amend further fields or return to the main Compendium menu.
+
+Create a new, randomised character using The Compendium
+If a user chooses to create a new character they are prompted to provide the following: a first name, which is a required field and a surname, which is an optional field. The program then automatically generates the following using Python's random dependency from the global allowed variables: Race/Species, Class, Statistics, Proficiencies, Alignment.
+
+        randomised_character = {
+            "Name": character_name,
+            "Race/Species": random.choice(ALLOWED_RACES),
+            "Class": random.choice(ALLOWED_CLASSES),
+            "Statistics": stats,
+            "Proficiencies": randomised_proficiencies,
+            "Alignment": random.choice(ALLOWED_ALIGNMENTS),
+        }
+        return randomised_character
+
+The character is automatically logged to The Compendium, and is added as a new row on the Google sheet, which a user can then go in and ammend, as detailed above. Once the program has finished running, the user is automatically returned to the main menu of The Compendium. 
+
 Log a pre-made Character
 Upload pre-made Character to The Compendium
 

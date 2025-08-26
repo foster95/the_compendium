@@ -29,7 +29,7 @@ ALLOWED_RACES = [
 
 ALLOWED_CLASSES = [
     "Fighter", "Wizard", "Rogue", "Cleric", "Paladin", "Druid", "Barbarian",
-    "Bard", "Monk", "Ranger", "Sorcerer", "Warlock"
+    "Bard", "Monk", "Ranger", "Sorcerer", "Warlock", "Artificer"
 ]
 
 ALLOWED_ALIGNMENTS = [
@@ -296,7 +296,7 @@ def amend_statistics(character, sheet, row):
 
         # Prompt user for which stat to change
         chosen_key = input(
-            "\nType the statistic name exactly as shown above."
+            "\nType the statistic name exactly as shown above and hit enter."
             " To return back to the character amendment"
             " choices, type 0: \n"
             ).strip().title()
@@ -316,7 +316,7 @@ def amend_statistics(character, sheet, row):
                 print("\nValue must be between 1 and 20.")
                 continue
             if new_val == stats.get(chosen_key, 10):
-                print(f"\nCharacter already has {chosen_key} = {new_val}. Try again.")
+                print(f"\nCharacter already has {chosen_key} {new_val}. Try again.")
                 continue
         except ValueError:
             print("Please enter a whole number between 1 and 20.")
@@ -506,7 +506,7 @@ def create_randomised_character():
     while True:
         # Code to require user to provide required first name
         first_name = input(
-            "\nEnter character first name (required): \n"
+            "\nEnter character first name (required) and hit enter: \n"
             ).strip()
         # Code to validate that user has entered a name
         if len(first_name) == 0:
@@ -525,7 +525,7 @@ def create_randomised_character():
         break
     while True:
         # Code for user to provide optional last name
-        last_name = input("Enter character surname (optional): \n")
+        last_name = input("Enter character surname (optional) and hit enter: \n")
         if last_name and not last_name.isalpha():
             print("Surname must contain only letters, please try again.")
             continue
