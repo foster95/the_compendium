@@ -78,7 +78,7 @@ def parse_stats_string(stats_str: str) -> dict:
 
 def format_stats_string(stats: dict) -> str:
     """
-    Shows character's statistics in a formatted string.
+    Shows character's Statistics in a formatted string.
     """
     return ", ".join(f"{k}: {int(stats.get(k, 10))}" for k in STAT_KEYS)
 
@@ -284,19 +284,19 @@ def amend_class(character, sheet, row):
 
 def amend_statistics(character, sheet, row):
     """
-    Function to allow user to amend character statistics
+    Function to allow user to amend character Statistics
     """
     current_stats_str = character.get('Statistics', '')
     stats = parse_stats_string(current_stats_str)
 
     while True:
-        print("\nWhich statistic do you want to change?")
+        print("\nWhich Statistic do you want to change?")
         for k in STAT_KEYS:
             print(f"{k} (current {stats.get(k, 10)})")
 
         # Prompt user for which stat to change
         chosen_key = input(
-            "\nType the statistic name exactly as shown above and hit enter."
+            "\nType the Statistic name exactly as shown above and hit enter."
             " To return back to the character amendment"
             " choices, type 0: \n"
             ).strip().title()
@@ -304,7 +304,7 @@ def amend_statistics(character, sheet, row):
             print("Returning to character amendment choices...\n")
             return
         if chosen_key not in STAT_KEYS:
-            print("Invalid statistic. Please enter one from the list above.")
+            print("Invalid Statistic. Please enter one from the list above.")
             continue
 
         # Ask for new value
@@ -336,7 +336,7 @@ def amend_statistics(character, sheet, row):
             print(f"\nOh no! Error updating sheet: {e}")
 
         more_updates = input(
-            "Do you want to amend another statistic? (yes/no): \n"
+            "Do you want to amend another Statistic? (type Yes or No and hit Enter): \n"
             ).strip().lower()
         if more_updates != "yes":
             break
@@ -344,7 +344,7 @@ def amend_statistics(character, sheet, row):
 
 def amend_proficiencies(character, sheet, row):
     """
-    Function to allow user to amend character proficiency
+    Function to allow user to amend character Proficiency
     """
     current_proficiencies = [p.strip() for p in character.get('Proficiencies', '').split(',') if p.strip()]
     print(f"\nCurrent Proficiencies: {', '.join(current_proficiencies) if current_proficiencies else '(none)'}")
@@ -352,9 +352,9 @@ def amend_proficiencies(character, sheet, row):
 
     while True:
         action = input(
-            "\nDo you want to add or remove a proficiency? \n"
-            "[1] Add a proficiency \n"
-            "[2] Remove a proficiency \n"
+            "\nDo you want to add or remove a Proficiency? \n"
+            "[1] Add a Proficiency \n"
+            "[2] Remove a Proficiency \n"
             "[0] Return to character amendment choices \n"
             "\nEnter your choice: \n"
             ).strip()
@@ -365,9 +365,9 @@ def amend_proficiencies(character, sheet, row):
             return
 
         elif action == "1":
-            # Launch proficiency addition. If character already
+            # Launch Proficiency addition. If character already
             # has 4 Proficiencies, they cannot add more and
-            # are prompted to remove a proficiency instead
+            # are prompted to remove a Proficiency instead
             if len(current_proficiencies) >= 4:
                 print(
                     "\nMaximum of 4 Proficiencies reached."
@@ -380,8 +380,8 @@ def amend_proficiencies(character, sheet, row):
                 f"Allowed Proficiencies: ", ", ".join(ALLOWED_PROFICIENCIES)
             )
             new_proficiency = input(
-                "Enter a proficiency to add, with a comma"
-                " between each proficiency"
+                "Enter a Proficiency to add, with a comma"
+                " between each Proficiency"
                 " or type 0 to return to character amendment choices: \n"
             ).strip().title()
 
@@ -394,14 +394,14 @@ def amend_proficiencies(character, sheet, row):
                 if len(current_proficiencies) >= 4:
                     print(
                         "\nMaximum of 4 Proficiencies reached."
-                        " You cannot add another proficiency."
+                        " You cannot add another Proficiency."
                         )
                     break
                 if new_proficiency == "0":
                     print("Returning to character amendment choices...\n")
                     return
                 if new_proficiency not in ALLOWED_PROFICIENCIES:
-                    print("Not an allowed proficiency. Try again.")
+                    print("Not an allowed Proficiency. Try again.")
                     continue
                 if new_proficiency in current_proficiencies:
                     print(f"Character already has {new_proficiency}.")
@@ -416,9 +416,9 @@ def amend_proficiencies(character, sheet, row):
                 print(f"Error updating sheet: {e}")
 
         elif action == "2":
-            # Launch proficiency removal. If character has no Proficiencies,
+            # Launch Proficiency removal. If character has no Proficiencies,
             # they cannot remove any and are prompted to add a
-            # proficiency instead
+            # Proficiency instead
             if not current_proficiencies:
                 print(
                     "No Proficiencies to remove."
@@ -430,8 +430,8 @@ def amend_proficiencies(character, sheet, row):
                 f"\nCurrent Proficiencies: {', '.join(current_proficiencies)}"
                 )
             proficiency_to_remove = input(
-                "Enter a proficiency to remove, with a"
-                " comma between each proficiency or type"
+                "Enter a Proficiency to remove, with a"
+                " comma between each Proficiency or type"
                 " 0 to return to character amendment choices): \n"
                 ).strip().title()
             if proficiency_to_remove == "0":
@@ -670,10 +670,10 @@ def add_premade_character():
         else:
             break
 
-    # Validation for pre-made character alignment
+    # Validation for pre-made character Alignment
     while True:
         pre_made_alignment = input(
-            f"\nEnter alignment from the following"
+            f"\nEnter Alignment from the following"
             f" list - \n{', '.join(ALLOWED_ALIGNMENTS)}: \n"
             ).strip().title()
         # Go back to main menu
@@ -700,7 +700,7 @@ def add_premade_character():
             return
         if raw_input == "":
             if not pre_made_proficiencies:
-                print("You must add four Proficiencies.")
+                print("You must add up to four Proficiencies.")
                 continue
             break
         entries = [item.strip().title() for item in raw_input.split(',')]
@@ -718,13 +718,17 @@ def add_premade_character():
             if proficiency in ALLOWED_PROFICIENCIES:
                 if proficiency not in pre_made_proficiencies:
                     pre_made_proficiencies.append(proficiency)
-                    print(f"Added: {proficiency} to Proficiencies.\n")
+                    print(f"Added: {proficiency} to Proficiencies.")
                 else:
                     print(f"{proficiency} is already added.\n")
             else:
                 print(f"{proficiency} is not a valid Proficiency.\n")
 
     # Code for user to provide pre-made stats
+    print("\nEnter all of the statistics for your pre-made character. "
+          "Statistic numbers must be between 1 and 20."
+          "When you are done, hit Enter\n"
+          )
     pre_made_statistics = {}
     for statistic in ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"]:
         while True:
@@ -743,7 +747,7 @@ def add_premade_character():
                 else:
                     print("Value must be between 1 and 20, please try again.")
             except ValueError:
-                print("Please enter a valid statistic number.")
+                print("Please enter a valid Statistic number.")
     return {
         "Name": pre_made_character_name,
         "Race/Species": pre_made_race,
@@ -827,26 +831,30 @@ def main():
                     print(
                         f"Proficiencies: {', '.join(pre_made_character['Proficiencies'])}")
                     print(f"Alignment: {pre_made_character['Alignment']}")
-                    confirm = input(
-                        "\nDo you want to add this character to"
-                        " The Compendium? (type yes or no): \n"
-                        ).strip().lower()
-                    if confirm == "yes":
-                        add_character_to_compendium(pre_made_character)
-                        print(
-                            "Character added to The Compendium!"
-                            " Returning to main menu...\n"
-                        )
-                    elif confirm == "no":
-                        print(
-                            "Character not added to The Compendium."
-                            " Returning to main menu...\n"
-                        )
-                    else:
-                        print(
-                            "Invalid option. You must choose either yes or no."
-                            " Character not added to The Compendium."
-                        )
+
+                    while True:
+                        confirm = input(
+                            "\nDo you want to add this character to"
+                            " The Compendium? (type Yes or No and"
+                            " hit Enter): \n"
+                            ).strip().lower()
+                        if confirm == "yes":
+                            add_character_to_compendium(pre_made_character)
+                            print(
+                                "Character added to The Compendium!"
+                                " Returning to main menu...\n"
+                                )
+                        elif confirm == "no":
+                            print(
+                                "Character not added to The Compendium."
+                                " Returning to main menu...\n"
+                                )
+                            break
+                        else:
+                            print(
+                                "Invalid option. You must choose:"
+                                " either Yes or No."
+                                )
 
             elif choice == 0:
                 print("Exiting The Compendium. Goodbye!")

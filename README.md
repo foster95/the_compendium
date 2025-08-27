@@ -41,10 +41,10 @@ The Compendium is designed for the following audience:
 In order to follow best practise, I created a flowchart using Lucidchart, which maps out the logic of the processes throughout the project
 
 General Project Logic
-![https://github.com/foster95/the_compendium/blob/main/assets/images/The%20Compendium%20-%20General%20Logic.png]
+![General Project Logic](https://github.com/foster95/the_compendium/blob/main/assets/images/The%20Compendium%20-%20General%20Logic.png)
 
-Amend Characters Logic
-![https://github.com/foster95/the_compendium/blob/main/assets/images/The%20Compendium%20-%20Character%20Amendment.png]
+Character Amendment Logic
+![Character Amendment Logic](https://github.com/foster95/the_compendium/blob/main/assets/images/The%20Compendium%20-%20Character%20Amendment.png)
 
 ## Existing Features
 ### Opening menu
@@ -111,7 +111,7 @@ In order to ensure that the user can only provide information that the program w
 
 By requiring the user to meet these restrictions, the program is immediately not suitable for anyone with HomeBrew characters. HomeBrew characters are charaqcter that don't follow standard Dungeons & Dragons rules. This is particularly relevant with the allowed races option. As of the D5 version of the players handbook, there are currently over 80 races registered in the universe, and this continues to grow. As there are over 80 races in the Dungeons and Dragons universe and I was aware of time, I chose to only include the races that are considered the standard/basic races. However, a further development of the program would include an import of a wider range of races. This would still not allow for HomeBrew characters, but would go a way to making it accessible for players that want to use more unique races.
 
-#### Amend a character logged to The Compendium
+### Amend a character logged to The Compendium
 After the user has trigged the view characters function, they are given the option to either return to the main menu (by typing 0), or alternatively to amend an individual character. The user is then asked which character they would like to choose, and they are required to type the entire name, with no spelling issues or added special characters, otherwise they will trigger the validation and will not be able to move further into the program. However upon typing the correct name, they will then be greeted with a further sub menu. The sub menu is made up of all of the features that can be adjusted - Class, Statistics, Proficiencies and Alignment. They also have the option to break out of the program and return directly to the main menu.
 
 If a character chooses to change any of their classes, statistics, proficiencies or alignments they must meet the following global variable requirements (these variables are also used for the character randomiser program and for logging a pre-made character)
