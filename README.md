@@ -6,21 +6,21 @@ Project 03 by Alice Foster
 The Compendium is a Python built project which is built around the concept of character creation for Dungeons and Dragon's (known colloquially as DnD). The project is connected to a Google Sheet and allows users to do the following: See all the characters already logged to the Google Sheet, Create a character using randomised features provided by the Compendium terminal and upload the details of a pre-made DnD character the user already has. Any characters created using The Compendium are automatically uploaded to the Google Sheet. Users can choose if they want to upload the pre-made character to the Google Sheet. 
 
 # Table of Contents
-1. Audience
-2. Project Logic
-3. Current Features
-    * Opening Menu
-    * View Characters Logged to The Compendium
-    * Modifiers
-    * Global Variables
-    * Amend a Character Logged to The Compendium
-        * Amend Classes
-        * Amend Statistics
-        * Amend Proficiencies
-        * Amend Alignments
-    * Create a New Character using The Compendium
-    * Log a Pre-Made Character
-    * Upload a Pre-Made Character to The Compendium
+1. [Audience](#audience)
+2. [Project Logic](#project-logic)
+3. [Existing Features](#existing-features)
+    * [Opening Menu](#opening-menu)
+    * [View Characters Logged to The Compendium](#view-characters-logged-to-the-compendium)
+    * [Modifiers](#modifiers)
+    * [Global Variables](#global-variables)
+    * [Amend a Character Logged to The Compendium](#amend-a-character-logged-to-the-compendium)
+        * [Amend Classes](#amend-classes)
+        * [Amend Statistics](#amend-statistics)
+        * [Amend Proficiencies](#amend-proficiencies)
+        * [Amend Alignments](#amend-alignments)
+    * [Create a New Character using The Compendium](#create-a-new-randomised-character-using-the-compendium)
+    * [Log a Pre-Made Character](#log-a-pre-made-character)
+    * [Upload a Character to The Compendium](#upload-a-character-to-the-compendium)
 4. Future Features
 5. Testing
     * Manual Testing
@@ -32,25 +32,28 @@ The Compendium is a Python built project which is built around the concept of ch
 10. Credits
 11. Acknowledgements
 
-Audience
+## Audience
 The Compendium is designed for the following audience:
 * People who play Dungeons and Dragons (specifically Dungeon Masters) who need to create characters fast, particularly for NPC roles which don't require a huge amount of character detail
 * People who play Dungeons and Dragons characters who would like a simple digital record of their own personal characters outside of platforms like DnD Beyond
 
-Project Logic
+## Project Logic
 In order to follow best practise, I created a flowchart using Lucidchart, which maps out the logic of the processes throughout the project
 
 General Project Logic
-Ammend Characters Logic
+![https://github.com/foster95/the_compendium/blob/main/assets/images/The%20Compendium%20-%20General%20Logic.png]
 
-Existing Features
-Opening menu
+Amend Characters Logic
+![https://github.com/foster95/the_compendium/blob/main/assets/images/The%20Compendium%20-%20Character%20Amendment.png]
+
+## Existing Features
+### Opening menu
 Upon launching the program, users are immediately greeted with a welcome message and the home screen. The welcome message tells the user exactly what the program does and provides them with a short list of options to progress the program. To exit and return to the previous point (or at this point, to leave the program), the user must type 0.
 
-View characters logged to The Compendium
+### View characters logged to The Compendium
 If the uses chooses option 1 they are immediately taken to the list of currently logged characters. This is information that is pulled directly from The_Compendium google sheet and is a real time snapshot of that information shown in the terminal. The information is laid out in the clearest way possible, with breaks between each character to ensure that the user can understand the information shown. 
 
-Modifiers
+### Modifiers
 Within DnD, modifiers play a huge part of character creation. They affect dice rolls and can change reguarly. 
 
  As such it was really important to me that along with statistics being updated, modifiers were also calculated at the same time, in the clearest possible fashion. When playing DnD, most users will instantly look to their modifier, not their stat. To work out the modifier for each stat, I built the function calculate modifiers. This function is based entirely on the logic behind the DnD modifier system, seen below:
@@ -80,7 +83,7 @@ Within DnD, modifiers play a huge part of character creation. They affect dice r
             modifiers[stat] = (value - 10) // 2
         return modifiers
 
-Global Variables
+### Global Variables
 In order to ensure that the user can only provide information that the program will accept, I create a few global variables. These variables are used in multiple functions across the program, adhering to the DRY principle. 
 
         ALLOWED_RACES = [
@@ -108,48 +111,48 @@ In order to ensure that the user can only provide information that the program w
 
 By requiring the user to meet these restrictions, the program is immediately not suitable for anyone with HomeBrew characters. HomeBrew characters are charaqcter that don't follow standard Dungeons & Dragons rules. This is particularly relevant with the allowed races option. As of the D5 version of the players handbook, there are currently over 80 races registered in the universe, and this continues to grow. As there are over 80 races in the Dungeons and Dragons universe and I was aware of time, I chose to only include the races that are considered the standard/basic races. However, a further development of the program would include an import of a wider range of races. This would still not allow for HomeBrew characters, but would go a way to making it accessible for players that want to use more unique races.
 
-Ammend a character logged to The Compendium
-After the user has trigged the view characters function, they are given the option to either return to the main menu (by typing 0), or alternatively to ammend an individual character. The user is then asked which character they would like to choose, and they are required to type the entire name, with no spelling issues or added special characters, otherwise they will trigger the validation and will not be able to move further into the program. However upon typing the correct name, they will then be greeted with a further sub menu. The sub menu is made up of all of the features that can be adjusted - Class, Statistics, Proficiencies and Alignment. They also have the option to break out of the program and return directly to the main menu.
+#### Amend a character logged to The Compendium
+After the user has trigged the view characters function, they are given the option to either return to the main menu (by typing 0), or alternatively to amend an individual character. The user is then asked which character they would like to choose, and they are required to type the entire name, with no spelling issues or added special characters, otherwise they will trigger the validation and will not be able to move further into the program. However upon typing the correct name, they will then be greeted with a further sub menu. The sub menu is made up of all of the features that can be adjusted - Class, Statistics, Proficiencies and Alignment. They also have the option to break out of the program and return directly to the main menu.
 
 If a character chooses to change any of their classes, statistics, proficiencies or alignments they must meet the following global variable requirements (these variables are also used for the character randomiser program and for logging a pre-made character)
 
-Once a user has chosen which feature they want to ammend, they can type the number to launch the approporiate program. At all times if the user enters information that is always registered to the character, they should recieve a prompt to state that the character already has that relevant class/alignment/proficiency and ask them to provide something different. The Program is also broken down into further functions. Details of these are below:
+Once a user has chosen which feature they want to amend, they can type the number to launch the approporiate program. At all times if the user enters information that is always registered to the character, they should recieve a prompt to state that the character already has that relevant class/alignment/proficiency and ask them to provide something different. The Program is also broken down into further functions. Details of these are below:
 
-Ammend Classes
-If the user chooses to launch the Class ammendment option they are told the following information - the current Class associated to the logged character and the allowed classes that the program requires.
+#### Amend Classes
+If the user chooses to launch the Class amendment option they are told the following information - the current Class associated to the logged character and the allowed classes that the program requires.
 
 A feature of Dungeons & Dragons is that the user can create a character that has multiple classes. This isn't a standardised process, a player has to level up in order to unlock the ability to have multiple classes, and the program currently operates on the assumption that for randomised characters, they should be starting at a L1 with only one class. However, for users that have chosen to multi-class, then they can choose to specifically add a second class. They cannot add the same class already associated to the character, and the second class must be from the allowed classes list.
 
-If the user does not want to add a further class, they can type 0 to return to the character ammendment options. 
+If the user does not want to add a further class, they can type 0 to return to the character amendment options. 
 
-Ammend Statistics
-If the user chooses to ammend their statistics, they are shown a list of all of their current statistics in the terminal and are prompted to type the name of the statistic that they want to update and hit enter. They are then asked what they want to update their new statistic to. Typically players are unlikely to update more than three statistics at any one time, and provided that the new statistic is accepted by the program, the user is prompted and asked if they want to add any more statistics. 
+#### Amend Statistics
+If the user chooses to amend their statistics, they are shown a list of all of their current statistics in the terminal and are prompted to type the name of the statistic that they want to update and hit enter. They are then asked what they want to update their new statistic to. Typically players are unlikely to update more than three statistics at any one time, and provided that the new statistic is accepted by the program, the user is prompted and asked if they want to add any more statistics. 
 
-As with all of the ammendments, the user is required to type the statistic name they wish to ammend exactly, without special characters otherwise this will trigger the validation. If the user tries to update the statistic number to one that is already logged to the character they are told that the character already has this number and asked to try again.
+As with all of the amendments, the user is required to type the statistic name they wish to amend exactly, without special characters otherwise this will trigger the validation. If the user tries to update the statistic number to one that is already logged to the character they are told that the character already has this number and asked to try again.
 
 Though it is not seen in the terminal, if the user chooses to update a statistic, the update_modifier function also runs, to ensure that the modifier is updated in line with the statistic number. 
 
-If the user does not want to ammend a statistic, they can type 0 to return to the character ammendment options. 
+If the user does not want to amend a statistic, they can type 0 to return to the character amendment options. 
 
-Ammend Proficiencies
-If the user chooses to launch the Proficiencies ammendment option they are told the following information - the current Proficiencies associated to the logged character and the allowed Proficiencies the program requires.
+#### Amend Proficiencies
+If the user chooses to launch the Proficiencies amendment option they are told the following information - the current Proficiencies associated to the logged character and the allowed Proficiencies the program requires.
 
-Currently the program restricts users to just four proficencies, and therefore the user is prompted with a submenu for proficiency ammendment. If a user would like to add a proficiency they can choose that option, however if the program already registers four proficiencies are associated to the character, the user will be told that they need to remove an proficiency to add an proficiency. Users are able to bulk add and remove proficiencies, provided they are seperated by a comma but again are limited by no more than four proficiencies. 
+Currently the program restricts users to just four proficencies, and therefore the user is prompted with a submenu for proficiency amendment. If a user would like to add a proficiency they can choose that option, however if the program already registers four proficiencies are associated to the character, the user will be told that they need to remove an proficiency to add an proficiency. Users are able to bulk add and remove proficiencies, provided they are seperated by a comma but again are limited by no more than four proficiencies. 
 
 If they want to remove they are shown again the current associated proficiencies with the character, and the proficiency removed must match a current proficiency. If it does not, the user will trigger validation and will be asked to remove a proficiency associated with the character. 
 
 If there are less than four proficiencies associated with a character, and the user wants to add a proficiency, they are also shown the current proficinecies associated the character, and are shown the available proficiencies as well. Any proficiency added, must not already be in the current proficiencies, and must also be part of the allowed proficiencies global variable. If either of these things are not true, validation is triggered and the user will be told either that they cannot add a profiency already associated, or that the proficiency they are trying to add, does not meet the allowed proficinecy requirements. 
 
-If the user does not want to ammend a proficiency, they can type 0 to return to the character ammendment options. 
+If the user does not want to amend a proficiency, they can type 0 to return to the character amendment options. 
 
-Amend Allignments
-If the user chooses to launch the Alignment amendment option they are told the following information - the current Alignment associated to the logged character and the allowed Allignments that the program requires.
+#### Amend Alignments
+If the user chooses to launch the Alignment amendment option they are told the following information - the current Alignment associated to the logged character and the allowed Alignments that the program requires.
 
-If the user wishes to update their Allignment, they must type the new Allignment exactly as listed in the program otherwise they will trigger the validation. A user cannot add the same Alignment already associated to the character.
+If the user wishes to update their Alignment, they must type the new Alignment exactly as listed in the program otherwise they will trigger the validation. A user cannot add the same Alignment already associated to the character.
 
-At the end of any character ammendments, these amendments will be logged and changed on the Google sheet immediately. The user will be brought back to the character ammendment menu and then can choose to amend further fields or return to the main Compendium menu.
+At the end of any character amendments, these amendments will be logged and changed on the Google sheet immediately. The user will be brought back to the character amendment menu and then can choose to amend further fields or return to the main Compendium menu.
 
-Create a new, randomised character using The Compendium
+### Create a New Character using The Compendium
 If a user chooses to create a new character they are prompted to provide the following: a first name, which is a required field and a surname, which is an optional field. The program then automatically generates the following using Python's random dependency from the global allowed variables: Race/Species, Class, Statistics, Proficiencies, Alignment.
 
         randomised_character = {
@@ -162,13 +165,13 @@ If a user chooses to create a new character they are prompted to provide the fol
         }
         return randomised_character
 
-The character is automatically logged to The Compendium, and is added as a new row on the Google sheet, which a user can then go in and ammend, as detailed above. Once the program has finished running, the user is automatically returned to the main menu of The Compendium. 
+The character is automatically logged to The Compendium, and is added as a new row on the Google sheet, which a user can then go in and amend, as detailed above. Once the program has finished running, the user is automatically returned to the main menu of The Compendium. 
 
-Log a pre-made Character
+### Log a pre-made Character
 If a user chooses to log a pre-made character outside of the randomiser, they are first prompted to enter a required first name and an optional surname. They are then prompted to provide the character's race/species, Class, Alignment, up to four proficiencies and their statistics. All of the information entered must match the allowed variables otherwise they will recieve a prompt informing them that the information is not valid. As with the character amendment options, multiple proficiencies can be typed at once to save the user time. At the end of this process, the terminal will display all of this information to the user and they will be asked if they wish to add the character to the Compendium. If they answer yes, the character is logged to The Compendium and added immediately to the Google sheet. If they answer no, they are taken back to the main menu.
 
-Upload pre-made Character to The Compendium
-If a user chooses to upload their pre-made character to the Compendium, the add_character_to_compendium function will run with the paratmeters of the randomised character. This function takes all of the information provided in the terminal and formats it into a string so it can be added to the Google sheet. Once the below function has run, the character is added and the user is taken back to the main menu
+### Upload a Character to The Compendium
+If a user chooses to upload their pre-made character to the Compendium, the add_character_to_compendium function will run with the paratmeters of the randomised character. This function takes all of the information provided in the terminal and formats it into a string so it can be added to the Google sheet. Once the below function has run, the character is added and the user is taken back to the main menu. This process also automatically runs when a user creates a character through The Compendium's random character generator. 
 
 
         def add_character_to_compendium(character):
