@@ -376,8 +376,9 @@ def amend_proficiencies(character, sheet, row):
                 continue
 
             print(
-                f"\nCurrent Proficiencies: {', '.join(current_proficiencies)}"
-                )
+                f"\nCurrent Proficiencies: {', '.join(current_proficiencies)}\n"
+                f"Allowed Proficiencies: ", ", ".join(ALLOWED_PROFICIENCIES)
+            )
             new_proficiency = input(
                 "Enter a proficiency to add, with a comma"
                 " between each proficiency"
@@ -717,7 +718,7 @@ def add_premade_character_to_compendium():
             if proficiency in ALLOWED_PROFICIENCIES:
                 if proficiency not in pre_made_proficiencies:
                     pre_made_proficiencies.append(proficiency)
-                    print(f"Added: {proficiency} to proficiencies.")
+                    print(f"Added: {proficiency} to proficiencies.\n")
                 else:
                     print(f"{proficiency} is already added.\n")
             else:

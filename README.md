@@ -1,13 +1,47 @@
 Project 03 by Alice Foster
 
-View live project
+[View live project](https://the-compendium-af-7957ce214c86.herokuapp.com/)
 
-The Compendium
+# The Compendium
 The Compendium is a Python built project which is built around the concept of character creation for Dungeons and Dragon's (known colloquially as DnD). The project is connected to a Google Sheet and allows users to do the following: See all the characters already logged to the Google Sheet, Create a character using randomised features provided by the Compendium terminal and upload the details of a pre-made DnD character the user already has. Any characters created using The Compendium are automatically uploaded to the Google Sheet. Users can choose if they want to upload the pre-made character to the Google Sheet. 
 
+# Table of Contents
+1. Audience
+2. Project Logic
+3. Current Features
+    * Opening Menu
+    * View Characters Logged to The Compendium
+    * Modifiers
+    * Global Variables
+    * Amend a Character Logged to The Compendium
+        * Amend Classes
+        * Amend Statistics
+        * Amend Proficiencies
+        * Amend Alignments
+    * Create a New Character using The Compendium
+    * Log a Pre-Made Character
+    * Upload a Pre-Made Character to The Compendium
+4. Future Features
+5. Testing
+    * Manual Testing
+    * PEP8 CI Python Linter
+6. Bugs
+7. Deployment
+8. Local Deployment
+9. Tools and Technologies Used
+10. Credits
+11. Acknowledgements
+
+Audience
 The Compendium is designed for the following audience:
 * People who play Dungeons and Dragons (specifically Dungeon Masters) who need to create characters fast, particularly for NPC roles which don't require a huge amount of character detail
 * People who play Dungeons and Dragons characters who would like a simple digital record of their own personal characters outside of platforms like DnD Beyond
+
+Project Logic
+In order to follow best practise, I created a flowchart using Lucidchart, which maps out the logic of the processes throughout the project
+
+General Project Logic
+Ammend Characters Logic
 
 Existing Features
 Opening menu
@@ -97,6 +131,17 @@ Though it is not seen in the terminal, if the user chooses to update a statistic
 
 If the user does not want to ammend a statistic, they can type 0 to return to the character ammendment options. 
 
+Ammend Proficiencies
+If the user chooses to launch the Proficiencies ammendment option they are told the following information - the current Proficiencies associated to the logged character and the allowed Proficiencies the program requires.
+
+Currently the program restricts users to just four proficencies, and therefore the user is prompted with a submenu for proficiency ammendment. If a user would like to add a proficiency they can choose that option, however if the program already registers four proficiencies are associated to the character, the user will be told that they need to remove an proficiency to add an proficiency. Users are able to bulk add and remove proficiencies, provided they are seperated by a comma but again are limited by no more than four proficiencies. 
+
+If they want to remove they are shown again the current associated proficiencies with the character, and the proficiency removed must match a current proficiency. If it does not, the user will trigger validation and will be asked to remove a proficiency associated with the character. 
+
+If there are less than four proficiencies associated with a character, and the user wants to add a proficiency, they are also shown the current proficinecies associated the character, and are shown the available proficiencies as well. Any proficiency added, must not already be in the current proficiencies, and must also be part of the allowed proficiencies global variable. If either of these things are not true, validation is triggered and the user will be told either that they cannot add a profiency already associated, or that the proficiency they are trying to add, does not meet the allowed proficinecy requirements. 
+
+If the user does not want to ammend a proficiency, they can type 0 to return to the character ammendment options. 
+
 Amend Allignments
 If the user chooses to launch the Alignment amendment option they are told the following information - the current Alignment associated to the logged character and the allowed Allignments that the program requires.
 
@@ -120,10 +165,52 @@ If a user chooses to create a new character they are prompted to provide the fol
 The character is automatically logged to The Compendium, and is added as a new row on the Google sheet, which a user can then go in and ammend, as detailed above. Once the program has finished running, the user is automatically returned to the main menu of The Compendium. 
 
 Log a pre-made Character
-Upload pre-made Character to The Compendium
+If a user chooses to log a pre-made character outside of the randomiser, they are first prompted to enter a required first name and an optional surname. They are then prompted to provide the character's race/species, Class, Alignment, up to four proficiencies and their statistics. All of the information entered must match the allowed variables otherwise they will recieve a prompt informing them that the information is not valid. As with the character amendment options, multiple proficiencies can be typed at once to save the user time. At the end of this process, the terminal will display all of this information to the user and they will be asked if they wish to add the character to the Compendium. If they answer yes, the character is logged to The Compendium and added immediately to the Google sheet. If they answer no, they are taken back to the main menu.
 
-Project Logic
-In order to follow best practise, I created a flowchart using Lucidchart, which maps out the logic of the processes throughout the project
+Upload pre-made Character to The Compendium
+If a user chooses to upload their pre-made character to the Compendium, the add_character_to_compendium function will run with the paratmeters of the randomised character. This function takes all of the information provided in the terminal and formats it into a string so it can be added to the Google sheet. Once the below function has run, the character is added and the user is taken back to the main menu
+
+
+        def add_character_to_compendium(character):
+        """
+        Function to add the randomised character to The Compendium.
+        This will add the character to the Google Sheet.
+        """
+        try:
+            sheet = SHEET.worksheet('Stored Characters')
+
+            # Change dictionary stats to a list of
+            # values so it can be added to Google Sheet
+            stats_dict = character["Statistics"]
+            stats_string = ", ".join(f"{stat}: {value}" for stat, value in stats_dict.items())
+
+            # Change proficiencies to a string so it can be
+            # added to Google Sheet
+            proficiencies_string = ", ".join(character["Proficiencies"])
+
+            # Change modifiers to a string so it can be added to Google Sheet
+            # Thanks to RealPython for explaining the +d function in Python
+            modifiers = calculate_modifiers(character["Statistics"])
+            modifiers_string = ", ".join(f"{stat}: {modifier:+d}" for stat, modifier in modifiers.items())
+
+            # Create a new row in Google Sheet with new generated character data
+            new_row = [
+                character["Name"],
+                character["Race/Species"],
+                character["Class"],
+                stats_string,
+                modifiers_string,
+                proficiencies_string,
+                character["Alignment"],
+            ]
+         sheet.append_row(new_row)
+            print(
+                f"\nCharacter '{character['Name']}' added to The Compendium!"
+                " Returning to main menu... \n"
+            )
+        except Exception as e:
+            print(f"Oh no! An error occurred while adding the character: {e}")
+
 
 ![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
 
