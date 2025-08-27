@@ -19,8 +19,8 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD.open('the_compendium')
 
-""" Global variables to be used to validate race, class,
-allignment, proficiencies"""
+""" Global variables to be used to validate Race, Class,
+Alignment, Proficiencies"""
 
 ALLOWED_RACES = [
     "Human", "Elf", "Dwarf", "Halfling", "Dragonborn", "Tiefling",
@@ -46,7 +46,7 @@ ALLOWED_PROFICIENCIES = [
     "Animal Handling", "Survival"
 ]
 """
-Global variables for the stat keys to be used in the ammend
+Global variables for the stat keys to be used in the amend
 stats section of compendium
 """
 STAT_KEYS = [
@@ -213,7 +213,7 @@ def amend_stored_character(characters):
               "[0] Return to main menu\n"
               )
 
-        # Allows user to choose field to ammend or breakout to main menu
+        # Allows user to choose field to amend or breakout to main menu
         choice = input("Enter your choice:\n").strip()
         if choice == "1":
             amend_class(character, sheet, row)
@@ -237,7 +237,7 @@ def amend_stored_character(characters):
 
 def amend_class(character, sheet, row):
     """
-    Function to allow user to ammend class
+    Function to allow user to amend Class
     """
     current_class = [c.strip() for c in character.get('Class', '').split(',') if c.strip()]
     print(f"\nCurrent Class: {', '.join(current_class) if current_class else '(none)'}")
@@ -245,7 +245,7 @@ def amend_class(character, sheet, row):
 
     while True:
         action = input(
-            "\nDo you want to add a class? \n"
+            "\nDo you want to add a Class? (only for Multi-Classing) \n"
             "[1] Yes \n"
             "[0] Return to character amendment choices \n"
             "Enter your choice: \n"
@@ -257,7 +257,7 @@ def amend_class(character, sheet, row):
 
         elif action == "1":
             new_class = input(
-                "Enter new class or type 0 to return"
+                "Enter new Class or type 0 to return"
                 " to character amendment choices: \n"
                 ).strip().title()
             if new_class == "0":
@@ -266,10 +266,10 @@ def amend_class(character, sheet, row):
             if not new_class:
                 continue
             if new_class not in ALLOWED_CLASSES:
-                print("Not an allowed class. Try again.")
+                print("Not an allowed Class. Try again.")
                 continue
             if new_class in current_class:
-                print("Character already has this class.")
+                print("Character already has this Class.")
                 continue
             current_class.append(new_class)
             character['Class'] = ', '.join(current_class)
@@ -284,7 +284,7 @@ def amend_class(character, sheet, row):
 
 def amend_statistics(character, sheet, row):
     """
-    Function to allow user to ammend character statistics
+    Function to allow user to amend character statistics
     """
     current_stats_str = character.get('Statistics', '')
     stats = parse_stats_string(current_stats_str)
@@ -344,7 +344,7 @@ def amend_statistics(character, sheet, row):
 
 def amend_proficiencies(character, sheet, row):
     """
-    Function to allow user to ammend character proficiency
+    Function to allow user to amend character proficiency
     """
     current_proficiencies = [p.strip() for p in character.get('Proficiencies', '').split(',') if p.strip()]
     print(f"\nCurrent Proficiencies: {', '.join(current_proficiencies) if current_proficiencies else '(none)'}")
@@ -366,11 +366,11 @@ def amend_proficiencies(character, sheet, row):
 
         elif action == "1":
             # Launch proficiency addition. If character already
-            # has 4 proficiencies, they cannot add more and
+            # has 4 Proficiencies, they cannot add more and
             # are prompted to remove a proficiency instead
             if len(current_proficiencies) >= 4:
                 print(
-                    "\nMaximum of 4 proficiencies reached."
+                    "\nMaximum of 4 Proficiencies reached."
                     " Remove one first if you want to add another."
                     )
                 continue
@@ -393,7 +393,7 @@ def amend_proficiencies(character, sheet, row):
             for new_proficiency in added_proficiency:
                 if len(current_proficiencies) >= 4:
                     print(
-                        "\nMaximum of 4 proficiencies reached."
+                        "\nMaximum of 4 Proficiencies reached."
                         " You cannot add another proficiency."
                         )
                     break
@@ -407,7 +407,7 @@ def amend_proficiencies(character, sheet, row):
                     print(f"Character already has {new_proficiency}.")
                     continue
                 current_proficiencies.append(new_proficiency)
-                print(f"{new_proficiency} added to proficiencies.")
+                print(f"{new_proficiency} added to Proficiencies.")
 
             character['Proficiencies'] = ", ".join(current_proficiencies)
             try:
@@ -416,13 +416,13 @@ def amend_proficiencies(character, sheet, row):
                 print(f"Error updating sheet: {e}")
 
         elif action == "2":
-            # Launch proficiency removal. If character has no proficiencies,
+            # Launch proficiency removal. If character has no Proficiencies,
             # they cannot remove any and are prompted to add a
             # proficiency instead
             if not current_proficiencies:
                 print(
-                    "No proficiencies to remove."
-                    " Please add a proficiency first."
+                    "No Proficiencies to remove."
+                    " Please add a Proficiency first."
                     )
                 continue
 
@@ -443,11 +443,11 @@ def amend_proficiencies(character, sheet, row):
                 if proficiency_to_remove not in current_proficiencies:
                     print(
                         f"{proficiency_to_remove} is not in"
-                        " current proficiencies."
+                        " current Proficiencies."
                         )
                     continue
                 current_proficiencies.remove(proficiency_to_remove)
-                print(f"{proficiency_to_remove} removed from proficiencies.")
+                print(f"{proficiency_to_remove} removed from Proficiencies.")
 
                 character['Proficiencies'] = ", ".join(current_proficiencies)
                 try:
@@ -462,8 +462,8 @@ def amend_alignment(character, sheet, row):
     print("Allowed Alignments: ", ", ".join(ALLOWED_ALIGNMENTS))
     while True:
         new_alignment = input(
-            "\nEnter new alignment or type 0 to return"
-            " to character ammendment choices: \n"
+            "\nEnter new Alignment or type 0 to return"
+            " to character amendment choices: \n"
             ).strip().title()
         if new_alignment == "0":
             print("Returning to character amendment choices...\n")
@@ -472,7 +472,7 @@ def amend_alignment(character, sheet, row):
             print("No changes made to alignment.")
             break
         if new_alignment not in ALLOWED_ALIGNMENTS:
-            print("Not an allowed alignment. Try again.")
+            print("Not an allowed Alignment. Try again.")
             continue
         if new_alignment == current_alignment:
             print("Alignment is already set to this value.")
@@ -558,7 +558,7 @@ def add_character_to_compendium(character):
         stats_dict = character["Statistics"]
         stats_string = ", ".join(f"{stat}: {value}" for stat, value in stats_dict.items())
 
-        # Change proficiencies to a string so it can be
+        # Change Proficiencies to a string so it can be
         # added to Google Sheet
         proficiencies_string = ", ".join(character["Proficiencies"])
 
@@ -586,7 +586,7 @@ def add_character_to_compendium(character):
         print(f"Oh no! An error occurred while adding the character: {e}")
 
 
-def add_premade_character_to_compendium():
+def add_premade_character():
     """
     Function to add a character made outside of The Compendium to
     the Google Sheet.
@@ -640,10 +640,10 @@ def add_premade_character_to_compendium():
     pre_made_character_name = f"{pre_made_first_name} {pre_made_last_name}" if pre_made_last_name else pre_made_first_name
 
     # Code for user to provide pre-made base characterists
-    # ie race, class, alignment with validation
+    # ie race, Class, Alignment with validation
     while True:
         pre_made_race = input(
-            f"\nEnter race/species from the following"
+            f"\nEnter Race/Species from the following"
             f" list - \n{', '.join(ALLOWED_RACES)}: \n"
             ).strip().title()
         # Go back to main menu
@@ -651,14 +651,14 @@ def add_premade_character_to_compendium():
             print("Returning to main menu...\n")
             return
         if pre_made_race not in ALLOWED_RACES:
-            print("Invalid race. Please choose one from the list.")
+            print("Invalid Race. Please choose one from the list.")
         else:
             break
 
-    # Validation for pre-made character class
+    # Validation for pre-made character Class
     while True:
         pre_made_character_class = input(
-            f"\nEnter class from the following"
+            f"\nEnter Class from the following"
             f" list -\n{', '.join(ALLOWED_CLASSES)}: \n"
             ).strip().title()
         # Go back to main menu
@@ -666,7 +666,7 @@ def add_premade_character_to_compendium():
             print("Returning to main menu...\n")
             return
         if pre_made_character_class not in ALLOWED_CLASSES:
-            print("Invalid class. Please choose one from the list.")
+            print("Invalid Class. Please choose one from the list.")
         else:
             break
 
@@ -681,34 +681,34 @@ def add_premade_character_to_compendium():
             print("Returning to main menu...\n")
             return
         if pre_made_alignment not in ALLOWED_ALIGNMENTS:
-            print("Invalid alignment. Please choose one from the list.")
+            print("Invalid Alignment. Please choose one from the list.")
         else:
             break
 
-    # Code for user to provide pre-made proficiencies
+    # Code for user to provide pre-made Proficiencies
     pre_made_proficiencies = []
     print(
-        f"\nEnter up to 4 proficiencies from the following"
+        f"\nEnter up to 4 Proficiencies from the following"
         " list. \nWhen you are done, hit Enter - "
         f"\n{', '.join(ALLOWED_PROFICIENCIES)}:")
 
     while len(pre_made_proficiencies) < 4:
-        raw_input = input("Enter proficiencies (comma-separated): \n").strip()
+        raw_input = input("Enter Proficiencies (comma-separated): \n").strip()
         # Go back to main menu
         if raw_input == "0":
             print("Returning to main menu...\n")
             return
         if raw_input == "":
             if not pre_made_proficiencies:
-                print("You must add four proficiencies.")
+                print("You must add four Proficiencies.")
                 continue
             break
         entries = [item.strip().title() for item in raw_input.split(',')]
 
-        # Warn user if they have entered more than 4 proficiencies
+        # Warn user if they have entered more than 4 Proficiencies
         if len(entries) + len(pre_made_proficiencies) > 4:
             print(
-                "You can only add up to 4 proficiencies in total. "
+                "You can only add up to 4 Proficiencies in total. "
                 "Please try again.")
             continue
 
@@ -718,11 +718,11 @@ def add_premade_character_to_compendium():
             if proficiency in ALLOWED_PROFICIENCIES:
                 if proficiency not in pre_made_proficiencies:
                     pre_made_proficiencies.append(proficiency)
-                    print(f"Added: {proficiency} to proficiencies.\n")
+                    print(f"Added: {proficiency} to Proficiencies.\n")
                 else:
                     print(f"{proficiency} is already added.\n")
             else:
-                print(f"{proficiency} is not a valid proficiency.\n")
+                print(f"{proficiency} is not a valid Proficiency.\n")
 
     # Code for user to provide pre-made stats
     pre_made_statistics = {}
@@ -808,7 +808,7 @@ def main():
                     "Loading choices to add an existing"
                     " character to The Compendium..."
                 )
-                pre_made_character = add_premade_character_to_compendium()
+                pre_made_character = add_premade_character()
                 if pre_made_character:
                     print(
                         "\nPlease ensure that the below characteristics are"
