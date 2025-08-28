@@ -132,11 +132,6 @@ def get_stored_characters():
                     modifier = calculate_modifiers(stats_dict)[stat]
                     sign = "+" if modifier >= 0 else ""
                     print(f"  {stat}: {value} ({sign}{modifier})")
-                modifiers = character.get('Modifiers', '')
-                if modifiers:
-                    print(f"Modifiers:")
-                    for mod in modifiers.split(','):
-                        print(f"  {mod.strip()}")
                 proficiencies = character.get('Proficiencies', '')
                 if proficiencies:
                     print(f"Proficiencies: {proficiencies}")
@@ -771,7 +766,7 @@ def main():
         try:
             print(
                 "Please select an option by typing the relevant number into"
-                " the terminal: \n"
+                " the terminal and hitting Enter: \n"
                 "[1] View all characters logged to The Compendium \n"
                 "[2] Create a new character using The Compendium's"
                 " character generator \n"
