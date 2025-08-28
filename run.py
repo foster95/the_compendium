@@ -139,7 +139,7 @@ def get_stored_characters():
 
             while True:
                 choice = input(
-                    "Please choose an option from the below:\n"
+                    "Please choose an option from the below and hit Enter:\n"
                     "[1] Amend a character in The Compendium \n"
                     "[0] Return to main menu \n"
                     "\nEnter your choice: \n"
@@ -223,7 +223,7 @@ def amend_stored_character(characters):
             amend_alignment(character, sheet, row)
 
         elif choice == "0":
-            print("\nReturning to main menu...")
+            print("\nReturning to main menu...\n")
             return True
 
         else:
@@ -252,7 +252,7 @@ def amend_class(character, sheet, row):
 
         elif action == "1":
             new_class = input(
-                "Enter new Class or type 0 to return"
+                "\nEnter new Class or type 0 to return"
                 " to character amendment choices: \n"
                 ).strip().title()
             if new_class == "0":
@@ -307,11 +307,14 @@ def amend_statistics(character, sheet, row):
             new_val = int(input(
                 f"\nEnter new value for {chosen_key} (1-20): \n"
                 ).strip())
+            if new_val == 0:
+                print("Returning to statistic choices...\n")
+                continue
             if not 1 <= new_val <= 20:
                 print("\nValue must be between 1 and 20.")
                 continue
             if new_val == stats.get(chosen_key, 10):
-                print(f"\nCharacter already has {chosen_key} {new_val}. Try again.")
+                print(f"{character['Name']} already has {chosen_key} {new_val}. Try again.")
                 continue
         except ValueError:
             print("Please enter a whole number between 1 and 20.")
@@ -329,13 +332,19 @@ def amend_statistics(character, sheet, row):
             print(f"\nUpdated {chosen_key} and recalculated modifiers.\n")
         except Exception as e:
             print(f"\nOh no! Error updating sheet: {e}")
-
-        more_updates = input(
+        
+        while True:
+            more_updates = input(
             "Do you want to amend another Statistic? (type Yes or No and hit Enter): \n"
             ).strip().lower()
-        if more_updates != "yes":
-            break
 
+            if more_updates == "yes":
+                break
+            elif more_updates == "no":
+                print("Returning to character amendment choices...\n")
+                return
+            else:
+                print("Invalid choice. Please type Yes or No.")
 
 def amend_proficiencies(character, sheet, row):
     """
@@ -399,7 +408,7 @@ def amend_proficiencies(character, sheet, row):
                     print("Not an allowed Proficiency. Try again.")
                     continue
                 if new_proficiency in current_proficiencies:
-                    print(f"Character already has {new_proficiency}.")
+                    print(f"{character['Name']} already has {new_proficiency}.")
                     continue
                 current_proficiencies.append(new_proficiency)
                 print(f"{new_proficiency} added to Proficiencies.")
@@ -574,8 +583,8 @@ def add_character_to_compendium(character):
         ]
         sheet.append_row(new_row)
         print(
-            f"\nCharacter '{character['Name']}' added to The Compendium!"
-            " Returning to main menu... \n"
+            f"\nCharacter '{character['Name']}' added to The Compendium!\n"
+            "\nReturning to main menu... \n"
             )
     except Exception as e:
         print(f"Oh no! An error occurred while adding the character: {e}")
@@ -598,7 +607,7 @@ def add_premade_character():
 
         # Go back to main menu
         if pre_made_first_name == "0":
-            print("Returning to main menu...\n")
+            print("\nReturning to main menu...\n")
             return
 
         # Code to validate that user has entered a name
@@ -624,7 +633,7 @@ def add_premade_character():
 
         # Go back to main menu
         if pre_made_last_name == "0":
-            print("Returning to main menu...\n")
+            print("\nReturning to main menu...\n")
             return
         if pre_made_last_name and not pre_made_last_name.isalpha():
             print("Surname must contain only letters, please try again.")
@@ -643,7 +652,7 @@ def add_premade_character():
             ).strip().title()
         # Go back to main menu
         if pre_made_race == "0":
-            print("Returning to main menu...\n")
+            print("\nReturning to main menu...\n")
             return
         if pre_made_race not in ALLOWED_RACES:
             print("Invalid Race. Please choose one from the list.")
@@ -658,7 +667,7 @@ def add_premade_character():
             ).strip().title()
         # Go back to main menu
         if pre_made_character_class == "0":
-            print("Returning to main menu...\n")
+            print("\nReturning to main menu...\n")
             return
         if pre_made_character_class not in ALLOWED_CLASSES:
             print("Invalid Class. Please choose one from the list.")
@@ -673,7 +682,7 @@ def add_premade_character():
             ).strip().title()
         # Go back to main menu
         if pre_made_alignment == "0":
-            print("Returning to main menu...\n")
+            print("\nReturning to main menu...\n")
             return
         if pre_made_alignment not in ALLOWED_ALIGNMENTS:
             print("Invalid Alignment. Please choose one from the list.")
@@ -691,7 +700,7 @@ def add_premade_character():
         raw_input = input("Enter Proficiencies (comma-separated): \n").strip()
         # Go back to main menu
         if raw_input == "0":
-            print("Returning to main menu...\n")
+            print("\nReturning to main menu...\n")
             return
         if raw_input == "":
             if not pre_made_proficiencies:
@@ -732,7 +741,7 @@ def add_premade_character():
                 " return to main menu: "
                 ).strip()
             if raw_input_val == "0":
-                print("Returning to main menu...\n")
+                print("\nReturning to main menu...\n")
                 return None
             try:
                 value = int(raw_input_val)
@@ -836,13 +845,13 @@ def main():
                         if confirm == "yes":
                             add_character_to_compendium(pre_made_character)
                             print(
-                                "Character added to The Compendium!"
-                                " Returning to main menu...\n"
+                                "Character added to The Compendium!\n"
+                                "\nReturning to main menu...\n"
                                 )
                         elif confirm == "no":
                             print(
                                 "Character not added to The Compendium."
-                                " Returning to main menu...\n"
+                                "\nReturning to main menu...\n"
                                 )
                             break
                         else:
