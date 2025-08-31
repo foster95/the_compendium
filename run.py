@@ -83,6 +83,17 @@ def format_stats_string(stats: dict) -> str:
     return ", ".join(f"{k}: {int(stats.get(k, 10))}" for k in STAT_KEYS)
 
 
+def calculate_modifiers(stats):
+    """
+    Function to calculate ability score modifiers - take the random number
+    minus ten and divide by two
+    """
+    modifiers = {}
+    for stat, value in stats.items():
+        modifiers[stat] = (value - 10) // 2
+    return modifiers
+
+
 def format_modifiers_string(stats: dict) -> str:
     """
     Shows character's ability score modifiers in a formatted string.
@@ -100,16 +111,6 @@ def update_row_fields(sheet, row: int, fields: dict) -> None:
         if name in headers:
             col_idx = headers.index(name) + 1
             sheet.update_cell(row, col_idx, value)
-
-
-def calculate_modifiers(stats):
-    """
-    Function to calculate ability score modifiers
-    """
-    modifiers = {}
-    for stat, value in stats.items():
-        modifiers[stat] = (value - 10) // 2
-    return modifiers
 
 
 def get_stored_characters():
@@ -176,7 +177,13 @@ def amend_stored_character(characters):
         " you want to amend. To return to "
         "the main menu type 0: \n"
         ).strip()
-    character = next((c for c in characters if c.get('Name', '').strip().lower() == name.lower()), None)
+    character = next(
+        (
+            c for c in characters
+            if c.get('Name', '').strip().lower() == name.lower()
+        ),
+        None
+    )
 
     if name == "0":
         print("\nReturning to main menu...")
@@ -308,13 +315,18 @@ def amend_statistics(character, sheet, row):
                 f"\nEnter new value for {chosen_key} (1-20): \n"
                 ).strip())
             if new_val == 0:
-                print("Returning to statistic choices...\n")
+                print(
+                    "Returning to statistic choices...\n"
+                )
                 continue
             if not 1 <= new_val <= 20:
                 print("\nValue must be between 1 and 20.")
                 continue
             if new_val == stats.get(chosen_key, 10):
-                print(f"{character['Name']} already has {chosen_key} {new_val}. Try again.")
+                print(
+                    f"{character['Name']} already has"
+                    f" {chosen_key} {new_val}. Try again."
+                    )
                 continue
         except ValueError:
             print("Please enter a whole number between 1 and 20.")
@@ -332,10 +344,11 @@ def amend_statistics(character, sheet, row):
             print(f"\nUpdated {chosen_key} and recalculated modifiers.\n")
         except Exception as e:
             print(f"\nOh no! Error updating sheet: {e}")
-        
+
         while True:
             more_updates = input(
-            "Do you want to amend another Statistic? (type Yes or No and hit Enter): \n"
+            "Do you want to amend another Statistic?\n"
+            " (type Yes or No and hit Enter): \n"
             ).strip().lower()
 
             if more_updates == "yes":
@@ -345,6 +358,7 @@ def amend_statistics(character, sheet, row):
                 return
             else:
                 print("Invalid choice. Please type Yes or No.")
+
 
 def amend_proficiencies(character, sheet, row):
     """
@@ -376,48 +390,64 @@ def amend_proficiencies(character, sheet, row):
                 print(
                     "\nMaximum of 4 Proficiencies reached."
                     " Remove one first if you want to add another."
-                    )
+                )
                 continue
 
-            print(
-                f"\nCurrent Proficiencies: {', '.join(current_proficiencies)}\n"
-                f"Allowed Proficiencies: ", ", ".join(ALLOWED_PROFICIENCIES)
-            )
-            new_proficiency = input(
-                "Enter a Proficiency to add, with a comma"
-                " between each Proficiency"
-                " or type 0 to return to character amendment choices: \n"
-            ).strip().title()
+            while True:
+                print(
+                    f"\nCurrent Proficiencies: "
+                    f"{', '.join(current_proficiencies)}\n"
+                    f"Allowed Proficiencies: "
+                    f"{', '.join(ALLOWED_PROFICIENCIES)}"
+                )
+                new_proficiency = input(
+                    "\nEnter a Proficiency to add, with a comma"
+                    " between each Proficiency"
+                    " or type 0 to return to character amendment choices: \n"
+                ).strip().title()
 
-            if not new_proficiency:
-                continue
-
-            added_proficiency = [p.strip() for p in new_proficiency.split(",") if p.strip()]
-
-            for new_proficiency in added_proficiency:
-                if len(current_proficiencies) >= 4:
-                    print(
-                        "\nMaximum of 4 Proficiencies reached."
-                        " You cannot add another Proficiency."
-                        )
-                    break
                 if new_proficiency == "0":
                     print("Returning to character amendment choices...\n")
                     return
-                if new_proficiency not in ALLOWED_PROFICIENCIES:
-                    print("Not an allowed Proficiency. Try again.")
+                if not new_proficiency:
+                    print("No Proficiency entered.")
                     continue
-                if new_proficiency in current_proficiencies:
-                    print(f"{character['Name']} already has {new_proficiency}.")
-                    continue
-                current_proficiencies.append(new_proficiency)
-                print(f"{new_proficiency} added to Proficiencies.")
 
-            character['Proficiencies'] = ", ".join(current_proficiencies)
-            try:
-                update_row_fields(sheet, row, {"Proficiencies": character['Proficiencies']})
-            except Exception as e:
-                print(f"Error updating sheet: {e}")
+                added_proficiency = [p.strip() for p in new_proficiency.split(",") if p.strip()]
+                valid_proficiency = False
+
+                for new_proficiency in added_proficiency:
+                    if len(current_proficiencies) >= 4:
+                        print(
+                            "\nMaximum of 4 Proficiencies reached."
+                            " You cannot add another Proficiency."
+                        )
+                        break
+                    if new_proficiency == "0":
+                        print("Returning to character amendment choices...\n")
+                        return
+                    if new_proficiency not in ALLOWED_PROFICIENCIES:
+                        print("Not an allowed Proficiency. Try again.")
+                        continue
+                    if new_proficiency in current_proficiencies:
+                        print(
+                            f"{character['Name']} already has"
+                            f" {new_proficiency}."
+                            )
+                        continue
+                    current_proficiencies.append(new_proficiency)
+                    print(f"{new_proficiency} added to Proficiencies.")
+                    valid_proficiency = True
+
+                if valid_proficiency:
+                    character['Proficiencies'] = ", ".join(current_proficiencies)
+                    try:
+                        update_row_fields(sheet, row, {"Proficiencies": character['Proficiencies']})
+                    except Exception as e:
+                        print(f"Error updating sheet: {e}")
+                    break
+                else:
+                    continue
 
         elif action == "2":
             # Launch Proficiency removal. If character has no Proficiencies,
@@ -430,34 +460,47 @@ def amend_proficiencies(character, sheet, row):
                     )
                 continue
 
-            print(
-                f"\nCurrent Proficiencies: {', '.join(current_proficiencies)}"
-                )
-            proficiency_to_remove = input(
-                "Enter a Proficiency to remove, with a"
-                " comma between each Proficiency or type"
-                " 0 to return to character amendment choices): \n"
-                ).strip().title()
-            if proficiency_to_remove == "0":
-                print("Returning to character amendment choices...\n")
-                continue
-
-            removed_proficiencies = [p.strip() for p in proficiency_to_remove.split(",") if p.strip()]
-            for proficiency_to_remove in removed_proficiencies:
-                if proficiency_to_remove not in current_proficiencies:
-                    print(
-                        f"{proficiency_to_remove} is not in"
-                        " current Proficiencies."
-                        )
+            while True:
+                print(
+                    f"\nCurrent Proficiencies: {', '.join(current_proficiencies)}\n"
+                    f"\nAllowed Proficiencies: "
+                    f"{', '.join(ALLOWED_PROFICIENCIES)}"
+                    )
+                proficiency_to_remove = input(
+                    "\nEnter a Proficiency to remove, with a"
+                    " comma between each Proficiency or type"
+                    " 0 to return to character amendment choices): \n"
+                    ).strip().title()
+                if proficiency_to_remove == "0":
+                    print("Returning to character amendment choices...\n")
+                    return
+                if not proficiency_to_remove:
+                    print("No Proficiencies entered.")
                     continue
-                current_proficiencies.remove(proficiency_to_remove)
-                print(f"{proficiency_to_remove} removed from Proficiencies.")
 
-                character['Proficiencies'] = ", ".join(current_proficiencies)
-                try:
-                    update_row_fields(sheet, row, {"Proficiencies": character['Proficiencies']})
-                except Exception as e:
-                    print(f"Error updating sheet: {e}")
+                removed_proficiencies = [p.strip() for p in proficiency_to_remove.split(",") if p.strip()]
+                valid_removal = False
+
+                for proficiency_to_remove in removed_proficiencies:
+                    if proficiency_to_remove not in current_proficiencies:
+                        print(
+                            f"{proficiency_to_remove} is not in"
+                            f" current Proficiencies."
+                            )
+                        continue
+                    current_proficiencies.remove(proficiency_to_remove)
+                    print(
+                        f"{proficiency_to_remove} removed from Proficiencies."
+                        )
+                    valid_removal = True
+
+                if valid_removal:
+                    character['Proficiencies'] = ", ".join(current_proficiencies)
+                    try:
+                        update_row_fields(sheet, row, {"Proficiencies": character['Proficiencies']})
+                    except Exception as e:
+                        print(f"Error updating sheet: {e}")
+                    break
 
 
 def amend_alignment(character, sheet, row):
@@ -530,7 +573,9 @@ def create_randomised_character():
         break
     while True:
         # Code for user to provide optional last name
-        last_name = input("Enter character surname (optional) and hit enter: \n")
+        last_name = input(
+            "Enter character surname (optional) and hit enter: \n"
+            )
         if last_name and not last_name.isalpha():
             print("Surname must contain only letters, please try again.")
             continue
@@ -596,8 +641,7 @@ def add_premade_character():
     the Google Sheet.
     """
 
-    print("Add your own existing character to The Compendium. \n"
-          "Please provide the character's details as prompted. \n"
+    print("\nPlease provide the character's details as prompted. \n"
           "\nTo go back to the main menu at any time, type 0")
     while True:
         # Code for user to provide required first name
@@ -649,13 +693,14 @@ def add_premade_character():
         pre_made_race = input(
             f"\nEnter Race/Species from the following"
             f" list - \n{', '.join(ALLOWED_RACES)}: \n"
+            f"To go back to the main menu at any time, type 0\n"
             ).strip().title()
         # Go back to main menu
         if pre_made_race == "0":
             print("\nReturning to main menu...\n")
             return
         if pre_made_race not in ALLOWED_RACES:
-            print("Invalid Race. Please choose one from the list.")
+            print("Invalid Race/Species. Please choose one from the list.")
         else:
             break
 
@@ -679,6 +724,7 @@ def add_premade_character():
         pre_made_alignment = input(
             f"\nEnter Alignment from the following"
             f" list - \n{', '.join(ALLOWED_ALIGNMENTS)}: \n"
+            f"To go back to the main menu at any time, type 0\n"
             ).strip().title()
         # Go back to main menu
         if pre_made_alignment == "0":
@@ -692,12 +738,13 @@ def add_premade_character():
     # Code for user to provide pre-made Proficiencies
     pre_made_proficiencies = []
     print(
-        f"\nEnter up to 4 Proficiencies from the following"
+        f"\nEnter 4 Proficiencies from the following"
         " list. \nWhen you are done, hit Enter - "
+        "To go back to the main menu at any time, type 0\n"
         f"\n{', '.join(ALLOWED_PROFICIENCIES)}:")
 
     while len(pre_made_proficiencies) < 4:
-        raw_input = input("Enter Proficiencies (comma-separated): \n").strip()
+        raw_input = input("Enter 4 Proficiencies (comma-separated): \n").strip()
         # Go back to main menu
         if raw_input == "0":
             print("\nReturning to main menu...\n")
@@ -726,11 +773,12 @@ def add_premade_character():
                 else:
                     print(f"{proficiency} is already added.\n")
             else:
-                print(f"{proficiency} is not a valid Proficiency.\n")
+                print(f"{proficiency} is not a valid Proficiency. Try again\n")
 
     # Code for user to provide pre-made stats
     print("\nEnter all of the statistics for your pre-made character. "
           "Statistic numbers must be between 1 and 20."
+          "To go back to the main menu at any time, type 0\n"
           "When you are done, hit Enter\n"
           )
     pre_made_statistics = {}
@@ -848,6 +896,7 @@ def main():
                                 "Character added to The Compendium!\n"
                                 "\nReturning to main menu...\n"
                                 )
+                            break
                         elif confirm == "no":
                             print(
                                 "Character not added to The Compendium."
