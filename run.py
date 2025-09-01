@@ -234,7 +234,7 @@ def amend_stored_character(characters):
             return True
 
         else:
-            print("Invalid choice. You must choose either 0, 1, 2, 3 or 4")
+            print("Invalid choice. You must choose either 0, 1, 2, 3 or 4\n")
 
 
 def amend_class(character, sheet, row):
@@ -308,7 +308,7 @@ def amend_statistics(character, sheet, row):
             print("Returning to character amendment choices...\n")
             return
         if chosen_key not in STAT_KEYS:
-            print("Invalid Statistic. Please enter one from the list above.")
+            print("Invalid Statistic. Please enter one from the list above.\n")
             continue
 
         # Ask for new value
@@ -359,7 +359,7 @@ def amend_statistics(character, sheet, row):
                 print("Returning to character amendment choices...\n")
                 return
             else:
-                print("Invalid choice. Please type Yes or No.")
+                print("Invalid choice. Please type Yes or No.\n")
 
 
 def amend_proficiencies(character, sheet, row):
@@ -406,8 +406,8 @@ def amend_proficiencies(character, sheet, row):
                 )
                 new_proficiency = input(
                     "\nEnter a Proficiency to add, with a comma\n"
-                    " between each Proficiency\n"
-                    " or type 0 to return to character amendment choices: \n"
+                    "between each Proficiency\n"
+                    "or type 0 to return to character amendment choices: \n"
                 ).strip().title()
 
                 if new_proficiency == "0":
@@ -714,6 +714,7 @@ def add_premade_character():
         pre_made_character_class = input(
             f"\nEnter Class from the following"
             f" list -\n{', '.join(ALLOWED_CLASSES)}: \n"
+            f"To go back to the main menu at any time, type 0\n"
             ).strip().title()
         # Go back to main menu
         if pre_made_character_class == "0":
