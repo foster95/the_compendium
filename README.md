@@ -25,10 +25,13 @@ The Compendium is a Python built project which is built around the concept of ch
 5. [Testing](#testing)
     * [Manual Testing](#manual-testing)
     * PEP8 CI Python Linter
-6. Bugs
-7. Deployment
-8. Local Deployment
-9. Tools and Technologies Used
+6. [Bugs](#bugs)
+7. [Deployment](#deployment)
+    * [Heroku Deployment](#heroku-deployment)
+    * [Local Deployment](#local-deployment)
+    * [Cloning](#cloning)
+    * [Forking](#forking)
+9. [Tools and Technologies Used]
 10. [Credits and acknowledgements](#credits-and-acknowledgements) 
 11. [Final note from the Developer](#final-note-from-the-developer)
 
@@ -141,7 +144,10 @@ If the user does not want to amend a statistic, they can type 0 to return to the
 ![Character Statistics amendment](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-statistics.png)
 
 User message when a user tries to update a Statistic to one the character already has:
-![Character Statistics amendment - character already has Statistic](!https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-statistics-same-value.png)
+![Character Statistics amendment - character already has Statistic](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-statistics-same-value.png)
+
+User message when a user tries to update a Statistic to one greater than 20:
+
 
 User message when a user succesfully updates a Statistic:
 ![Character Statistics amendment - character Statistic succesfully amended](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-strength-statistic-succesfully-amended.png)
@@ -159,8 +165,20 @@ If the user does not want to amend a proficiency, they can type 0 to return to t
 
 ![Character Proficiencies amendment](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-proficiencies.png)
 
-User message when user tries to amend Proficiencies when character already has four Proficiencies associated:
+User message when user tries to add Proficiencies when character already has four Proficiencies associated:
 ![Character Proficiencies amendment - four Proficiencies already associated](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-proficiencies-too-many-proficiencies.png)
+
+User message when user tries to remove Proficiencies and the character doesn't have any Proficiencies associated
+
+User message when user tries to remove Proficienices and the character has at least one Proficiency associated:
+
+User message when user tries to add a Proficiency that is not from the ALLOWED_PROFICIENCIES variable
+
+User message when user tries to add/remove a set of Proficiencies without a comma between the two
+
+User message when user succesfully adds a Proficiency
+
+User message when user succesffuly removes a Proficiency
 
 #### Amend Alignments
 If the user chooses to launch the Alignment amendment option they are told the following information - the current Alignment associated to the logged character and the allowed Alignments that the program requires.
@@ -192,8 +210,49 @@ If a user chooses to create a new character they are prompted to provide the fol
 
 The character is automatically logged to The Compendium, and is added as a new row on the Google sheet, which a user can then go in and amend, as detailed above. Once the program has finished running, the user is automatically returned to the main menu of The Compendium. 
 
+![Create a character using The Compendium - firstname and surname](https://github.com/foster95/the_compendium/blob/main/assets/images/option-2-create-character-using-compendium-firstname-surname.png)
+
+User message when user tries to provide a firstname or surname that includes numbers or special characters:
+[Create a character using The Compendium - firstname and surname, user tries to add a name with special character or number](https://github.com/foster95/the_compendium/blob/main/assets/images/option-2-create-character-using-compendium-firstname-surname-special-character-message.png)
+
+User message when user tries to skip providing a firsname:
+[Create a character using The Compendium - user tries to skip adding a firstname](https://github.com/foster95/the_compendium/blob/main/assets/images/option-2-create-character-using-compendium-firstname-user-tries-to-add-nothing.png)
+
+![Create a character using The Compendium - full character shown](https://github.com/foster95/the_compendium/blob/main/assets/images/option-2-create-character-using-compendium-full-character-shown.png)
+
 ### Log a pre-made Character
 If a user chooses to log a pre-made character outside of the randomiser, they are first prompted to enter a required first name and an optional surname. They are then prompted to provide the character's race/species, Class, Alignment, up to four proficiencies and their statistics. All of the information entered must match the allowed variables otherwise they will recieve a prompt informing them that the information is not valid. As with the character amendment options, multiple proficiencies can be typed at once to save the user time. At the end of this process, the terminal will display all of this information to the user and they will be asked if they wish to add the character to the Compendium. If they answer yes, the character is logged to The Compendium and added immediately to the Google sheet. If they answer no, they are taken back to the main menu.
+
+![Option 3 - log a premade character](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-premade-provide-firstname-surname-and-race.png)
+
+![Option3 - log a premade character full character shown](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-premade-show-full-premade.png)
+
+User message if user tries to add invalid options:
+Invalid Race/Species
+![Invalid Race/Species provided](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-pre-made-user-tries-to-add-invalid-race.png)
+
+Invalid Class
+![Invalid Class provided]()
+
+Invalid Proficiency
+![Invalid Proficiency provided](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-premade-proficiency-user-tries-to-add-invalid-proficiency.png)
+
+Invalid Statistics
+![Invalid Statistic provided](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-premade-character-statistics-user-provides-statistic-higher-than-20.png)
+
+Invalid Alignment
+![Invalid Alignment provided](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-premade-user-tries-to-add-invalid-alignment.png)
+
+User message if user adds a valid option:
+Valid Proficiency
+![Valid proficiency added](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-premade-proficiencies-proficiencies-accepted.png)
+
+User asked to choose between uploading character to The Compendium
+User chooses to add character to The Compenidum
+
+User chooses to not add character to The Compendium:
+![User chooses not to add character to The Compendium](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-premade-alignment-user-not-adding-to-compendium.png)
+
 
 ### Upload a Character to The Compendium
 If a user chooses to upload their pre-made character to the Compendium, the add_character_to_compendium function will run with the paratmeters of the randomised character. This function takes all of the information provided in the terminal and formats it into a string so it can be added to the Google sheet. Once the below function has run, the character is added and the user is taken back to the main menu. This process also automatically runs when a user creates a character through The Compendium's random character generator. 
@@ -257,6 +316,126 @@ Option 1 - Amend a character > Option 3 > Amend Proficiencies | The user should 
 Option 1 - Amend a character > Option 4 > Amend Alignment | The user should be shown their current Alignment associated to the charaqcter, and a string of the ALLOWED_ALIGNMENTS global variable. They should then be prompted to enter the new Alignment they would like to associate to the character. The Alignment they enter must be a match to one of the allowed alignments. If the user tries to enter an alignment that is not from the allowed list, they program should prompt them that the Alignment they entered is not valid and to try again. If the user enters an alignment that matches one of the allowed list the program should tell the user that their Alignment has been updated and the Google sheet should update in real time. The user should then be taken back to the character amendment options. If the user types 0 on as their updated Alignment, it should take them back to the character amendment options. | The user is shown their current Alignment associated to the character, and a string of the ALLOWED_ALIGNMENTS global variable. They are then prompted to enter the new Alignment they would like to associate to the character.  The Alignment they enter must be a match to one of the allowed alignments. If the user tries to enter an alignment that is not from the allowed list, they program prompts them that the Alignment they entered is not valid and to try again. If the user enters an alignment that matches one of the allowed list the program tells the user that their Alignment has been updated and the Google sheet updates in real time. The user is then be taken back to the character amendment options. If the user types 0 on as their updated Alignment, it takes them back to the character amendment options. | Option 1 - Amend a character > Option 4 > Amend Alignment working as expected
 Option 2 - Create a new character using The Compendium's character generator | The user should be prompted to enter a first name and a surname for the character they would like to create. The first name is a required field and must be completed. If the user tries to enter nothing they should be told that they must enter at least one letter and to try again. The user can only enter letters and no special characters. If they try to enter special characters or numbers they should be told that the character name can only be made up of letters. Once the user has typed a first name that is accepted, they should be asked an optional second name. If the user wishes to skip this they should hit enter, otherwise the same rules apply. The program should then use the random function to create a character, using all of the ALLOWED global variables at the top of the code. To work out Statistics the program should produce a random number between one and twenty for each Statistic. To work out the modifier, the code should take the random number that the program produced, minus that number by 10 and then divide that number by 2. The user should be shown the entirety of this random character and the information produced by The Compendium and this character should then automatically be uploaded to the Google sheet so that the information is added when the user tries to run Option 1 to view all characters. The user should then be returned to The Compendium main menu. | The user is prompted to enter a first name and a surname. The first name is a required field and must be completed. If the user tries to enter nothing they are be told that they must enter at least one letter and to try again. The user can only enter letters and no special characters. If they try to enter special characters or numbers they are be told that the character name can only be made up of letters. Once the user has typed a first name that is accepted, they are asked for an optional second name. If the user wishes to skip this they should hit enter, otherwise the same rules apply. The program then creates a random character, using the random function on Python using all the ALLOWED global variables. To work out Statistics the program produces a random number between one and twenty for each Statistic. To work out the modifier, the code takes the random number that the program produced, minuses that number by 10 and then divides that number by 2. The user is then shown the entirety of this random character and the information produced by The Compendium. The character is then automatically be uploaded to the Google sheet so that the information is added when the user tries to run Option 1 to view all characters. The user is then be returned to The Compendium main menu. | Option 2 - Create a new character using The Compendium's character generator working as expected
 Option 3 - Add your own existing character to The Compendium | The user should be prompted to enter the character's first name and surname for their pre-existing character. The first name is a required field and must be completed. If the user tries to enter nothing they should be told that they must enter at least one letter and to try again. The user can only enter letters and no special characters. If they try to enter special characters or numbers they should be told that the character name can only be made up of letters. Once the user has typed a first name that is accepted, they should be asked an optional second name. If the user wishes to skip this they should hit enter, otherwise the same rules apply. Provided the user has given information that is accepted by the computer the user should then be asked to enter the characters Race/Species followed by a a string of the ALLOWED_RACES global variable. If the user tries to enter a Race/Species that is not from that list, they should be told that the Race/Species is invalid and to try again. This process will continue until the user provides an accepted Race/Species. The program should then prompt the user to enter the Class of their pre-existing character, followed by a string of the ALLOWED_CLASSES global variable. If the user tries to enter a Class that is not from that list, they should be told that the Class is invalid and to try again. This process will continue until the user provides an accepted Class. The program should then prompt the user to enter the Alignment of their pre-existing character, followed by a string of the ALLOWED_ALIGNMENTS global variable. If the user tries to enter a Alignment that is not from that list, they should be told that the Alignment is invalid and to try again. This process will continue until the user provides as accepted Alignment. The program should then prompt the user to provide four Proficiencies associated with the pre-existing character, followed by a string of the ALLOWED_PROFICIENCIES global varaible. If the user tries to enter a Proficiency that is not from that list, they should be told that the Proficiency is not valid and to try again. To speed up the process of entering Proficiencies, a user should be able to enter up to four Proficiencies in one go, seperated by a comma each time. If they try to add four Proficiencies without a comma the program should inform the user that the Proficiency is invalid and to try again. If the user adds four Proficiencies, seperated by a comma and the program accepts the Proficiency the user should be shown that the proficiency has been added. At the end of this process, the program should then prompt the user to enter their Statistics, starting with Strength and moving on in the following order: Strength, Dexterity, Constitution, Intelligence, Wisdom and Charisma. If the user tries to provide a number greater than 21 they should be prompted that the value must be between 1 and 20 and to try again. The program should at the same time work out the modifiers, using the same function as it did to create the random character (taking the random number produced, minusing 10 and dividing that number by 2) and the terminal should display the full character information provided by the user. At any time in the process up to the user being shown the character in its completion, the user should be able to type 0 to exit back to The Compendium main menu. Once the user has been shown their complete pre-existing character, they should be asked if they would like to add their character to The Compendium. They must type yes or no, if they do not type yes or no, the computer should prompt them that they have entered an invalid option and to try again. If the user chooses not to add the character to The Compendium they should be taken back to the main menu. If the user chooses to add the character to The Compendium, they should be be told the character has been added to The Compendium and then returned to the main menu and the Google sheet should add a row with the character information so it can be called when the user chooses option 1 - view all characters logged to The Compendium. | The user is prompted to enter the first name and surname for their pre-existing character. The first name is a required field and must be completed. If the user tries to enter nothing they are be told that they must enter at least one letter and to try again. The user can only enter letters and no special characters. If they try to enter special characters or numbers they are  told that the character name can only be made up of letters. Once the user has typed a first name that is accepted, they are asked an optional second name. If the user wishes to skip this they should hit enter, otherwise the same rules apply. Provided the user has given information that is accepted by the computer the user is then asked to enter the characters Race/Species followed by a a string of the ALLOWED_RACES global variable. If the user tries to enter a Race/Species that is not from that list, they are told that the Race/Species is invalid and to try again. This process will continue until the user provides an accepted Race/Species. The program then prompts the user to enter the Class of their pre-existing character, followed by a string of the ALLOWED_CLASSES global variable. If the user tries to enter a Class that is not from that list, they are told that the Class is invalid and to try again. This process will continue until the user provides an accepted Class. The program then prompts the user to enter the Alignment of their pre-existing character, followed by a string of the ALLOWED_ALIGNMENTS global variable. If the user tries to enter a Alignment that is not from that list, they are told that the Alignment is invalid and to try again. This process will continue until the user provides an accepted Alignment. The program then prompts the user to provide four Proficiencies associated with the pre-existing character, followed by a string of the ALLOWED_PROFICIENCIES global varaible. If the user tries to enter a Proficiency that is not from that list, they are told that the Proficiency is not valid and to try again. To speed up the process of entering Proficiencies, a user can enter up to four Proficiencies in one go, seperated by a comma each time. If they try to add four Proficiencies without a comma the program should inform the user that the Proficiency is invalid and to try again. If the user adds four Proficiencies, seperated by a comma and the program accepts the Proficiency the user is shown that the proficiency has been added with a message. At the end of this process, the program then prompts the user to enter their Statistics, starting with Strength and moving on in the following order: Strength, Dexterity, Constitution, Intelligence, Wisdom and Charisma. If the user tries to provide a number greater than 21 they are prompted that the value must be between 1 and 20 and to try again. The program should at the same time work out the modifiers, using the same function as it did to create the random character (taking the number provided by the user, minusing 10 and dividing that number by 2). The terminal then displays the full character information provided by the user. At any time in the process up to the user being shown the character in its completion, the user can type 0 to exit back to The Compendium main menu. Once the user has been shown their complete pre-existing character, they are asked if they would like to add their character to The Compendium. They must type yes or no, if they do not type yes or no, the computer prompts them that they have entered an invalid option and to try again. If the user chooses not to add the character to The Compendium they should be taken back to the main menu. If the user chooses to add the character to The Compendium, they are told the character has been added to The Compendium and then returned to the main menu, the character will also be added to the Google sheet, so it can be called when the user selects Option 1 - view all characters logged to The Compendium. | Option 3 - Add your own existing character to The Compendium working as expected
+
+## Bugs
+### Sleight of Hand issue
+At one point in the coding whilst testing, I ran into an issue where Sleight of Hand wasn't being accepted when typed, but Sleight Of Hand was.
+
+    allowed_proficiencies = [
+        "Athletics", "Acrobatics", "Stealth", "Perception",
+        "Arcana", "History", "Insight", "Medicine",
+        "Nature", "Religion", "Deception", "Intimidation",
+        "Performance", "Persuasion", "Sleight of Hand", "Investigation",
+        "Animal Handling", "Survival"
+    ]
+
+Due to the code using the strip() process and converting all of the first letters to uppercase, Sleight of Hand was returning as an incorrect option. By changing this to "Sleight Of Hand" in the global ALLOWED_PROFICIENCIES fixed the problem and allows the users to type with both upper and lower case letters. 
+
+### Adding proficiencies for a character
+The code had been written to only allow one proficiency added at a time. Whilst this worked, it was laborious and required more work from the user when this could be simplified.
+
+To simplify this process for the user I changed the code so that the user could provide those proficiencies as a string which had to match up to the required proficiencies dictionary above the function
+
+Code Before:
+    while len(pre_made_proficiencies) < 4:
+            proficiency = input("Enter proficiency: ").strip().title()
+            if proficiency in allowed_proficiencies:
+                if proficiency not in pre_made_proficiencies:
+                    pre_made_proficiencies.append(proficiency)
+                    print(f"Added proficiency: {proficiency}")
+                else:
+                    print("Proficiency already added, please enter a different one.")
+            elif proficiency == "":
+                if len(pre_made_proficiencies) < 4:
+                    print("You must enter at least one proficiency.")
+                break
+            else:
+                print("Invalid proficiency, please choose from the list.")
+                print(", ".join(allowed_proficiencies))
+        if not pre_made_proficiencies:
+            print("No proficiencies added, defaulting to 'None'.")
+            pre_made_proficiencies = ["None"]
+
+Code After:
+        pre_made_proficiencies = []
+        print("\nEnter up to 4 proficiencies from the following list:")
+        print(", ".join(allowed_proficiencies))
+        print("Press Enter on an empty line when you're done.")
+
+        while len(pre_made_proficiencies) < 4:
+            raw_input = input("Enter proficiencies (comma-separated): ").strip()
+
+            if raw_input == "":
+                if not pre_made_proficiencies:
+                    print("You must add four proficiencies.")
+                    continue
+                break
+
+            entries = [item.strip().title() for item in raw_input.split(',')]
+
+            for proficiency in entries:
+                if len(pre_made_proficiencies) >= 4:
+                    break
+                if proficiency in allowed_proficiencies:
+                    if proficiency not in pre_made_proficiencies:
+                        pre_made_proficiencies.append(proficiency)
+                        print(f"Added: {proficiency} to proficiencies.")
+                    else:
+                        print(f"{proficiency} is already added.")
+                else:
+                    print(f"{proficiency} is not a valid proficiency.")
+
+Other general bugs were discovered throughout the project due to incorrect indentation and spacing errors which have been remedied. At the time of submission no further bugs had been discovered
+
+## Deployment
+Code Institute has provided a template to display the terminal view of this backend application in a modern web browser. This is to improve the accessibility of the project to others.
+
+The live deployed application can be found deployed on Heroku.
+
+### Heroku Deployment
+This project uses Heroku, a platform as a service (PaaS) that enables developers to build, run, and operate applications entirely in the cloud.
+
+Deployment steps are as follows, after account setup:
+
+Select New in the top-right corner of your Heroku Dashboard, and select Create new app from the dropdown menu.
+Connect the app to Github account and choose correct repository
+Select auto deployment, or alternatively choose to manually pull - auto deploy will ensure that Heroku runs the code related to the most recent commits
+Go to settings and do the following:
+* Add in the creds.json file as a CONFIG var
+* Add in the additional CONFIG var listed by Code Institute - PORT/8000
+* Install python and nodejs buildpacks and ensure that they are downloaded in this order. 
+Once this has been saved, Heroku will build the app and you can use 'Open App' at any time to open the most up to date program. 
+
+### Local Deployment
+This project can be cloned or forked in order to make a local copy on your own system.
+
+For either method, you will need to install any applicable packages found within the requirements.txt file.
+
+### Cloning
+You can clone the repository by following these steps:
+
+* Go to the GitHub repository
+* Locate the Code button above the list of files and click it
+* Select if you prefer to clone using HTTPS, SSH, or GitHub CLI and click the copy button to copy the URL to your clipboard
+* Open Git Bash or Terminal
+* Change the current working directory to the one where you want the cloned directory
+* In your IDE Terminal, type the following command to clone my repository:
+git clone https://github.com/foster95/the_compendium.git
+* Press Enter to create your local clone.
+
+### Forking
+By forking the GitHub Repository, we make a copy of the original repository on our GitHub account to view and/or make changes without affecting the original owner's repository. You can fork this repository by using the following steps:
+
+Log in to GitHub and locate the GitHub Repository
+At the top of the Repository (not top of page) just above the "Settings" Button on the menu, locate the "Fork" Button.
+Once clicked, you should now have a copy of the original repository in your own GitHub account!
+
+## Tools and Technologies Used
+* Python
+* Heroku
+* Git (git add, git commit -m, git push)
+* CI PEP8
+* LucidChart
 
 ## Credits and acknowledgements
 Dungeons & Dragons was unfortunately not created by me, nor do I pretend it was. The credit for the creation of the bonkers and brilliant world of D&D is solely down to Gary Gygax and Dave Arneson and Wizards of the Coast/Hasbro though credit must also be given to the brilliant Matt Mercer and Brennan Lee Mulligan who have becoming the modern day magicians of D&D.
@@ -398,14 +577,3 @@ while len(pre_made_proficiencies) < 4:
                 print(f"{proficiency} is not a valid proficiency.")
 
 
-    Sleight of Hand bug 
-
-    allowed_proficiencies = [
-        "Athletics", "Acrobatics", "Stealth", "Perception",
-        "Arcana", "History", "Insight", "Medicine",
-        "Nature", "Religion", "Deception", "Intimidation",
-        "Performance", "Persuasion", "Sleight of Hand", "Investigation",
-        "Animal Handling", "Survival"
-    ]
-
-    Due to the codee using the strip() process and converting all of the first letters to uppercase, Sleight of Hand was returning as an incorrect option. By changing this to "Sleight Of Hand" in both the allowed_proficiencies and the proficiencies dictionary this fixed the problem. 
