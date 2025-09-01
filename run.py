@@ -28,13 +28,13 @@ ALLOWED_RACES = [
 ]
 
 ALLOWED_CLASSES = [
-    "Fighter", "Wizard", "Rogue", "Cleric", "Paladin", "Druid", "Barbarian"
+    "Fighter", "Wizard", "Rogue", "Cleric", "Paladin", "Druid", "Barbarian",
     "Bard", "Monk", "Ranger", "Sorcerer", "Warlock", "Artificer"
 ]
 
 ALLOWED_ALIGNMENTS = [
-    "Lawful Good", "Neutral Good", "Chaotic Good,"
-    "Lawful Neutral", "True Neutral", "Chaotic Neutral,"
+    "Lawful Good", "Neutral Good", "Chaotic Good",
+    "Lawful Neutral", "True Neutral", "Chaotic Neutral",
     "Lawful Evil", "Neutral Evil", "Chaotic Evil"
 ]
 
@@ -321,9 +321,9 @@ def amend_statistics(character, sheet, row):
                 ).strip())
             if new_val == 0:
                 print(
-                    "Returning to statistic choices...\n"
+                    "Returning to character amendment options...\n"
                 )
-                continue
+                return
             if not 1 <= new_val <= 20:
                 print("\nValue must be between 1 and 20.")
                 continue
