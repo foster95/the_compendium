@@ -174,7 +174,7 @@ def amend_stored_character(characters):
 
     name = input(
         "Enter the name of the character\n"
-        " you want to amend. To return to \n"
+        "you want to amend. To return to \n"
         "the main menu type 0: \n"
         ).strip()
     character = next(
@@ -405,8 +405,8 @@ def amend_proficiencies(character, sheet, row):
                     f"{', '.join(ALLOWED_PROFICIENCIES)}"
                 )
                 new_proficiency = input(
-                    "\nEnter a Proficiency to add, with a comma"
-                    " between each Proficiency"
+                    "\nEnter a Proficiency to add, with a comma\n"
+                    " between each Proficiency\n"
                     " or type 0 to return to character amendment choices: \n"
                 ).strip().title()
 
@@ -473,8 +473,8 @@ def amend_proficiencies(character, sheet, row):
                     )
                 proficiency_to_remove = input(
                     "\nEnter a Proficiency to remove, with a\n"
-                    " comma between each Proficiency or type\n"
-                    " 0 to return to character amendment choices): \n"
+                    "comma between each Proficiency or type\n"
+                    "0 to return to character amendment choices): \n"
                     ).strip().title()
                 if proficiency_to_remove == "0":
                     print("Returning to character amendment choices...\n")
