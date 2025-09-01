@@ -173,9 +173,9 @@ def amend_stored_character(characters):
     print("Choose a character from The Compendium to amend.\n")
 
     name = input(
-        "Enter the name of the character\n"
-        "you want to amend. To return to \n"
-        "the main menu type 0: \n"
+        "Enter the name of the character"
+        " you want to amend.\n" 
+        "To return to the main menu type 0: \n"
         ).strip()
     character = next(
         (
@@ -300,7 +300,8 @@ def amend_statistics(character, sheet, row):
 
         # Prompt user for which stat to change
         chosen_key = input(
-            "\nType the Statistic name exactly as shown above and hit enter."
+            "\nType the Statistic name exactly as shown above"
+            " and hit enter.\n"
             " To return back to the character amendment"
             " choices, type 0: \n"
             ).strip().title()
@@ -405,8 +406,8 @@ def amend_proficiencies(character, sheet, row):
                     f"{', '.join(ALLOWED_PROFICIENCIES)}"
                 )
                 new_proficiency = input(
-                    "\nEnter a Proficiency to add, with a comma\n"
-                    "between each Proficiency\n"
+                    "\nEnter a Proficiency to add, with a comma"
+                    " between each Proficiency\n"
                     "or type 0 to return to character amendment choices: \n"
                 ).strip().title()
 
@@ -472,8 +473,8 @@ def amend_proficiencies(character, sheet, row):
                     f"{', '.join(ALLOWED_PROFICIENCIES)}"
                     )
                 proficiency_to_remove = input(
-                    "\nEnter a Proficiency to remove, with a\n"
-                    "comma between each Proficiency or type\n"
+                    "\nEnter a Proficiency to remove, with a"
+                    " comma between each Proficiency or type\n"
                     "0 to return to character amendment choices): \n"
                     ).strip().title()
                 if proficiency_to_remove == "0":
@@ -745,7 +746,7 @@ def add_premade_character():
     pre_made_proficiencies = []
     print(
         f"\nEnter 4 Proficiencies from the following"
-        " list. \nWhen you are done, hit Enter - "
+        " list. \nWhen you are done, hit Enter\n"
         "To go back to the main menu at any time, type 0\n"
         f"\n{', '.join(ALLOWED_PROFICIENCIES)}:")
 
@@ -830,8 +831,8 @@ def main():
     while True:
         try:
             print(
-                "Please select an option by typing the relevant number into"
-                " the terminal and hitting Enter: \n"
+                "Please select an option by typing the relevant number into\n"
+                "the terminal and hitting Enter: \n"
                 "[1] View all characters logged to The Compendium \n"
                 "[2] Create a new character using The Compendium's"
                 " character generator \n"
@@ -841,12 +842,12 @@ def main():
 
             choice = int(input("Enter your choice: \n"))
             if choice == 1:
-                print("Viewing all characters logged to The Compendium...")
+                print("Viewing all characters logged to The Compendium...\n")
                 # Code to view all characters loaded to The Compendium
                 get_stored_characters()
 
             elif choice == 2:
-                print("Create a new character using The Compendium...")
+                print("Create a new character using The Compendium...\n")
                 # Code to create a new character using
                 # The Compendium randomiser
                 randomised_character = create_randomised_character()
@@ -870,7 +871,7 @@ def main():
             elif choice == 3:
                 print(
                     "Loading choices to add an existing\n"
-                    " character to The Compendium..."
+                    " character to The Compendium...\n"
                 )
                 pre_made_character = add_premade_character()
                 if pre_made_character:
@@ -896,8 +897,9 @@ def main():
 
                     while True:
                         confirm = input(
-                            "\nDo you want to add this character to\n"
-                            "The Compendium? (type Yes or No and\n"
+                            "\nDo you want to add this character to"
+                            "The Compendium?\n"
+                            "(type Yes or No and"
                             "hit Enter): \n"
                             ).strip().lower()
                         if confirm == "yes":
@@ -911,20 +913,20 @@ def main():
                             break
                         else:
                             print(
-                                "Invalid option. You must choose:"
-                                " either Yes or No."
+                                "Invalid option. You must choose:\n"
+                                "either Yes or No.\n"
                                 )
 
             elif choice == 0:
-                print("Exiting The Compendium. Goodbye!")
+                print("Exiting The Compendium. Goodbye!\n")
                 break
             else:
                 print(
-                    "Invalid choice, please only enter"
-                    " a number between 0 and 3."
+                    "Invalid choice, please only enter\n"
+                    "a number between 0 and 3.\n"
                 )
         except ValueError:
-            print("Please enter a valid number.")
+            print("Please enter a valid number.\n")
 
 
 # Launch the program
