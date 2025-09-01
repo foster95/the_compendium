@@ -173,8 +173,8 @@ def amend_stored_character(characters):
     print("Choose a character from The Compendium to amend.\n")
 
     name = input(
-        "Enter the name of the character"
-        " you want to amend. To return to "
+        "Enter the name of the character\n"
+        " you want to amend. To return to \n"
         "the main menu type 0: \n"
         ).strip()
     character = next(
@@ -242,7 +242,9 @@ def amend_class(character, sheet, row):
     Function to allow user to amend Class
     """
     current_class = [c.strip() for c in character.get('Class', '').split(',') if c.strip()]
-    print(f"\nCurrent Class: {', '.join(current_class) if current_class else '(none)'}")
+    print(
+        f"\nCurrent Class: {', '.join(current_class) if current_class else '(none)'}"
+        )
     print("Allowed Classes: ", ", ".join(ALLOWED_CLASSES))
 
     while True:
@@ -347,9 +349,9 @@ def amend_statistics(character, sheet, row):
 
         while True:
             more_updates = input(
-            "Do you want to amend another Statistic?\n"
-            " (type Yes or No and hit Enter): \n"
-            ).strip().lower()
+                "Do you want to amend another Statistic?\n"
+                "(type Yes or No and hit Enter): \n"
+                ).strip().lower()
 
             if more_updates == "yes":
                 break
@@ -365,7 +367,9 @@ def amend_proficiencies(character, sheet, row):
     Function to allow user to amend character Proficiency
     """
     current_proficiencies = [p.strip() for p in character.get('Proficiencies', '').split(',') if p.strip()]
-    print(f"\nCurrent Proficiencies: {', '.join(current_proficiencies) if current_proficiencies else '(none)'}")
+    print(
+        f"\nCurrent Proficiencies: {', '.join(current_proficiencies) if current_proficiencies else '(none)'}"
+        )
     print("Allowed Proficiencies: ", ", ".join(ALLOWED_PROFICIENCIES))
 
     while True:
@@ -462,13 +466,14 @@ def amend_proficiencies(character, sheet, row):
 
             while True:
                 print(
-                    f"\nCurrent Proficiencies: {', '.join(current_proficiencies)}\n"
+                    f"\nCurrent Proficiencies: " 
+                    f"{', '.join(current_proficiencies)}\n"
                     f"\nAllowed Proficiencies: "
                     f"{', '.join(ALLOWED_PROFICIENCIES)}"
                     )
                 proficiency_to_remove = input(
-                    "\nEnter a Proficiency to remove, with a"
-                    " comma between each Proficiency or type"
+                    "\nEnter a Proficiency to remove, with a\n"
+                    " comma between each Proficiency or type\n"
                     " 0 to return to character amendment choices): \n"
                     ).strip().title()
                 if proficiency_to_remove == "0":
@@ -744,7 +749,9 @@ def add_premade_character():
         f"\n{', '.join(ALLOWED_PROFICIENCIES)}:")
 
     while len(pre_made_proficiencies) < 4:
-        raw_input = input("Enter 4 Proficiencies (comma-separated): \n").strip()
+        raw_input = input(
+            "Enter 4 Proficiencies (comma-separated): \n"
+            ).strip()
         # Go back to main menu
         if raw_input == "0":
             print("\nReturning to main menu...\n")
@@ -861,13 +868,13 @@ def main():
 
             elif choice == 3:
                 print(
-                    "Loading choices to add an existing"
+                    "Loading choices to add an existing\n"
                     " character to The Compendium..."
                 )
                 pre_made_character = add_premade_character()
                 if pre_made_character:
                     print(
-                        "\nPlease ensure that the below characteristics are"
+                        "\nPlease ensure that the below characteristics are\n"
                         " correct before adding to The Compendium\n"
                     )
                     print(f"Name: {pre_made_character['Name']}")
@@ -881,25 +888,23 @@ def main():
                         sign = "+" if modifier >= 0 else ""
                         print(f" {stat}: {value} ({sign}{modifier})")
                     print(
-                        f"Proficiencies: {', '.join(pre_made_character['Proficiencies'])}")
+                        f"Proficiencies: "
+                        f"{', '.join(pre_made_character['Proficiencies'])}"
+                        )
                     print(f"Alignment: {pre_made_character['Alignment']}")
 
                     while True:
                         confirm = input(
-                            "\nDo you want to add this character to"
-                            " The Compendium? (type Yes or No and"
-                            " hit Enter): \n"
+                            "\nDo you want to add this character to\n"
+                            "The Compendium? (type Yes or No and\n"
+                            "hit Enter): \n"
                             ).strip().lower()
                         if confirm == "yes":
                             add_character_to_compendium(pre_made_character)
-                            print(
-                                "Character added to The Compendium!\n"
-                                "\nReturning to main menu...\n"
-                                )
                             break
                         elif confirm == "no":
                             print(
-                                "Character not added to The Compendium."
+                                "Character not added to The Compendium.\n"
                                 "\nReturning to main menu...\n"
                                 )
                             break
