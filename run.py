@@ -23,27 +23,26 @@ SHEET = GSPREAD.open('the_compendium')
 Alignment, Proficiencies"""
 
 ALLOWED_RACES = [
-    "Human", "Elf", "Dwarf", "Halfling", "Dragonborn", "Tiefling",
+    "Human", "Elf", "Dwarf", "Halfling", "Dragonborn", "Tiefling"
     "Gnome", "Half-Elf", "Half-Orc"
 ]
 
 ALLOWED_CLASSES = [
-    "Fighter", "Wizard", "Rogue", "Cleric", "Paladin", "Druid", "Barbarian",
+    "Fighter", "Wizard", "Rogue", "Cleric", "Paladin", "Druid", "Barbarian"
     "Bard", "Monk", "Ranger", "Sorcerer", "Warlock", "Artificer"
 ]
 
 ALLOWED_ALIGNMENTS = [
-    "Lawful Good", "Neutral Good", "Chaotic Good",
-    "Lawful Neutral", "True Neutral", "Chaotic Neutral",
+    "Lawful Good", "Neutral Good", "Chaotic Good,"
+    "Lawful Neutral", "True Neutral", "Chaotic Neutral,"
     "Lawful Evil", "Neutral Evil", "Chaotic Evil"
 ]
 
 ALLOWED_PROFICIENCIES = [
     "Athletics", "Acrobatics", "Stealth", "Perception",
-    "Arcana", "History", "Insight", "Medicine",
-    "Nature", "Religion", "Deception", "Intimidation",
-    "Performance", "Persuasion", "Sleight Of Hand", "Investigation",
-    "Animal Handling", "Survival"
+    "Arcana", "History", "Insight", "Medicine", "Nature", "Religion",
+    "Deception", "Intimidation", "Performance", "Persuasion",
+    "Sleight Of Hand", "Investigation", "Animal Handling", "Survival"
 ]
 """
 Global variables for the stat keys to be used in the amend
@@ -174,7 +173,7 @@ def amend_stored_character(characters):
 
     name = input(
         "Enter the name of the character"
-        " you want to amend.\n" 
+        " you want to amend.\n"
         "To return to the main menu type 0: \n"
         ).strip()
     character = next(
@@ -243,16 +242,17 @@ def amend_class(character, sheet, row):
     """
     current_class = [c.strip() for c in character.get('Class', '').split(',') if c.strip()]
     print(
-        f"\nCurrent Class: {', '.join(current_class) if current_class else '(none)'}"
+        f"\nCurrent Class: "
+        f"{', '.join(current_class) if current_class else '(none)'}"
         )
-    print("Allowed Classes: ", ", ".join(ALLOWED_CLASSES))
+    print("\nAllowed Classes: ", ", ".join(ALLOWED_CLASSES))
 
     while True:
         action = input(
             "\nDo you want to add a Class? (only for Multi-Classing) \n"
             "[1] Yes \n"
             "[0] Return to character amendment choices \n"
-            "Enter your choice: \n"
+            "\nEnter your choice: \n"
             ).strip()
 
         if action == "0":
@@ -302,7 +302,7 @@ def amend_statistics(character, sheet, row):
         chosen_key = input(
             "\nType the Statistic name exactly as shown above"
             " and hit enter.\n"
-            " To return back to the character amendment"
+            "To return back to the character amendment"
             " choices, type 0: \n"
             ).strip().title()
         if chosen_key == "0":
@@ -369,9 +369,10 @@ def amend_proficiencies(character, sheet, row):
     """
     current_proficiencies = [p.strip() for p in character.get('Proficiencies', '').split(',') if p.strip()]
     print(
-        f"\nCurrent Proficiencies: {', '.join(current_proficiencies) if current_proficiencies else '(none)'}"
+        f"\nCurrent Proficiencies: "
+        f"{', '.join(current_proficiencies) if current_proficiencies else '(none)'}"
         )
-    print("Allowed Proficiencies: ", ", ".join(ALLOWED_PROFICIENCIES))
+    print("\nAllowed Proficiencies: ", ", ".join(ALLOWED_PROFICIENCIES))
 
     while True:
         action = input(
@@ -402,7 +403,7 @@ def amend_proficiencies(character, sheet, row):
                 print(
                     f"\nCurrent Proficiencies: "
                     f"{', '.join(current_proficiencies)}\n"
-                    f"Allowed Proficiencies: "
+                    f"\nAllowed Proficiencies: "
                     f"{', '.join(ALLOWED_PROFICIENCIES)}"
                 )
                 new_proficiency = input(
@@ -467,7 +468,7 @@ def amend_proficiencies(character, sheet, row):
 
             while True:
                 print(
-                    f"\nCurrent Proficiencies: " 
+                    f"\nCurrent Proficiencies: "
                     f"{', '.join(current_proficiencies)}\n"
                     f"\nAllowed Proficiencies: "
                     f"{', '.join(ALLOWED_PROFICIENCIES)}"
@@ -512,7 +513,7 @@ def amend_proficiencies(character, sheet, row):
 def amend_alignment(character, sheet, row):
     current_alignment = character.get('Alignment', '')
     print(f"\nCurrent Alignment: {current_alignment}")
-    print("Allowed Alignments: ", ", ".join(ALLOWED_ALIGNMENTS))
+    print("\nAllowed Alignments: ", ", ".join(ALLOWED_ALIGNMENTS))
     while True:
         new_alignment = input(
             "\nEnter new Alignment or type 0 to return"
@@ -758,6 +759,7 @@ def add_premade_character():
         if raw_input == "0":
             print("\nReturning to main menu...\n")
             return
+
         if raw_input == "":
             if not pre_made_proficiencies:
                 print("You must add up to four Proficiencies.")
@@ -786,7 +788,7 @@ def add_premade_character():
 
     # Code for user to provide pre-made stats
     print("\nEnter all of the statistics for your pre-made character. "
-          "Statistic numbers must be between 1 and 20."
+          "Statistic numbers must be between 1 and 20.\n"
           "To go back to the main menu at any time, type 0\n"
           "When you are done, hit Enter\n"
           )
@@ -833,7 +835,7 @@ def main():
             print(
                 "Please select an option by typing the relevant number into\n"
                 "the terminal and hitting Enter: \n"
-                "[1] View all characters logged to The Compendium \n"
+                "\n[1] View all characters logged to The Compendium \n"
                 "[2] Create a new character using The Compendium's"
                 " character generator \n"
                 "[3] Add your own existing character to The Compendium \n"
@@ -870,21 +872,20 @@ def main():
 
             elif choice == 3:
                 print(
-                    "Loading choices to add an existing\n"
-                    " character to The Compendium...\n"
+                    "Loading choices to add an existing character"
+                    "to The Compendium...\n"
                 )
                 pre_made_character = add_premade_character()
                 if pre_made_character:
                     print(
                         "\nPlease ensure that the below characteristics are\n"
-                        " correct before adding to The Compendium\n"
+                        "correct before adding to The Compendium\n"
                     )
                     print(f"Name: {pre_made_character['Name']}")
                     print(
-                        "Race/Species:"
-                        f" {pre_made_character['Race/Species']}")
+                        f"Race/Species: {pre_made_character['Race/Species']}")
                     print(f"Class: {pre_made_character['Class']}")
-                    print(f"Statistics:")
+                    print("Statistics:")
                     for stat, value in pre_made_character['Statistics'].items():
                         modifier = calculate_modifiers(pre_made_character['Statistics'])[stat]
                         sign = "+" if modifier >= 0 else ""
@@ -898,9 +899,9 @@ def main():
                     while True:
                         confirm = input(
                             "\nDo you want to add this character to"
-                            "The Compendium?\n"
+                            " The Compendium?\n"
                             "(type Yes or No and"
-                            "hit Enter): \n"
+                            " hit Enter): \n"
                             ).strip().lower()
                         if confirm == "yes":
                             add_character_to_compendium(pre_made_character)
