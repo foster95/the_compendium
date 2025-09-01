@@ -49,9 +49,11 @@ Character Amendment Logic
 ## Existing Features
 ### Opening menu
 Upon launching the program, users are immediately greeted with a welcome message and the home screen. The welcome message tells the user exactly what the program does and provides them with a short list of options to progress the program. To exit and return to the previous point (or at this point, to leave the program), the user must type 0.
+![Opening menu screenshot](https://github.com/foster95/the_compendium/blob/main/assets/images/compendium-main-menu.png)
 
 ### View characters logged to The Compendium
 If the uses chooses option 1 they are immediately taken to the list of currently logged characters. This is information that is pulled directly from The_Compendium google sheet and is a real time snapshot of that information shown in the terminal. The information is laid out in the clearest way possible, with breaks between each character to ensure that the user can understand the information shown. 
+![View character logged to The Compendium](https://github.com/foster95/the_compendium/blob/main/assets/images/option-1-view-all-characters.png)
 
 ### Modifiers
 Within DnD, modifiers play a huge part of character creation. They affect dice rolls and can change reguarly. 
@@ -118,6 +120,8 @@ If a character chooses to change any of their classes, statistics, proficiencies
 
 Once a user has chosen which feature they want to amend, they can type the number to launch the approporiate program. At all times if the user enters information that is always registered to the character, they should recieve a prompt to state that the character already has that relevant class/alignment/proficiency and ask them to provide something different. The Program is also broken down into further functions. Details of these are below:
 
+![Character amendment submenu](https://github.com/foster95/the_compendium/blob/main/assets/images/character-amendment-options.png)
+
 #### Amend Classes
 If the user chooses to launch the Class amendment option they are told the following information - the current Class associated to the logged character and the allowed classes that the program requires.
 
@@ -128,11 +132,19 @@ If the user does not want to add a further class, they can type 0 to return to t
 #### Amend Statistics
 If the user chooses to amend their statistics, they are shown a list of all of their current statistics in the terminal and are prompted to type the name of the statistic that they want to update and hit enter. They are then asked what they want to update their new statistic to. Typically players are unlikely to update more than three statistics at any one time, and provided that the new statistic is accepted by the program, the user is prompted and asked if they want to add any more statistics. 
 
-As with all of the amendments, the user is required to type the statistic name they wish to amend exactly, without special characters otherwise this will trigger the validation. If the user tries to update the statistic number to one that is already logged to the character they are told that the character already has this number and asked to try again.
+As with all of the amendments, the user is required to type the statistic name they wish to amend exactly, without special characters otherwise this will trigger the validation. If the user tries to update the statistic number to one that is already logged to the character they are told that the character already has this number and asked to try again. If the player tries to update the statistic to a number higher than 20 they will also be told the number cannot be accepted and be asked to try again
 
 Though it is not seen in the terminal, if the user chooses to update a statistic, the update_modifier function also runs, to ensure that the modifier is updated in line with the statistic number. 
 
 If the user does not want to amend a statistic, they can type 0 to return to the character amendment options. 
+
+![Character Statistics amendment](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-statistics.png)
+
+User message when a user tries to update a Statistic to one the character already has:
+![Character Statistics amendment - character already has Statistic](!https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-statistics-same-value.png)
+
+User message when a user succesfully updates a Statistic:
+![Character Statistics amendment - character Statistic succesfully amended](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-strength-statistic-succesfully-amended.png)
 
 #### Amend Proficiencies
 If the user chooses to launch the Proficiencies amendment option they are told the following information - the current Proficiencies associated to the logged character and the allowed Proficiencies the program requires.
@@ -145,12 +157,25 @@ If there are less than four proficiencies associated with a character, and the u
 
 If the user does not want to amend a proficiency, they can type 0 to return to the character amendment options. 
 
+![Character Proficiencies amendment](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-proficiencies.png)
+
+User message when user tries to amend Proficiencies when character already has four Proficiencies associated:
+![Character Proficiencies amendment - four Proficiencies already associated](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-proficiencies-too-many-proficiencies.png)
+
 #### Amend Alignments
 If the user chooses to launch the Alignment amendment option they are told the following information - the current Alignment associated to the logged character and the allowed Alignments that the program requires.
 
 If the user wishes to update their Alignment, they must type the new Alignment exactly as listed in the program otherwise they will trigger the validation. A user cannot add the same Alignment already associated to the character.
 
 At the end of any character amendments, these amendments will be logged and changed on the Google sheet immediately. The user will be brought back to the character amendment menu and then can choose to amend further fields or return to the main Compendium menu.
+
+![Character Alignment amendment](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-alignment.png)
+
+User message when user tries to amend Alignment to one the character already has: 
+![Character Alignment amendement - Alignment already associated](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-alignment-same-alignment.png)
+
+User message when user tries to amend Alignment and amends succesfully:
+![Character Alignment amendment - Alignment succesfully updated](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-alignment-alignment-succesfully-amended.png)
 
 ### Create a New Character using The Compendium
 If a user chooses to create a new character they are prompted to provide the following: a first name, which is a required field and a surname, which is an optional field. The program then automatically generates the following using Python's random dependency from the global allowed variables: Race/Species, Class, Statistics, Proficiencies, Alignment.
