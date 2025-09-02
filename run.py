@@ -954,7 +954,7 @@ def main():
                         else:
                             print(
                                 "Invalid option. You must choose:\n"
-                                "either 0
+                                "either 0"
                                 "or no and hit Enter.\n"
                                 )
 
