@@ -195,10 +195,10 @@ Remove:
 ![Character Proficiencies amendment - can't remove, no commas](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-proficiencies-try-to-remove-invalid-proficiency-no-comma.png)
 
 User message when user succesfully adds a Proficiency:
-[!Character Proficiencies amendment - succesfully added](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-proficiencies-succesful-added-valid-proficiency.png)
+![Character Proficiencies amendment - succesfully added](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-proficiencies-succesful-added-valid-proficiency.png)
 
 User message when user succesfuly removes a Proficiency:
-[!Character Proficiencies amendment - succesfully removed](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-proficiencies-succesful-remove-valid-proficiency.png)
+![Character Proficiencies amendment - succesfully removed](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-proficiencies-succesful-remove-valid-proficiency.png)
 
 #### Amend Alignments
 If the user chooses to launch the Alignment amendment option they are told the following information - the current Alignment associated to the logged character and the allowed Alignments that the program requires.
@@ -270,6 +270,7 @@ Valid Proficiency:
 ![Valid proficiency added](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-premade-proficiencies-proficiencies-accepted.png)
 
 User asked to choose between uploading character to The Compendium
+
 User chooses to add character to The Compenidum
 ![User chooses to add character to The Compendium](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-premade-alignment-user-adding-to-compendium.png)
 
