@@ -355,7 +355,7 @@ def amend_statistics(character, sheet, row):
         while True:
             more_updates = input(
                 "Do you want to amend another Statistic?\n"
-                "(type Yes or No and hit Enter): \n"
+                "(type yes or no and hit Enter): \n"
                 ).strip().lower()
 
             if more_updates == "yes":
@@ -364,7 +364,7 @@ def amend_statistics(character, sheet, row):
                 print("Returning to character amendment choices...\n")
                 return
             else:
-                print("Invalid choice. Please type Yes or No.\n")
+                print("Invalid choice. Please type yes or no and hit Enter.\n")
 
 
 def amend_proficiencies(character, sheet, row):
@@ -377,7 +377,7 @@ def amend_proficiencies(character, sheet, row):
             ).split(',') if p.strip()
         ]
     print(
-        f"\nCurrent Prof: "
+        f"\nCurrent Proficiencies: "
         f"{', '.join(current_prof) if current_prof else '(none)'}"
         )
     print("\nAllowed Proficiencies: ", ", ".join(ALLOWED_PROFICIENCIES))
@@ -402,8 +402,8 @@ def amend_proficiencies(character, sheet, row):
             # are prompted to remove a Proficiency instead
             if len(current_prof) >= 4:
                 print(
-                    "\nMaximum of 4 Proficiencies reached."
-                    " Remove one first if you want to add another."
+                    "\nMaximum of 4 Proficiencies reached.\n"
+                    "Remove one first if you want to add another."
                 )
                 continue
 
@@ -424,7 +424,7 @@ def amend_proficiencies(character, sheet, row):
                     print("Returning to character amendment choices...\n")
                     return
                 if not new_proficiency:
-                    print("No Proficiency entered.")
+                    print("No Proficiency entered.\n")
                     continue
 
                 added_proficiency = [
@@ -434,15 +434,15 @@ def amend_proficiencies(character, sheet, row):
                 for new_proficiency in added_proficiency:
                     if len(current_prof) >= 4:
                         print(
-                            "\nMaximum of 4 Proficiencies reached."
-                            " You cannot add another Proficiency."
+                            "\nMaximum of 4 Proficiencies reached.\n"
+                            "You cannot add another Proficiency.\n"
                         )
                         break
                     if new_proficiency == "0":
                         print("Returning to character amendment choices...\n")
                         return
                     if new_proficiency not in ALLOWED_PROFICIENCIES:
-                        print("Not an allowed Proficiency. Try again.")
+                        print("Not an allowed Proficiency. Try again.\n")
                         continue
                     if new_proficiency in current_prof:
                         print(
@@ -473,8 +473,8 @@ def amend_proficiencies(character, sheet, row):
             # Proficiency instead
             if not current_prof:
                 print(
-                    "No Proficiencies to remove."
-                    " Please add a Proficiency first."
+                    "No Proficiencies to remove.\n"
+                    "Please add a Proficiency first.\n"
                     )
                 continue
 
@@ -487,8 +487,9 @@ def amend_proficiencies(character, sheet, row):
                     )
                 prof_to_remove = input(
                     "\nEnter a Proficiency to remove, with a"
-                    " comma between each Proficiency or type\n"
-                    "0 to return to character amendment choices): \n"
+                    " comma between each Proficiency\n"
+                    "or type 0 to return to character amendment"
+                    " choices): \n"
                     ).strip().title()
                 if prof_to_remove == "0":
                     print("Returning to character amendment choices...\n")
@@ -540,10 +541,10 @@ def amend_alignment(character, sheet, row):
             print("No changes made to alignment.")
             break
         if new_alignment not in ALLOWED_ALIGNMENTS:
-            print("Not an allowed Alignment. Try again.")
+            print("Not an allowed Alignment. Try again.\n")
             continue
         if new_alignment == current_alignment:
-            print("Alignment is already set to this value.")
+            print("Alignment is already set to this value.\n")
             continue
         character['Alignment'] = new_alignment
         try:
@@ -554,6 +555,10 @@ def amend_alignment(character, sheet, row):
             print(f"\nOh no! Error updating sheet: {e}")
         break
     return character
+
+
+def format_name(name: str) -> str:
+    return " ".join(word.capitalize() for word in name.strip().split())
 
 
 def create_randomised_character():
@@ -576,7 +581,7 @@ def create_randomised_character():
     while True:
         # Code to require user to provide required first name
         first_name = input(
-            "\nEnter character first name (required) and hit enter: \n"
+            "Enter character first name (required) and hit enter: \n"
             ).strip()
         # Code to validate that user has entered a name
         if len(first_name) == 0:
@@ -596,12 +601,16 @@ def create_randomised_character():
     while True:
         # Code for user to provide optional last name
         last_name = input(
-            "Enter character surname (optional) and hit enter: \n"
+            "\nEnter character surname (optional) and hit enter: \n"
             )
         if last_name and not last_name.isalpha():
             print("Surname must contain only letters, please try again.")
             continue
         break
+    # Combine first name and last name (if provided)
+    first_name = format_name(first_name)
+    last_name = format_name(last_name)
+
     # Combine first name and last name (if provided)
     character_name = f"{first_name} {last_name}" if last_name else first_name
 
@@ -665,12 +674,12 @@ def add_premade_character():
     the Google Sheet.
     """
 
-    print("\nPlease provide the character's details as prompted. \n"
+    print("Please provide the character's details as prompted. \n"
           "\nTo go back to the main menu at any time, type 0")
     while True:
         # Code for user to provide required first name
         pre_made_f_name = input(
-            "Enter character first name (required): \n"
+            "\nEnter character first name (required): \n"
             ).strip()
 
         # Go back to main menu
@@ -697,7 +706,7 @@ def add_premade_character():
         break
     while True:
         # Code for user to provide optional last name
-        pre_made_l_name = input("Enter character surname (optional): \n")
+        pre_made_l_name = input("\nEnter character surname (optional): \n")
 
         # Go back to main menu
         if pre_made_l_name == "0":
@@ -709,18 +718,17 @@ def add_premade_character():
         break
 
     # Code to combine first name and last name (if provided)
-    pre_made_character_name = (
-        f"{pre_made_f_name} {pre_made_l_name}"
-        if pre_made_l_name else pre_made_f_name
-        )
+    pre_made_f_name = format_name(pre_made_f_name)
+    pre_made_l_name = format_name(pre_made_l_name)
 
-    # Code for user to provide pre-made base characterists
-    # ie race, Class, Alignment with validation
+    pre_made_character_name = f"{pre_made_f_name} {pre_made_l_name}".strip()
+
     while True:
         pre_made_race = input(
             f"\nEnter Race/Species from the following"
-            f" list - \n{', '.join(ALLOWED_RACES)}: \n"
-            f"To go back to the main menu at any time, type 0\n"
+            f" list: \n"
+            f"\n{', '.join(ALLOWED_RACES)} \n"
+            f"\nTo go back to the main menu at any time, type 0\n"
             ).strip().title()
         # Go back to main menu
         if pre_made_race == "0":
@@ -735,8 +743,9 @@ def add_premade_character():
     while True:
         pre_made_character_class = input(
             f"\nEnter Class from the following"
-            f" list -\n{', '.join(ALLOWED_CLASSES)}: \n"
-            f"To go back to the main menu at any time, type 0\n"
+            f" list: \n"
+            f"\n{', '.join(ALLOWED_CLASSES)} \n"
+            f"\nTo go back to the main menu at any time, type 0\n"
             ).strip().title()
         # Go back to main menu
         if pre_made_character_class == "0":
@@ -751,8 +760,9 @@ def add_premade_character():
     while True:
         pre_made_alignment = input(
             f"\nEnter Alignment from the following"
-            f" list - \n{', '.join(ALLOWED_ALIGNMENTS)}: \n"
-            f"To go back to the main menu at any time, type 0\n"
+            f" list - \n"
+            f"\n{', '.join(ALLOWED_ALIGNMENTS)} \n"
+            f"\nTo go back to the main menu at any time, type 0\n"
             ).strip().title()
         # Go back to main menu
         if pre_made_alignment == "0":
@@ -767,9 +777,10 @@ def add_premade_character():
     pre_made_proficiencies = []
     print(
         f"\nEnter 4 Proficiencies from the following"
-        " list. \nWhen you are done, hit Enter\n"
-        "To go back to the main menu at any time, type 0\n"
-        f"\n{', '.join(ALLOWED_PROFICIENCIES)}:")
+        f" list. \nWhen you are done, hit Enter\n"
+        f"\n{', '.join(ALLOWED_PROFICIENCIES)}\na"
+        f"\nTo go back to the main menu at any time, type 0\n"
+    )
 
     while len(pre_made_proficiencies) < 4:
         raw_input = input(
@@ -900,7 +911,7 @@ def main():
             elif choice == 3:
                 print(
                     "Loading choices to add an existing character"
-                    "to The Compendium...\n"
+                    " to The Compendium...\n"
                 )
                 pre_made_character = add_premade_character()
                 if pre_made_character:
@@ -928,7 +939,7 @@ def main():
                         confirm = input(
                             "\nDo you want to add this character to"
                             " The Compendium?\n"
-                            "(type Yes or No and"
+                            "(type yes or no and"
                             " hit Enter): \n"
                             ).strip().lower()
                         if confirm == "yes":
@@ -943,7 +954,7 @@ def main():
                         else:
                             print(
                                 "Invalid option. You must choose:\n"
-                                "either Yes or No.\n"
+                                "either yes or no and hit Enter.\n"
                                 )
 
             elif choice == 0:
