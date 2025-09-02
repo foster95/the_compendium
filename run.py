@@ -23,7 +23,7 @@ SHEET = GSPREAD.open('the_compendium')
 Alignment, Proficiencies"""
 
 ALLOWED_RACES = [
-    "Human", "Elf", "Dwarf", "Halfling", "Dragonborn", "Tiefling"
+    "Human", "Elf", "Dwarf", "Halfling", "Dragonborn", "Tiefling",
     "Gnome", "Half-Elf", "Half-Orc"
 ]
 
@@ -778,7 +778,7 @@ def add_premade_character():
     print(
         f"\nEnter 4 Proficiencies from the following"
         f" list. \nWhen you are done, hit Enter\n"
-        f"\n{', '.join(ALLOWED_PROFICIENCIES)}\na"
+        f"\n{', '.join(ALLOWED_PROFICIENCIES)}\n"
         f"\nTo go back to the main menu at any time, type 0\n"
     )
 
@@ -954,7 +954,8 @@ def main():
                         else:
                             print(
                                 "Invalid option. You must choose:\n"
-                                "either yes or no and hit Enter.\n"
+                                "either 0
+                                "or no and hit Enter.\n"
                                 )
 
             elif choice == 0:
