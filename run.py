@@ -163,7 +163,7 @@ def get_stored_characters():
             f" fetching: {e}. Returning to main menu... \n"
             )
         return
-
+    
 
 def amend_stored_character(characters):
     """
@@ -171,69 +171,67 @@ def amend_stored_character(characters):
     """
     print("Choose a character from The Compendium to amend.\n")
 
-    name = input(
-        "Enter the name of the character"
-        " you want to amend.\n"
-        "To return to the main menu type 0: \n"
-        ).strip()
-    character = next(
-        (
-            c for c in characters
-            if c.get('Name', '').strip().lower() == name.lower()
-        ),
-        None
-    )
-
-    if name == "0":
-        print("\nReturning to main menu...")
-        return True
-
-    if not character:
-        print(f"Character not found: {name}")
-        return
-
-    try:
-        sheet = SHEET.worksheet('Stored Characters')
-    except Exception as e:
-        print(f"Oh no! Could not open worksheet: {e}")
-        return
-
-    cell = sheet.find(character['Name'])
-    if not cell:
-        print(f"Character {name} not found in the sheet.")
-        return
-    row = cell.row
-
     while True:
-        print(f"Amending: {character.get('Name','(unknown)')}")
-        print("\nFields you can amend:\n"
-              "[1] Class\n"
-              "[2] Statistics\n"
-              "[3] Proficiencies\n"
-              "[4] Alignment\n"
-              "[0] Return to main menu\n"
-              )
+        name = input(
+            "Enter the name of the character you want to amend.\n"
+            "To return to the main menu type 0: \n"
+        ).strip()
+        character = next(
+            (
+                c for c in characters
+                if c.get('Name', '').strip().lower() == name.lower()
+            ),
+            None
+        )
 
-        # Allows user to choose field to amend or breakout to main menu
-        choice = input("Enter your choice:\n").strip()
-        if choice == "1":
-            amend_class(character, sheet, row)
-
-        elif choice == "2":
-            amend_statistics(character, sheet, row)
-
-        elif choice == "3":
-            amend_proficiencies(character, sheet, row)
-
-        elif choice == "4":
-            amend_alignment(character, sheet, row)
-
-        elif choice == "0":
-            print("\nReturning to main menu...\n")
+        if name == "0":
+            print("\nReturning to main menu...")
             return True
 
-        else:
-            print("Invalid choice. You must choose either 0, 1, 2, 3 or 4\n")
+        if not character:
+            print(
+                f"Character not found: {name}. Try again "
+                "or type 0 to return to the main menu\n"
+            )
+            continue
+
+        try:
+            sheet = SHEET.worksheet('Stored Characters')
+        except Exception as e:
+            print(f"Oh no! Could not open worksheet: {e}")
+            return
+
+        cell = sheet.find(character['Name'])
+        if not cell:
+            print(f"Character {name} not found in the sheet.")
+            return
+        row = cell.row
+
+        while True:
+            print(f"Amending: {character.get('Name', '(unknown)')}")
+            print(
+                "\nFields you can amend:\n"
+                "[1] Class\n"
+                "[2] Statistics\n"
+                "[3] Proficiencies\n"
+                "[4] Alignment\n"
+                "[0] Return to main menu\n"
+            )
+
+            choice = input("Enter your choice:\n").strip()
+            if choice == "1":
+                amend_class(character, sheet, row)
+            elif choice == "2":
+                amend_statistics(character, sheet, row)
+            elif choice == "3":
+                amend_proficiencies(character, sheet, row)
+            elif choice == "4":
+                amend_alignment(character, sheet, row)
+            elif choice == "0":
+                print("\nReturning to main menu...\n")
+                return True
+            else:
+                print("Invalid choice. You must choose either 0, 1, 2, 3 or 4\n")
 
 
 def amend_class(character, sheet, row):
