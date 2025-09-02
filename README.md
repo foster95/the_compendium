@@ -5,6 +5,8 @@ Project 03 by Alice Foster
 # The Compendium
 The Compendium is a Python built project which is built around the concept of character creation for Dungeons and Dragon's (known colloquially as DnD). The project is connected to a Google Sheet and allows users to do the following: See all the characters already logged to the Google Sheet, Create a character using randomised features provided by the Compendium terminal and upload the details of a pre-made DnD character the user already has. Any characters created using The Compendium are automatically uploaded to the Google Sheet. Users can choose if they want to upload the pre-made character to the Google Sheet. 
 
+![The Compendium](https://github.com/foster95/the_compendium/blob/main/assets/images/compendium-main-menu.png)
+
 # Table of Contents
 1. [Audience](#audience)
 2. [Project Logic](#project-logic)
@@ -24,14 +26,14 @@ The Compendium is a Python built project which is built around the concept of ch
 4. [Future Features](#future-features)
 5. [Testing](#testing)
     * [Manual Testing](#manual-testing)
-    * PEP8 CI Python Linter
+    * [PEP8 CI Python Linter](#pep8-ci-linter)
 6. [Bugs](#bugs)
 7. [Deployment](#deployment)
     * [Heroku Deployment](#heroku-deployment)
     * [Local Deployment](#local-deployment)
     * [Cloning](#cloning)
     * [Forking](#forking)
-9. [Tools and Technologies Used]
+9. [Tools and Technologies Used](#tools-and-technologies-used)
 10. [Credits and acknowledgements](#credits-and-acknowledgements) 
 11. [Final note from the Developer](#final-note-from-the-developer)
 
@@ -134,9 +136,11 @@ If the user does not want to add a further class, they can type 0 to return to t
 
 ![Character Class amendment - only for Multi-classing](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-add-class.png)
 
+User message that shows when user tries to add a Class already associated to the character:
 ![Character Class amendment - tries to add an the same Class](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-add-class-same-class.png)
 
-![Character Class amendment - tries to add an invalid Class]
+![Character Class amendment - tries to add an invalid Class](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-class-tries-to-add-invalid-class.png)
+
 
 #### Amend Statistics
 If the user chooses to amend their statistics, they are shown a list of all of their current statistics in the terminal and are prompted to type the name of the statistic that they want to update and hit enter. They are then asked what they want to update their new statistic to. Typically players are unlikely to update more than three statistics at any one time, and provided that the new statistic is accepted by the program, the user is prompted and asked if they want to add any more statistics. 
@@ -245,7 +249,7 @@ Invalid Race/Species
 ![Invalid Race/Species provided](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-pre-made-user-tries-to-add-invalid-race.png)
 
 Invalid Class
-![Invalid Class provided]()
+![Invalid Class provided](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-premade-character-statistics-user-provides-invalid-class.png)
 
 Invalid Proficiency
 ![Invalid Proficiency provided](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-premade-proficiency-user-tries-to-add-invalid-proficiency.png)
