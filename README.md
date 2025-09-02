@@ -269,14 +269,6 @@ User message if user adds a valid option:
 Valid Proficiency:
 ![Valid proficiency added](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-premade-proficiencies-proficiencies-accepted.png)
 
-User asked to choose between uploading character to The Compendium
-
-User chooses to add character to The Compenidum
-![User chooses to add character to The Compendium](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-premade-alignment-user-adding-to-compendium.png)
-
-User chooses to not add character to The Compendium:
-![User chooses not to add character to The Compendium](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-premade-alignment-user-not-adding-to-compendium.png)
-
 
 ### Upload a Character to The Compendium
 If a user chooses to upload their pre-made character to the Compendium, the add_character_to_compendium function will run with the paratmeters of the randomised character. This function takes all of the information provided in the terminal and formats it into a string so it can be added to the Google sheet. Once the below function has run, the character is added and the user is taken back to the main menu. This process also automatically runs when a user creates a character through The Compendium's random character generator. 
@@ -321,6 +313,14 @@ If a user chooses to upload their pre-made character to the Compendium, the add_
             )
         except Exception as e:
             print(f"Oh no! An error occurred while adding the character: {e}")
+
+User asked to choose between uploading character to The Compendium
+
+User chooses to add character to The Compenidum
+![User chooses to add character to The Compendium](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-premade-alignment-user-adding-to-compendium.png)
+
+User chooses to not add character to The Compendium:
+![User chooses not to add character to The Compendium](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-premade-alignment-user-not-adding-to-compendium.png)
 
 ### Future Features
 * Additional races - as detailed in the features above, the program is currently limited to a series of common races. A future version of this program would allow for a wider pool of races to be used, with rarer, and more uncommon races available.
