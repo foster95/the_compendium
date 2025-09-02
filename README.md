@@ -132,6 +132,12 @@ A feature of Dungeons & Dragons is that the user can create a character that has
 
 If the user does not want to add a further class, they can type 0 to return to the character amendment options. 
 
+![Character Class amendment - only for Multi-classing](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-add-class.png)
+
+![Character Class amendment - tries to add an the same Class](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-add-class-same-class.png)
+
+![Character Class amendment - tries to add an invalid Class]
+
 #### Amend Statistics
 If the user chooses to amend their statistics, they are shown a list of all of their current statistics in the terminal and are prompted to type the name of the statistic that they want to update and hit enter. They are then asked what they want to update their new statistic to. Typically players are unlikely to update more than three statistics at any one time, and provided that the new statistic is accepted by the program, the user is prompted and asked if they want to add any more statistics. 
 
@@ -168,17 +174,24 @@ If the user does not want to amend a proficiency, they can type 0 to return to t
 User message when user tries to add Proficiencies when character already has four Proficiencies associated:
 ![Character Proficiencies amendment - four Proficiencies already associated](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-proficiencies-too-many-proficiencies.png)
 
-User message when user tries to remove Proficiencies and the character doesn't have any Proficiencies associated
+User message when user tries to remove Proficiencies and the character doesn't have any Proficiencies associated:
+Remove:
+![Character Proficiencies amendment - can't remove as no Proficiencies associated](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-proficiencies-no-profieciencies-associated.png)
 
-User message when user tries to remove Proficienices and the character has at least one Proficiency associated:
+User message when user tries to add a Proficiency that is not from the ALLOWED_PROFICIENCIES variable:
+![Character Proficiencies amendment - can't add as not from ALLOWED_PROFICIENCIES variable](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-proficiencies-try-to-add-invalid-proficiency.png)
 
-User message when user tries to add a Proficiency that is not from the ALLOWED_PROFICIENCIES variable
-
-User message when user tries to add/remove a set of Proficiencies without a comma between the two
+User message when user tries to add/remove a set of Proficiencies without a comma between the two:
+Add:
+![Character Proficiencies amendment - can't add, no commas](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-proficiencies-try-to-add-invalid-proficiency-no-comma.png)
+Remove:
+![Character Proficiencies amendment - can't remove, no commas](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-proficiencies-try-to-remove-invalid-proficiency-no-comma.png)
 
 User message when user succesfully adds a Proficiency
+[!Character Proficiencies amendment - succesfully added]()
 
 User message when user succesffuly removes a Proficiency
+[!Character Proficiencies amendment - succesfully removed](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-proficiencies-succesful-remove-valid-proficiency.png)
 
 #### Amend Alignments
 If the user chooses to launch the Alignment amendment option they are told the following information - the current Alignment associated to the logged character and the allowed Alignments that the program requires.

@@ -163,7 +163,7 @@ def get_stored_characters():
             f" fetching: {e}. Returning to main menu... \n"
             )
         return
-    
+
 
 def amend_stored_character(characters):
     """
@@ -231,7 +231,9 @@ def amend_stored_character(characters):
                 print("\nReturning to main menu...\n")
                 return True
             else:
-                print("Invalid choice. You must choose either 0, 1, 2, 3 or 4\n")
+                print(
+                    "Invalid choice. You must choose either 0, 1, 2, 3 or 4\n"
+                    )
 
 
 def amend_class(character, sheet, row):
