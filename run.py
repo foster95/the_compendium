@@ -122,7 +122,7 @@ def get_stored_characters():
         characters = sheet.get_all_records()
         if characters:
             for character in characters:
-                print(f"\nName: {character.get('Name', '')}")
+                print(f"Name: {character.get('Name', '')}")
                 print(f"Race/Species: {character.get('Race/Species', '')}")
                 print(f"Class: {character.get('Class', '')}")
                 stats_str = character.get('Statistics', '')
@@ -174,7 +174,7 @@ def amend_stored_character(characters):
     while True:
         name = input(
             "Enter the name of the character you want to amend.\n"
-            "To return to the main menu type 0: \n"
+            "\nTo return to the main menu type 0: \n"
         ).strip()
         character = next(
             (
@@ -304,7 +304,7 @@ def amend_statistics(character, sheet, row):
         chosen_key = input(
             "\nType the Statistic name exactly as shown above"
             " and hit enter.\n"
-            "To return back to the character amendment"
+            "\nTo return back to the character amendment"
             " choices, type 0: \n"
             ).strip().title()
         if chosen_key == "0":

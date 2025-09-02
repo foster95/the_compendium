@@ -139,6 +139,7 @@ If the user does not want to add a further class, they can type 0 to return to t
 User message that shows when user tries to add a Class already associated to the character:
 ![Character Class amendment - tries to add an the same Class](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-add-class-same-class.png)
 
+User message that shows when user tries to add a Class not in the ALLOWED_CLASSES global variable:
 ![Character Class amendment - tries to add an invalid Class](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-class-tries-to-add-invalid-class.png)
 
 
@@ -157,7 +158,7 @@ User message when a user tries to update a Statistic to one the character alread
 ![Character Statistics amendment - character already has Statistic](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-statistics-same-value.png)
 
 User message when a user tries to update a Statistic to one greater than 20:
-
+![Character Statistics amendment - user tries to update statistic to one greater than 20](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-statistics-value-greater-than-20.png)
 
 User message when a user succesfully updates a Statistic:
 ![Character Statistics amendment - character Statistic succesfully amended](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-strength-statistic-succesfully-amended.png)
@@ -179,22 +180,24 @@ User message when user tries to add Proficiencies when character already has fou
 ![Character Proficiencies amendment - four Proficiencies already associated](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-proficiencies-too-many-proficiencies.png)
 
 User message when user tries to remove Proficiencies and the character doesn't have any Proficiencies associated:
-Remove:
+
 ![Character Proficiencies amendment - can't remove as no Proficiencies associated](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-proficiencies-no-profieciencies-associated.png)
 
 User message when user tries to add a Proficiency that is not from the ALLOWED_PROFICIENCIES variable:
 ![Character Proficiencies amendment - can't add as not from ALLOWED_PROFICIENCIES variable](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-proficiencies-try-to-add-invalid-proficiency.png)
 
 User message when user tries to add/remove a set of Proficiencies without a comma between the two:
+
 Add:
 ![Character Proficiencies amendment - can't add, no commas](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-proficiencies-try-to-add-invalid-proficiency-no-comma.png)
+
 Remove:
 ![Character Proficiencies amendment - can't remove, no commas](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-proficiencies-try-to-remove-invalid-proficiency-no-comma.png)
 
-User message when user succesfully adds a Proficiency
-[!Character Proficiencies amendment - succesfully added]()
+User message when user succesfully adds a Proficiency:
+[!Character Proficiencies amendment - succesfully added](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-proficiencies-succesful-added-valid-proficiency.png)
 
-User message when user succesffuly removes a Proficiency
+User message when user succesfuly removes a Proficiency:
 [!Character Proficiencies amendment - succesfully removed](https://github.com/foster95/the_compendium/blob/main/assets/images/amend-character-amend-proficiencies-succesful-remove-valid-proficiency.png)
 
 #### Amend Alignments
@@ -235,6 +238,7 @@ User message when user tries to provide a firstname or surname that includes num
 User message when user tries to skip providing a firsname:
 ![Create a character using The Compendium - user tries to skip adding a firstname](https://github.com/foster95/the_compendium/blob/main/assets/images/option-2-create-character-using-compendium-firstname-user-tries-to-add-nothing.png)
 
+Full character shown to the user after names have been provided:
 ![Create a character using The Compendium - full character shown](https://github.com/foster95/the_compendium/blob/main/assets/images/option-2-create-character-using-compendium-full-character-shown.png)
 
 ### Log a pre-made Character
@@ -242,30 +246,32 @@ If a user chooses to log a pre-made character outside of the randomiser, they ar
 
 ![Option 3 - log a premade character](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-premade-provide-firstname-surname-and-race.png)
 
+Full character shown to user after all information provided:
 ![Option3 - log a premade character full character shown](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-premade-show-full-premade.png)
 
 User message if user tries to add invalid options:
-Invalid Race/Species
+Invalid Race/Species:
 ![Invalid Race/Species provided](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-pre-made-user-tries-to-add-invalid-race.png)
 
-Invalid Class
+Invalid Class:
 ![Invalid Class provided](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-premade-character-statistics-user-provides-invalid-class.png)
 
-Invalid Proficiency
+Invalid Proficiency:
 ![Invalid Proficiency provided](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-premade-proficiency-user-tries-to-add-invalid-proficiency.png)
 
-Invalid Statistics
+Invalid Statistics:
 ![Invalid Statistic provided](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-premade-character-statistics-user-provides-statistic-higher-than-20.png)
 
-Invalid Alignment
+Invalid Alignment:
 ![Invalid Alignment provided](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-premade-user-tries-to-add-invalid-alignment.png)
 
 User message if user adds a valid option:
-Valid Proficiency
+Valid Proficiency:
 ![Valid proficiency added](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-premade-proficiencies-proficiencies-accepted.png)
 
 User asked to choose between uploading character to The Compendium
 User chooses to add character to The Compenidum
+![User chooses to add character to The Compendium](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-premade-alignment-user-adding-to-compendium.png)
 
 User chooses to not add character to The Compendium:
 ![User chooses not to add character to The Compendium](https://github.com/foster95/the_compendium/blob/main/assets/images/option-3-log-premade-alignment-user-not-adding-to-compendium.png)
